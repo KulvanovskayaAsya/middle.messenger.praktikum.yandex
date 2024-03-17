@@ -1,0 +1,22 @@
+@import "./assets/variables.scss";
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font: 500 14px/14px #{$font-family__primary};
+  background-color: $color__background;
+  color: $color-text__light_main;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  font-size: inherit;
+  line-height: inherit;
+}
