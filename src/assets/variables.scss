@@ -1,0 +1,44 @@
+// COLORS
+
+$color__primary: #F9C784;
+$color__primary_light: #FBD8A9;
+$color__secondary: #222222;
+
+$color__background: #222222;
+$color__surface: #2B2B2B;
+$color__divider: #A9A9A9;
+
+$color__error: #F25F5C;
+$color__success: #6BAB90;
+
+$color-text__light_accent: #FFFFFF;
+$color-text__light_main: #D3D3D3;
+$color-text__dark_accent: #161819;
+$color-text__dark_main: #2B2B2B;
+$color-text__label: #A9A9A9;
+
+// FONTS
+
+$font-family__primary: 'Roboto', sans-serif;
+$font-family__secondary: 'Nunito', serif;
+
+$font__label: 500 12px/12px #{$font-family__secondary};
+$font__label_small: 400 10px/10px #{$font-family__secondary};
+
+//BORDER-RADIUS
+
+$border-radius_small: 7px;
+$border-radius_large: 14px;
+$border-radius_circle: 50%;
+
+// SPACINGS
+
+$spacing__extra-small: 0.25rem;
+$spacing__small: 0.5rem;
+$spacing__medium: 1rem;
+$spacing__large: 1.5rem;
+$spacing__extra-large: 2rem;
+$spacing__modal: 2.5rem;
+
+//FORM
+$form-width: 280px;

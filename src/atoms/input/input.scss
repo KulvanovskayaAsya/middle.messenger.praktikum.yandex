@@ -1,0 +1,19 @@
+@import '../../assets/variables';
+
+.input {
+  width: 100%;
+	background-color: transparent;
+	color: $color-text__light_main;
+	border: 1px solid $color__divider;
+	border-radius: $border-radius_small;
+	padding: $spacing__medium;
+	font-size: inherit;
+
+	&:focus {
+		outline: 2px solid $color__primary;
+	}
+
+	&:autofill {
+		background-color: transparent;
+	}
+}

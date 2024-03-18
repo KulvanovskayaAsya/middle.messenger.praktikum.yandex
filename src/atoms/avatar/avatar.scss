@@ -1,0 +1,12 @@
+@import '../../assets/variables';
+
+.avatar {
+  height: 60px;
+  width: 60px;
+  cursor: pointer;
+
+  &_large {
+    height: 140px;
+    width: 140px;
+  }
+}
