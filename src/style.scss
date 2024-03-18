@@ -5,6 +5,11 @@ body {
   padding: 0;
   margin: 0;
   height: 100%;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: inherit;
 }
 
 body {
@@ -12,6 +17,7 @@ body {
   background-color: $color__background;
   color: $color-text__light_main;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
