@@ -1,3 +1,3 @@
-import './button.scss';
+import './link.scss';
 
-export { default as Button } from './button.hbs?raw';
+export { default as Link } from './link.hbs?raw';

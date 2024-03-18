@@ -1,0 +1,27 @@
+@import '../../assets/variables';
+
+.link {
+	position: relative;
+	color: $color__primary;
+	text-decoration: none;
+
+	&_back {
+		color: $color__primary_light;
+		font: 800 18px/18px $font-family__secondary;
+    padding-left: 3rem;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      height: 2rem;
+      width: 2rem;
+      background-image: url('/src/assets/icons/backArrow.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+	}
+}

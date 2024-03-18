@@ -13,6 +13,10 @@
     color: $color-text__dark_accent;
   }
 
+  &_submit {
+    margin-top: $spacing__medium;
+  }
+
   &_secondary {
     background-color: $color__secondary;
     color: $color-text__light_accent;
