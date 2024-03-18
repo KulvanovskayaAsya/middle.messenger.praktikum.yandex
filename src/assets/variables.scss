@@ -22,6 +22,9 @@ $color-text__label: #A9A9A9;
 $font-family__primary: 'Roboto', sans-serif;
 $font-family__secondary: 'Nunito', serif;
 
+$font__label: 500 12px/12px #{$font-family__secondary};
+$font__label_small: 400 10px/10px #{$font-family__secondary};
+
 //BORDER-RADIUS
 
 $border-radius_small: 7px;
@@ -35,3 +38,7 @@ $spacing__small: 0.5rem;
 $spacing__medium: 1rem;
 $spacing__large: 1.5rem;
 $spacing__extra-large: 2rem;
+$spacing__modal: 2.5rem;
+
+//FORM
+$form-width: 280px;
