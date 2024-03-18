@@ -1,0 +1,6 @@
+<form class='form' action='' method=''>
+  {{#each formFields}}
+    {{> TextField }}
+  {{/each}}
+  {{> Button text=submitButtonText hrefPage=hrefPage additionalClasses='button_primary button_submit'}}
+</form>
