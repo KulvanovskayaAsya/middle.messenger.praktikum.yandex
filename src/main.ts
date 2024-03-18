@@ -59,12 +59,12 @@ function getPageContext(page: string) {
 		
 		case 'ErrorPage404':
 			return {
-				errorImgSrc: '/src/assets/images/error404.svg'
+				errorImgSrc: '/images/error404.svg'
 			};
 
 		case 'ErrorPage500':
 			return {
-				errorImgSrc: '/src/assets/images/error500.svg'
+				errorImgSrc: '/images/error500.svg'
 			};
 
 		case 'ProfilePage': 
