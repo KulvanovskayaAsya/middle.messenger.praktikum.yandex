@@ -1,30 +1,83 @@
 import Handlebars from 'handlebars';
-import * as Components from './atoms/index';
+import * as Atoms from './atoms/index';
+import * as Molecules from './molecules/index';
+import * as Organisms from './organisms/index';
+import * as Pages from './pages/index';
 
-import addUser from './assets/icons/addUser.svg?raw';
+import * as Forms from './utils/mockData';
 
-Object.entries(Components).forEach(([name, component]) => {
-  Handlebars.registerPartial(name, component);
+Object.entries(Forms).forEach(([formName, formData]) => {
+  Handlebars.registerHelper(formName, () => formData);
 });
 
-function renderButton(text?: string, additionalClasses?: string, icon?: string) {
-  const template = Handlebars.compile(Components.Button);
-  const html = template({ text, additionalClasses, icon });
-  const container = document.getElementById('app');
-  if (container) {
-    container.innerHTML += html;
-  }
+Handlebars.registerHelper('inputType', function(type) {
+  return new Handlebars.SafeString(type || 'text');
+});
+
+[Atoms, Molecules, Organisms, Pages].forEach((componentSet) => {
+  Object.entries(componentSet).forEach(([name, component]) => {
+    Handlebars.registerPartial(name, component);
+  });
+});
+
+function renderPage(pageName: keyof typeof Pages, context: Object) {
+  const pageTemplate = Handlebars.compile(Pages[pageName]);
+  const html = pageTemplate(context);
+  document.body.innerHTML = html;
 }
 
-function renderInput(placeholder?: string) {
-  const template = Handlebars.compile(Components.Input);
-  const html = template({ placeholder });
-  const container = document.getElementById('app');
-  if (container) {
-    container.innerHTML += html;
+document.addEventListener('DOMContentLoaded', () => {
+  renderPage('LoginPage', { formFields: Forms.authenticationForm });
+});
+
+document.addEventListener('click', e => {
+  const target = e.target as HTMLElement;
+  const page = target.getAttribute('data-page');
+
+  if (page) {
+    e.preventDefault();
+    
+		const isErrorPage = page === 'ErrorPage404' || page === 'ErrorPage500';
+    const context = getPageContext(page);
+		const pageName = isErrorPage ? 'ErrorPage' : page as keyof typeof Pages;
+    
+    renderPage(pageName, context);
   }
+});
+
+function getPageContext(page: string) {
+	switch(page) {
+		case 'LoginPage': 
+			return {
+				formFields: Forms.authenticationForm
+			};
+	
+		case 'RegistrationPage':
+			return {
+				formFields: Forms.registrationForm
+			};
+		
+		case 'ErrorPage404':
+			return {
+				errorImgSrc: '/src/assets/images/error404.svg'
+			};
+
+		case 'ErrorPage500':
+			return {
+				errorImgSrc: '/src/assets/images/error500.svg'
+			};
+
+		case 'ProfilePage': 
+			return {
+				formFields: Forms.profileForm
+			};
+		
+		case 'ChangePasswordPage': 
+			return {
+				formFields: Forms.changePasswordForm
+			};
+
+		default:
+			return {};
+	}
 }
-
-
-renderButton('Нажми меня', 'button_primary', addUser);
-renderInput();
