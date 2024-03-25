@@ -11,6 +11,8 @@
     "start": "npm run build && node server.js"
   },
   "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb": "^19.0.4",
     "sass": "^1.72.0",
     "typescript": "^5.2.2",
     "vite": "^5.1.6"
