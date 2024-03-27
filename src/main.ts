@@ -1,10 +1,10 @@
 import Handlebars from 'handlebars';
-import * as Atoms from './atoms/index';
-import * as Molecules from './molecules/index';
-import * as Organisms from './organisms/index';
+import * as Atoms from './components/atoms';
+import * as Molecules from './components/molecules';
+import * as Organisms from './components/organisms';
 import * as Pages from './pages/index';
 
-import * as Forms from './utils/mockData';
+import * as Forms from './utils/mock-data';
 
 Object.entries(Forms).forEach(([formName, formData]) => {
   Handlebars.registerHelper(formName, () => formData);
