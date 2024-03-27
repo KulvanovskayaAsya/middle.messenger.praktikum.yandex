@@ -84,7 +84,7 @@ abstract class BaseComponent {
   }
 
   public getContent() {
-    return this.element;
+    return this._element;
   }
 
   public setProps = (nextProps: Props): void => {
@@ -158,8 +158,8 @@ abstract class BaseComponent {
 				stub.replaceWith(child.getContent() ?? '');
 			}
 		});
-	
-		return fragment.content;
+
+		return fragment.content.firstElementChild;
 	}
 
   _addEvents() {
