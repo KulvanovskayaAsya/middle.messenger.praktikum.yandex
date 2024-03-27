@@ -1,12 +1,12 @@
+type EventName = string;
 type Listener = (...args: unknown[]) => void;
 
-class EventBus {
-	private listeners: { [event: string]: Listener[] };
-  constructor() {
-    this.listeners = {};
-  }
+type ListenersList = Record<EventName, Listener[]>;
 
-  on(event: string, callback: Listener): void {
+class EventBus {
+	private listeners: ListenersList = {};
+
+  public on(event: EventName, callback: Listener): void {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
@@ -14,7 +14,7 @@ class EventBus {
     this.listeners[event].push(callback);
   }
 
-  off(event: string, callback: Listener): void {
+  public off(event: EventName, callback: Listener): void {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
@@ -24,7 +24,7 @@ class EventBus {
     );
   }
 
-  emit(event: string, ...args: unknown[]): void {
+  public emit<T extends unknown[]>(event: EventName, ...args: T): void {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
