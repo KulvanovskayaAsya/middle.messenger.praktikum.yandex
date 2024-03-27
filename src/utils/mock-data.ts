@@ -26,3 +26,22 @@ export const changePasswordForm = [
   { id: 'new_password', name: 'new_password', label: 'Новый пароль', type: 'password' },
   { id: 'new_password_copy', name: 'new_password_copy', label: 'Повторите новый пароль', type: 'password' }
 ];
+
+export const chatsList = [
+  {
+    id: 1,
+    avatar: '/images/avatar.png',
+    name: 'пн',
+    date: 'пн',
+    message: 'Здравствуйте! Я представитель компании Oriflame. Не хотите посмотреть наш каталог?',
+    unreadedCount: '2',
+  },
+  {
+    id: 2,
+    avatar: '/images/avatar.png',
+    name: 'Бора-Бора',
+    date: 'пн',
+    message: 'Я тебя жду!!! Хватит опаздывать...',
+    unreadedCount: '4',
+  },
+]
