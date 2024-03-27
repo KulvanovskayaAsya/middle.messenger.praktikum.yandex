@@ -1,6 +1,16 @@
+import Handlebars from 'handlebars';
+import { v4 as uuidv4 } from 'uuid';
 import EventBus from './event-bus';
 
 type Props = Record<string, unknown>;
+type Children = Record<string, Block>;
+
+type PropsAndChildren = {
+  children?: Children
+  props?: Props
+  blockArrays?: Record<string, Block[]>
+  [prop: string]: unknown
+}
 
 type Meta = {
   tagName: string;
@@ -17,45 +27,48 @@ enum EVENTS {
 class Block {
   static LIFECICLE_EVENTS = EVENTS;
 
-  private _element: HTMLElement | null = null;
+  public id = uuidv4();
+
+  private _element: HTMLElement;
   private _meta: Meta | null = null;
 
-	props: Props;
-	private eventBus: EventBus;
+  props: Props;
+  private eventBus: EventBus;
 
-	constructor(tagName: string = 'div', props: Props = {}) {
-		const eventBus = new EventBus();
-		this.eventBus = eventBus;
+  constructor(propsAndChildren) {
+    const eventBus = new EventBus();
+    this.eventBus = eventBus;
 
-		this._registerEvents(eventBus);
+    this._registerEvents(eventBus);
 
-		this._meta = {
+    this._meta = {
       tagName,
-      props
+      props,
     };
+    this._element = document.createElement(tagName);
     this.props = this._makePropsProxy(props);
-    
-		eventBus.emit(Block.LIFECICLE_EVENTS.INIT);
+
+    eventBus.emit(Block.LIFECICLE_EVENTS.INIT);
   }
 
-	private _createDocumentElement(tagName: string): HTMLElement {
+  private _createDocumentElement(tagName: string): HTMLElement {
     return document.createElement(tagName);
   }
 
-	private _createResources(): void {
-    const tagName = this._meta?.tagName ?? 'div';
+  private _createResources(): void {
+    const tagName = this._meta?.tagName ?? "div";
     this._element = this._createDocumentElement(tagName);
   }
 
-	public get element(): HTMLElement | null {
+  public get element(): HTMLElement {
     return this._element;
   }
 
-	public getContent(): HTMLElement | null {
+  public getContent(): HTMLElement {
     return this.element;
   }
 
-	public setProps = (nextProps: Props): void => {
+  public setProps = (nextProps: Props): void => {
     if (!nextProps) {
       return;
     }
@@ -63,7 +76,7 @@ class Block {
     Object.assign(this.props, nextProps);
   };
 
-	private _makePropsProxy(props: Props): Props {
+  private _makePropsProxy(props: Props): Props {
     return new Proxy(props, {
       set: (target: Props, prop: string, value: any): boolean => {
         const oldProps = { ...target };
@@ -72,24 +85,30 @@ class Block {
         return true;
       },
       deleteProperty(): boolean {
-        throw new Error('Нет доступа');
+        throw new Error("Нет доступа");
       },
     });
   }
 
   private _registerEvents(eventBus: EventBus): void {
     eventBus.on(Block.LIFECICLE_EVENTS.INIT, this.init.bind(this));
-    eventBus.on(Block.LIFECICLE_EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-    eventBus.on(Block.LIFECICLE_EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    eventBus.on(
+      Block.LIFECICLE_EVENTS.FLOW_CDM,
+      this._componentDidMount.bind(this)
+    );
+    eventBus.on(
+      Block.LIFECICLE_EVENTS.FLOW_CDU,
+      this._componentDidUpdate.bind(this)
+    );
     eventBus.on(Block.LIFECICLE_EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-	private init(): void {
+  private init(): void {
     this._createResources();
     this.eventBus.emit(Block.LIFECICLE_EVENTS.FLOW_RENDER);
   }
 
-	private _componentDidMount(): void {
+  private _componentDidMount(): void {
     this.componentDidMount();
   }
 
@@ -97,13 +116,16 @@ class Block {
     // для переопределения в потомках
   }
 
-	private dispatchComponentDidMount(): void {
+  private dispatchComponentDidMount(): void {
     this.eventBus.emit(Block.LIFECICLE_EVENTS.FLOW_CDM);
   }
 
-	private _componentDidUpdate(oldProps: unknown, newProps: unknown): void {
-    const response = this.componentDidUpdate(oldProps as Props, newProps as Props);
-    
+  private _componentDidUpdate(oldProps: unknown, newProps: unknown): void {
+    const response = this.componentDidUpdate(
+      oldProps as Props,
+      newProps as Props
+    );
+
     if (response) {
       this.eventBus.emit(Block.LIFECICLE_EVENTS.FLOW_RENDER);
     }
@@ -113,7 +135,7 @@ class Block {
     return true;
   }
 
-	private _render(): void {
+  private _render(): void {
     const block = this.render();
     if (this._element) {
       this._element.innerHTML = block;
@@ -121,18 +143,34 @@ class Block {
   }
 
   protected render(): string {
-    return '';
+    return "";
   }
 
-	public show(): void {
+  _addEvents() {
+    const { events = {}, eventInterception } = this.props as { events: Record<string, Function>, eventInterception:boolean };
+
+    Object.keys(events).forEach((eventName) => {
+      this._element?.addEventListener(eventName, events[eventName] as EventListenerOrEventListenerObject, eventInterception);
+    });
+  }
+
+  _removeEvents() {
+    const { events = {} } = this.props as { events: Record<string, Function> };
+
+    Object.keys(events).forEach((eventName) => {
+      this._element?.removeEventListener(eventName, events[eventName] as EventListenerOrEventListenerObject);
+    });
+  }
+
+  public show(): void {
     if (this._element) {
-      this._element.style.display = 'block';
+      this._element.style.display = "block";
     }
   }
 
   public hide(): void {
     if (this._element) {
-      this._element.style.display = 'none';
+      this._element.style.display = "none";
     }
   }
 }

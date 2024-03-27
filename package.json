@@ -11,6 +11,7 @@
     "start": "npm run build && node server.js"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.8",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "sass": "^1.72.0",
