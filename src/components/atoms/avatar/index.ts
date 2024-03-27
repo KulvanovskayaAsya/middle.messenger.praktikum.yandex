@@ -13,6 +13,7 @@ class Avatar extends BaseComponent {
 	}
 
 	render() {
+		console.log(this.compile(template, this.props))
 		return this.compile(template, this.props);
 	}
 }

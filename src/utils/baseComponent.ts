@@ -144,6 +144,8 @@ abstract class BaseComponent {
 
 	compile(template: string, props: Props): DocumentFragment {
 		const propsAndStubs = { ...props };
+
+    console.log(propsAndStubs)
 	
 		Object.entries(this.children).forEach(([key, child]) => {
 			propsAndStubs[key] = `<div data-id="id-${child._id}"></div>`;
@@ -158,7 +160,7 @@ abstract class BaseComponent {
 				stub.replaceWith(child.getContent() ?? '');
 			}
 		});
-
+    console.log(fragment)
 		return fragment.content.firstElementChild;
 	}
 
