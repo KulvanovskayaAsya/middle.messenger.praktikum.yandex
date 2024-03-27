@@ -1,0 +1,12 @@
+@import 'src/assets/variables.scss';
+
+.chat {
+	display: flex;
+	padding: $spacing__medium;
+}
+
+.chat__content {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing__extra-small;
+}
