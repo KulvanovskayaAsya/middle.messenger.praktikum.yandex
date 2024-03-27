@@ -2,7 +2,7 @@ import Block from "../../../utils/block";
 import "./button.scss";
 import template from "./button.hbs?raw";
 
-interface ButtonProps {
+interface IButtonProps {
   text?: string;
   icon?: string;
   additionalClasses?: string;
@@ -11,8 +11,8 @@ interface ButtonProps {
 }
 
 class Button extends Block {
-  constructor(props: ButtonProps) {
-    super("button", { 
+  constructor(props: IButtonProps) {
+    super({ 
 			...props, 
 			events: { 
 				click: props.onClick

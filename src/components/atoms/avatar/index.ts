@@ -3,7 +3,7 @@ import './avatar.scss';
 import template from './avatar.hbs?raw';
 
 interface IAvatarProps {
-  src: string,
+	src: string,
 	additionalClasses?: string
 }
 

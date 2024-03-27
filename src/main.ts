@@ -1,14 +1,69 @@
-import Avatar from "./components/atoms/avatar";
+//@ts-nocheck
+import Handlebars from 'handlebars';
+import * as Components from './components';
+import * as Pages from './pages';
+import Block from './utils/block';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const appElement = document.getElementById('app');
-	console.log(appElement);
-	const block = new Avatar({ src: '/images/avatar.png' });
-
-  if (appElement) {
-    appElement.appendChild(block.getContent());
+class Button extends Block {
+  constructor(props) {
+    super({
+      ...props,
+      events: {
+        click: () => console.log('event')
+      }
+    })
   }
-});
+
+  render() {
+    return "<button>{{text}}</button>"
+  }
+}
+
+class Input extends Block {
+  constructor(props) {
+    super({
+      ...props,
+      events: {
+        change: (e) => props.onChange(e.target.value)
+      }
+    })
+  }
+
+  render() {
+      return `<input />`
+  }
+}
+
+class Page extends Block {
+  constructor(props) {
+    super({
+      ...props,
+      button: new Button({text: props.buttonText}),
+      input: new Input({
+        lable: "input",
+        onChange: (value) => {
+          this.setProps({buttonText: value})
+        }
+      }),
+    })
+  }
+
+  componentDidUpdate(oldProps, newProps) {
+      if (oldProps.buttonText !== newProps.buttonText) {
+        this.children.button.setProps({ text: newProps.buttonText });
+      }
+      return true;
+  }
+
+  override render() {
+      return '<div>{{{ button }}} {{{ input }}}</div>'
+  }
+}
+
+const block = new Page({buttonText: 'Button'});
+const container = document.getElementById('app')!;
+console.log(container);
+container.append(block.getContent()!);
 
 // import * as Atoms from './components/atoms';
 // import * as Molecules from './components/molecules';
