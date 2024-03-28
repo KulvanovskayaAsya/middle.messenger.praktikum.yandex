@@ -22,13 +22,8 @@ class TextField extends BaseComponent {
   constructor(props: ITextFieldProps) {
     super({
       ...props,
-      input: new Input({ ...props.input }),
-      label: new Label({ ...props.label }),
-      events: {
-        blur: event => {
-          console.log(event.target);
-        }
-      }
+      input: new Input({ ...props.input, additionalClasses: 'text-field__input' }),
+      label: new Label({ ...props.label, additionalClasses: 'text-field__label' })
     });
   }
 

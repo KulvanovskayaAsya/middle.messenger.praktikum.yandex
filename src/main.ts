@@ -1,7 +1,5 @@
-import Avatar from './components/atoms/avatar';
-import Input from './components/atoms/input';
-import Label from './components/atoms/label';
 import TextField from './components/molecules/text-field';
+import Button from './components/atoms/button';
 
 document.addEventListener('DOMContentLoaded', () => {
   const appElement = document.getElementById('app');
@@ -9,17 +7,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // const input = new Input({ id: 'login', name: 'login' });
   // const label = new Label({ id: 'login', label: 'login' });
 
-  const textField = new TextField({
+  const textFieldLogin = new TextField({
     input: { id: 'login', name: 'login', inputType: 'text' },
-    label: { id: 'login', label: 'Login' }
+    label: { id: 'login', label: 'Логин' }
   });
-  // console.log(textField)
+  const textFieldPassword = new TextField({
+    input: { id: 'password', name: 'password', inputType: 'password' },
+    label: { id: 'password', label: 'Пароль' }
+  });
+  const submitButton = new Button({
+    text: 'Авторизоваться',
+    hrefPage: 'ProfilePage',
+    additionalClasses: 'button_primary'
+  })
 
   if (appElement) {
-    // appElement.appendChild(block.getContent());
-    // appElement.appendChild(input.getContent());
-    // appElement.appendChild(label.getContent());
-    appElement.appendChild(textField.getContent());
+    appElement.appendChild(textFieldLogin.getContent());
+    appElement.appendChild(textFieldPassword.getContent());
+    appElement.appendChild(submitButton.getContent());
   }
 });
 

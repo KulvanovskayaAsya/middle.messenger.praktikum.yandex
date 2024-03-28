@@ -1,6 +1,6 @@
-import BaseComponent from "../../../utils/baseComponent";
-import "./button.scss";
-import template from "./button.hbs?raw";
+import BaseComponent from '../../../utils/base-component';
+import './button.scss';
+import template from './button.hbs?raw';
 
 interface IButtonProps {
   text?: string;
@@ -21,8 +21,7 @@ class Button extends BaseComponent {
   }
 
   render(): string {
-    const temp = Handlebars.compile(template);
-    return temp(this.props);
+    return this.compile(template, this.props);
   }
 }
 

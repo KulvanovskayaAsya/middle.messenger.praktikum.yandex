@@ -43,7 +43,6 @@ abstract class BaseComponent {
 		this._id = uuidv4();
 		this.props = this._makePropsProxy(props);
 		this.children = children;
-    console.log(this.children)
 		this.eventBus = eventBus;
 
     this._registerEvents(eventBus);
@@ -54,11 +53,8 @@ abstract class BaseComponent {
     const children: Children = {};
     const props: Props = {};
 
-    console.log(this, propsAndChildren);
     Object.entries(propsAndChildren).forEach(([key, value]) => {
-      console.log(key, value)
       if (value instanceof BaseComponent) {
-        console.log('child = ', value)
         children[key] = value;
       } else {
         props[key] = value;
@@ -174,7 +170,6 @@ abstract class BaseComponent {
 
   _addEvents() {
     const { events } = this.props;
-    // console.log('_addEvents = ', events);
 
     if (events) {
       Object.keys(events).forEach((eventName) => {

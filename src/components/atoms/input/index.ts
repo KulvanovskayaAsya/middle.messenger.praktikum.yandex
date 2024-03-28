@@ -11,7 +11,14 @@ interface IInputProps {
 
 class Input extends BaseComponent {
   constructor(props: IInputProps) {
-    super(props);
+    super({ 
+      ...props,
+      events: {
+        blur: event => {
+          console.log(event.target);
+        }
+      }
+    });
   }
 
 	render() {
