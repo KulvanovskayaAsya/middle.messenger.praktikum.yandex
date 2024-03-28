@@ -4,17 +4,33 @@ import template from "./text-field.hbs?raw";
 import Input from "../../atoms/input";
 import Label from "../../atoms/label";
 
+interface ITextFieldProps {
+  input: { 
+    id: string,
+    name: string,
+    inputType?: string,
+    additionalClasses?: string 
+  },
+  label: { 
+    id: string, 
+    label: string,
+    additionalClasses?: string 
+  }
+}
+
 class TextField extends BaseComponent {
-  constructor(props) {
+  constructor(props: ITextFieldProps) {
     super({
+      ...props,
       children: {
         input: new Input({ ...props.input }),
         label: new Label({ ...props.label }),
       },
-      props,
-			events: {
-				blur: this.onBlur.bind(this);
-			}
+      events: {
+        blur: event => {
+          console.log(event.target);
+        }
+      }
     });
   }
 
@@ -26,3 +42,5 @@ class TextField extends BaseComponent {
 		return this.compile(template, this.props);
 	}
 }
+
+export default TextField;

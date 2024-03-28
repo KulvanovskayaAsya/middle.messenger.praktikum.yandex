@@ -15,8 +15,6 @@ export default class Block {
   _id = Math.floor(100000 + Math.random() * 900000);
 
   constructor(propsWithChildren = {}) {
-    console.log('constructor');
-    console.log(this);
     const eventBus = new EventBus();
     const {props, children} = this._getChildrenPropsAndProps(propsWithChildren);
     this.props = this._makePropsProxy({...props});

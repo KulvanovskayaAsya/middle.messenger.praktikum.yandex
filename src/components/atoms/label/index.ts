@@ -1,9 +1,15 @@
-import BaseComponent from "../../../utils/base-component";
-import "./label.scss";
-import template from "./label.hbs?raw";
+import BaseComponent from '../../../utils/base-component';
+import './label.scss';
+import template from './label.hbs?raw';
+
+interface ILabelProps {
+  id: string,
+  additionalClasses?: string,
+  label: string
+}
 
 class Label extends BaseComponent {
-  constructor(props) {
+  constructor(props: ILabelProps) {
     super(props);
   }
 

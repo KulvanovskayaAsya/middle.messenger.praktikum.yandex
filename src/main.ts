@@ -1,12 +1,25 @@
-import Avatar from "./components/atoms/avatar";
+import Avatar from './components/atoms/avatar';
+import Input from './components/atoms/input';
+import Label from './components/atoms/label';
+import TextField from './components/molecules/text-field';
 
 document.addEventListener('DOMContentLoaded', () => {
   const appElement = document.getElementById('app');
-	console.log(appElement);
-	const block = new Avatar({ src: '/images/avatar.png' });
+	// const block = new Avatar({ src: '/images/avatar.png' });
+  // const input = new Input({ id: 'login', name: 'login' });
+  // const label = new Label({ id: 'login', label: 'login' });
+
+  const textField = new TextField({
+    input: { id: 'login', name: 'login', inputType: 'text' },
+    label: { id: 'login', label: 'Login' }
+  });
+  // console.log(textField)
 
   if (appElement) {
-    appElement.appendChild(block.getContent());
+    // appElement.appendChild(block.getContent());
+    // appElement.appendChild(input.getContent());
+    // appElement.appendChild(label.getContent());
+    appElement.appendChild(textField.getContent());
   }
 });
 

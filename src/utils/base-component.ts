@@ -15,9 +15,15 @@ type Props = {
 	[key: string]: unknown;
 };
 type Children = Record<string, BaseComponent>;
+/* обработчик заранее неизвестен и может возвращать любое значение или не возвращать ничего */
+type EventHandlers = {
+  [K in keyof GlobalEventHandlersEventMap]?: (this: GlobalEventHandlers, ev: GlobalEventHandlersEventMap[K]) => any
+};
+
 type PropsAndChildren = {
-	children?: Children
-  props?: Props
+	children?: Children,
+  props?: Props,
+  events?: EventHandlers;
 };
 
 abstract class BaseComponent {
@@ -48,6 +54,7 @@ abstract class BaseComponent {
     const props: Props = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
+      console.log(key, value)
       if (value instanceof BaseComponent) {
         children[key] = value;
       } else {
@@ -136,16 +143,14 @@ abstract class BaseComponent {
     if (!this._element) {
       this._element = document.createElement('div'); // или любой другой тег, подходящий для вашего компонента
   }
-    this._element.innerHTML = block;
+    this._element = block;
 		this._addEvents();
   }
 
-  abstract render(): string;
+  abstract render(): HTMLElement;
 
-	compile(template: string, props: Props): DocumentFragment {
+	compile(template: string, props: Props): HTMLElement {
 		const propsAndStubs = { ...props };
-
-    console.log(propsAndStubs)
 	
 		Object.entries(this.children).forEach(([key, child]) => {
 			propsAndStubs[key] = `<div data-id="id-${child._id}"></div>`;
@@ -160,12 +165,13 @@ abstract class BaseComponent {
 				stub.replaceWith(child.getContent() ?? '');
 			}
 		});
-    console.log(fragment)
+
 		return fragment.content.firstElementChild;
 	}
 
   _addEvents() {
     const { events } = this.props;
+    // console.log('_addEvents = ', events);
 
     if (events) {
       Object.keys(events).forEach((eventName) => {

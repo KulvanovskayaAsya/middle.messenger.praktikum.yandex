@@ -1,5 +1,6 @@
 type EventName = string;
-type Listener = (...args: unknown[]) => void;
+/*any используется для универсальности, поскольку конкретные типы аргументов слушателей неизвестны */
+type Listener = (...args: any[]) => void;
 
 type ListenersList = Record<EventName, Listener[]>;
 

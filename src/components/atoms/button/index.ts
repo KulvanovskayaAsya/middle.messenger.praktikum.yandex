@@ -1,4 +1,4 @@
-import BaseComponent from "../../../utils/base-component";
+import BaseComponent from "../../../utils/baseComponent";
 import "./button.scss";
 import template from "./button.hbs?raw";
 
