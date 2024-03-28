@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Handlebars from 'handlebars';
 
 import EventBus from './event-bus';
+import isObjectsEqual from './object-comparing';
 
 enum EVENTS {
 	INIT = 'init',
@@ -21,9 +22,9 @@ type EventHandlers = {
 };
 
 type PropsAndChildren = {
-	children?: Children,
-  props?: Props,
-  events?: EventHandlers;
+	// children?: Children,
+  // props?: Props,
+  // events?: EventHandlers;
 };
 
 abstract class BaseComponent {
@@ -73,7 +74,7 @@ abstract class BaseComponent {
         return true;
       },
       deleteProperty(): boolean {
-        throw new Error("Нет доступа");
+        throw new Error('Нет доступа');
       },
     });
   };
@@ -90,7 +91,8 @@ abstract class BaseComponent {
   }
 
   public getContent() {
-    return this._element;
+    if (this._element !== null)
+      return this._element;
   }
 
   public setProps = (nextProps: Props): void => {
@@ -133,7 +135,7 @@ abstract class BaseComponent {
   }
 
   public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-    return true;
+    return isObjectsEqual(oldProps, newProps);
   }
 
   private _render(): void {
@@ -148,18 +150,18 @@ abstract class BaseComponent {
 
   abstract render(): HTMLElement;
 
-	compile(template: string, props: Props): HTMLElement {
+	compile(template: string, props: Props) {
 		const propsAndStubs = { ...props };
 	
 		Object.entries(this.children).forEach(([key, child]) => {
-			propsAndStubs[key] = `<div data-id="id-${child._id}"></div>`;
+			propsAndStubs[key] = `<div data-id='id-${child._id}'></div>`;
 		});
 	
 		const fragment = document.createElement('template');
 		fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
 	
 		Object.values(this.children).forEach(child => {
-			const stub = fragment.content.querySelector(`[data-id="id-${child._id}"]`);
+			const stub = fragment.content.querySelector(`[data-id='id-${child._id}']`);
 			if (stub) {
 				stub.replaceWith(child.getContent() ?? '');
 			}
@@ -190,13 +192,13 @@ abstract class BaseComponent {
 
   public show(): void {
     if (this._element) {
-      this._element.style.display = "block";
+      this._element.style.display = 'block';
     }
   }
 
   public hide(): void {
     if (this._element) {
-      this._element.style.display = "none";
+      this._element.style.display = 'none';
     }
   }
 }
