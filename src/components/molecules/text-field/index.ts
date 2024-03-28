@@ -22,10 +22,8 @@ class TextField extends BaseComponent {
   constructor(props: ITextFieldProps) {
     super({
       ...props,
-      children: {
-        input: new Input({ ...props.input }),
-        label: new Label({ ...props.label }),
-      },
+      input: new Input({ ...props.input }),
+      label: new Label({ ...props.label }),
       events: {
         blur: event => {
           console.log(event.target);
@@ -39,7 +37,10 @@ class TextField extends BaseComponent {
   }
 
 	render(): string {
-		return this.compile(template, this.props);
+		return this.compile(template, {
+      input: this.props.input,
+      label: this.props.label
+    });
 	}
 }
 
