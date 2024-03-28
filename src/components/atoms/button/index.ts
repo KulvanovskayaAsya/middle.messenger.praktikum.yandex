@@ -1,4 +1,4 @@
-import Block from "../../../utils/block";
+import BaseComponent from "../../../utils/base-component";
 import "./button.scss";
 import template from "./button.hbs?raw";
 
@@ -10,7 +10,7 @@ interface IButtonProps {
   onClick?: () => void;
 }
 
-class Button extends Block {
+class Button extends BaseComponent {
   constructor(props: IButtonProps) {
     super({ 
 			...props, 
