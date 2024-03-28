@@ -1,4 +1,4 @@
-import Block from '../../../utils/block';
+import BaseComponent from '../../../utils/base-component';
 import './chat.scss';
 import template from './chat.hbs?raw'
 
@@ -9,13 +9,18 @@ type ChatProps = {
   unreadedCount: number;
 }
 
-class Chat extends Block {
+class Chat extends BaseComponent {
   constructor(props: ChatProps) {
-    super('div', props);
+    super({
+      ...props,
+      avatar: {
+        src: '/images/avatar.png'
+      }
+    });
   }
 
-  render(): string {
-    return template;
+  render() {
+    this.compile(template, this.props);
   }
 }
 

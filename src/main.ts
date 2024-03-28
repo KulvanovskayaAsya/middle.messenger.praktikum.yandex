@@ -1,112 +1,42 @@
-import TextField from './components/molecules/text-field';
-import Button from './components/atoms/button';
+import LoginPage from './pages/login';
+import RegistrationPage from './pages/registration';
+import ChatPage from './pages/chat';
 
-document.addEventListener('DOMContentLoaded', () => {
+interface IPage {
+  getContent: () => HTMLElement;
+}
+
+interface IPageConstructor {
+  new (): IPage;
+}
+
+const pageConstructors: Record<string, IPageConstructor> = {
+  loginPage: LoginPage,
+  registrationPage: RegistrationPage,
+  chatPage: ChatPage,
+};
+
+function showPage(pageId: string): void {
   const appElement = document.getElementById('app');
-	// const block = new Avatar({ src: '/images/avatar.png' });
-  // const input = new Input({ id: 'login', name: 'login' });
-  // const label = new Label({ id: 'login', label: 'login' });
+  const PageConstructor = pageConstructors[pageId];
 
-  const textFieldLogin = new TextField({
-    input: { id: 'login', name: 'login', inputType: 'text' },
-    label: { id: 'login', label: 'Логин' }
-  });
-  const textFieldPassword = new TextField({
-    input: { id: 'password', name: 'password', inputType: 'password' },
-    label: { id: 'password', label: 'Пароль' }
-  });
-  const submitButton = new Button({
-    text: 'Авторизоваться',
-    hrefPage: 'ProfilePage',
-    additionalClasses: 'button_primary'
-  })
+  if (appElement && PageConstructor) {
+    const pageInstance = new PageConstructor();
+    appElement.innerHTML = '';
+    appElement.appendChild(pageInstance.getContent());
+  }
+}
 
-  if (appElement) {
-    appElement.appendChild(textFieldLogin.getContent());
-    appElement.appendChild(textFieldPassword.getContent());
-    appElement.appendChild(submitButton.getContent());
+document.addEventListener('click', (e) => {
+  const target = e.target as HTMLElement;
+  const pageId = target.getAttribute('data-page');
+
+  if (pageId && pageConstructors[pageId]) {
+    e.preventDefault();
+    showPage(pageId);
   }
 });
 
-// import * as Atoms from './components/atoms';
-// import * as Molecules from './components/molecules';
-// import * as Organisms from './components/organisms';
-// import * as Pages from './pages/index';
-
-// import * as Forms from './utils/mock-data';
-
-// Object.entries(Forms).forEach(([formName, formData]) => {
-//   Handlebars.registerHelper(formName, () => formData);
-// });
-
-// Handlebars.registerHelper('inputType', function(type) {
-//   return new Handlebars.SafeString(type || 'text');
-// });
-
-// [Atoms, Molecules, Organisms, Pages].forEach((componentSet) => {
-//   Object.entries(componentSet).forEach(([name, component]) => {
-//     Handlebars.registerPartial(name, component);
-//   });
-// });
-
-// function renderPage(pageName: keyof typeof Pages, context: Object) {
-//   const pageTemplate = Handlebars.compile(Pages[pageName]);
-//   const html = pageTemplate(context);
-//   document.body.innerHTML = html;
-// }
-
-// document.addEventListener('DOMContentLoaded', () => {
-//   renderPage('LoginPage', { formFields: Forms.authenticationForm });
-// });
-
-// document.addEventListener('click', e => {
-//   const target = e.target as HTMLElement;
-//   const page = target.getAttribute('data-page');
-
-//   if (page) {
-//     e.preventDefault();
-    
-// 		const isErrorPage = page === 'ErrorPage404' || page === 'ErrorPage500';
-//     const context = getPageContext(page);
-// 		const pageName = isErrorPage ? 'ErrorPage' : page as keyof typeof Pages;
-    
-//     renderPage(pageName, context);
-//   }
-// });
-
-// function getPageContext(page: string) {
-// 	switch(page) {
-// 		case 'LoginPage': 
-// 			return {
-// 				formFields: Forms.authenticationForm
-// 			};
-	
-// 		case 'RegistrationPage':
-// 			return {
-// 				formFields: Forms.registrationForm
-// 			};
-		
-// 		case 'ErrorPage404':
-// 			return {
-// 				errorImgSrc: '/images/error404.svg'
-// 			};
-
-// 		case 'ErrorPage500':
-// 			return {
-// 				errorImgSrc: '/images/error500.svg'
-// 			};
-
-// 		case 'ProfilePage': 
-// 			return {
-// 				formFields: Forms.profileForm
-// 			};
-		
-// 		case 'ChangePasswordPage': 
-// 			return {
-// 				formFields: Forms.changePasswordForm
-// 			};
-
-// 		default:
-// 			return {};
-// 	}
-// }
+document.addEventListener('DOMContentLoaded', () => {
+  showPage('loginPage');
+});

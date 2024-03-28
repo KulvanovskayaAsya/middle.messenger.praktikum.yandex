@@ -1,8 +1,8 @@
 <article class='chat'>
-  {{ >Avatar avatar='/images/avatar.png'}}
+  {{{ avatar }}}
   <div class='chat__content'>
     <h2>{{ name }}</h2>
     <p>{{ messageText }}</p>
   </div>
-  <div class='chat__unreaded-count'> </div>
+  <div class='chat__unreaded-count'>{{ unreadedCount }}</div>
 </article>

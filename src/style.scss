@@ -26,3 +26,13 @@ button {
   font-size: inherit;
   line-height: inherit;
 }
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing__modal;
+  padding: $spacing__extra-large;
+  background-color: $color__surface;
+  border-radius: $border-radius_large;
+}

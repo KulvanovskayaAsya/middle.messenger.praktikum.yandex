@@ -1,24 +1,36 @@
-import Block from "../../utils/block";
+import BaseComponent from "../../utils/base-component";
 import { chatsList } from "../../utils/mock-data";
 import Chat from "../../components/molecules/chat";
+import Avatar from "../../components/atoms/avatar";
 
-class ChatPage extends Block {
-  constructor() {
-    super("div", {});
+const chats = chatsList.map(chat => new Chat({
+  avatar: chat.avatar,
+  name: chat.name,
+  lastMessage: chat.lastMessage,
+  unreadedCount: chat.unreadedCount,
+}));
+
+class ChatPage extends BaseComponent {
+  constructor(props) {
+    super({
+      ...props,
+      avatar: new Avatar
+    });
   }
 
-  render(): string {
-    const chatItemsHtml = chatsList
-      .map((chat) => new Chat(chat).render())
-      .join("");
+  render() {
+    const formElement = document.createElement('div');
+    formElement.classList.add('form');
 
-    // Предполагается, что у вас есть шаблон для ChatPage или вы строите его здесь
-    return `
-      <div class='chat-page'>
-        <aside class='chat-list'>${chatItemsHtml}</aside>
-        <main class='chat-content'>Выберите чат или начните новый диалог</main>
-      </div>
-    `;
+    chats.forEach((chat) => {
+      formElement.appendChild(chat.getContent());
+    });
+    
+    Object.values(this.children).forEach((child) => {
+      formElement.appendChild(child.getContent());
+    });
+
+    return formElement;
   }
 }
 

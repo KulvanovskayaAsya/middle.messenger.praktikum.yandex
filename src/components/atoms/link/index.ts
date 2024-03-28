@@ -4,6 +4,7 @@ import template from './link.hbs?raw';
 
 interface ILinkProps {
   link: string,
+  text: string,
   additionalClasses?: string,
   hrefPage: string
 }
