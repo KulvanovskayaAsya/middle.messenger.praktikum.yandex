@@ -1,6 +1,15 @@
 @import 'src/assets/variables.scss';
 
-.navigation {
+.chat-page {
   display: flex;
+  flex-direction: row;
   gap: $spacing__large;
+}
+
+.chat-page__side-column {
+  flex: 0 1 360px;
+}
+
+.chat-page__messenger {
+  flex: 1;
 }

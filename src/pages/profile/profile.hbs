@@ -1,8 +1,7 @@
-{{> Link link='#' hrefPage='ChatPage' text='Вернуться к чатам' additionalClasses='link_back errorPageWrapper__link' }}
 <main>
-  {{#> Modal }}
-    {{> Avatar avatar='/images/avatar.png' additionalClasses='avatar_large'}}
-    {{> Form submitButtonText='Сохранить' hrefPage='ChatPage' additionalClasses='profile-form' }}
-    {{> Link link='#' hrefPage='ChangePasswordPage' text='Изменить пароль' additionalClasses='link_forward profile-form__change-password-link' }}
-  {{/ Modal}}
+  <div class='modal'>
+    {{{ avatar }}}
+    {{{ form }}}
+    {{{ link }}}
+  </div>
 </main>

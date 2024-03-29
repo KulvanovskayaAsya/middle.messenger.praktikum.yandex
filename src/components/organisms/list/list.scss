@@ -1,0 +1,7 @@
+@import 'src/assets/variables.scss';
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing__medium;
+}

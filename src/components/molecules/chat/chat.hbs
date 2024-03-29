@@ -1,8 +1,11 @@
 <article class='chat'>
   {{{ avatar }}}
   <div class='chat__content'>
-    <h2>{{ name }}</h2>
-    <p>{{ messageText }}</p>
+    <h2 class='chat__name'>{{ name }}</h2>
+    <p class='chat__message'>{{ lastMessage }}</p>
   </div>
-  <div class='chat__unreaded-count'>{{ unreadedCount }}</div>
+  <div class='chat__unreaded-info'>
+    <p class='chat__unreaded-date'>{{ date }}</p>
+    <p class='chat__unreaded-count'>{{ unreadedCount }}</p>
+  </div>
 </article>

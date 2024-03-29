@@ -27,15 +27,8 @@ class TextField extends BaseComponent {
     });
   }
 
-	public onBlur(event: Event) {
-    console.log('Валидация:', event);
-  }
-
-	render(): string {
-		return this.compile(template, {
-      input: this.props.input,
-      label: this.props.label
-    });
+	render() {
+		return this.compile(template, this.props);
 	}
 }
 

@@ -1,6 +1,8 @@
 import LoginPage from './pages/login';
 import RegistrationPage from './pages/registration';
 import ChatPage from './pages/chat';
+import ProfilePage from './pages/profile';
+import ChangePasswordPage from './pages/change-password';
 
 interface IPage {
   getContent: () => HTMLElement;
@@ -14,6 +16,10 @@ const pageConstructors: Record<string, IPageConstructor> = {
   loginPage: LoginPage,
   registrationPage: RegistrationPage,
   chatPage: ChatPage,
+  profilePage: ProfilePage,
+  changePasswordPage: ChangePasswordPage
+  // errorPage404: ErrorPage404,
+  // errorPage500: ErrorPage500,
 };
 
 function showPage(pageId: string): void {
@@ -28,6 +34,7 @@ function showPage(pageId: string): void {
 }
 
 document.addEventListener('click', (e) => {
+  console.log(e)
   const target = e.target as HTMLElement;
   const pageId = target.getAttribute('data-page');
 
