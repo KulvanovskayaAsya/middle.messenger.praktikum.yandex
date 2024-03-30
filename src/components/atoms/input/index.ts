@@ -19,20 +19,20 @@ class Input extends BaseComponent {
   constructor(props: IInputProps) {
     super({
       ...props,
-      events: {
-        input: (event: Event) => {
-          const target = event.target as HTMLInputElement;
-          if (target) {
-            this.setProps({
-              ...this.props,
-              value: target.value,
-            });
+      // events: {
+      //   input: (event: Event) => {
+      //     const target = event.target as HTMLInputElement;
+      //     if (target) {
+      //       this.setProps({
+      //         ...this.props,
+      //         value: target.value,
+      //       });
 
-            console.log(this.props);
-          }
-        },
-        blur: (event: Event) => this.onBlurValidation(event),
-      },
+      //       console.log(this.props);
+      //     }
+      //   },
+      //   blur: (event: Event) => this.onBlurValidation(event),
+      // },
     });
   }
 

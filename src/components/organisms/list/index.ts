@@ -14,10 +14,11 @@ class List extends BaseComponent {
     const elementsList = document.createElement('section');
     elementsList.classList.add('list');
 
-    // опять же не выходит типизировать
-    this.props.list.forEach((item: BaseComponent) => {
-      elementsList.appendChild(item.getContent());
-    });
+    if(Array.isArray(this.props.list)) {
+      this.props.list.forEach((item: BaseComponent) => {
+        elementsList.appendChild(item.getContent());
+      });
+    }
 
     return elementsList;
   }
