@@ -16,29 +16,25 @@ class Form extends BaseComponent {
     super(props);
   }
 
-  grabFormValues(form: HTMLFormElement): void {
+  grabFormValues(form: HTMLFormElement): boolean {
     const formData: Record<string, string> = {};
     const formElements = form.elements;
-    const isValidForm = false;
+    let isValidForm = true;
 
     for (let i = 0; i < formElements.length; i++) {
       const element = formElements[i] as HTMLInputElement;
       if (element.name) {
         formData[element.name] = element.value;
         const isValidField = validate(formData[element.name], element.value).isValid;
-        if (!isValidField) break;
+        if (!isValidField) {
+          isValidForm = false;
+        }
       }
     }
 
-    if (!isValidForm) {
-      console.log('isValidForm', this)
-      this.children.button.setProps({
-        ...this.props,
-        isDisabled: true,
-      });
-    }
-
     console.log(formData);
+
+    return isValidForm;
   }
 
   handleFormSubmit(e: Event): void {
@@ -46,9 +42,38 @@ class Form extends BaseComponent {
     const form = buttonElement.closest('form');
 
     if (form) {
-      this.grabFormValues(form);
+      const isValidForm = this.grabFormValues(form);
+      if (!isValidForm) {
+        this.children.button.setProps({
+          isDisabled: true
+        });
+      }
     } else {
-      console.log('Форма не найдена');
+      throw new Error('Форма не найдена');
+    }
+  }
+
+  onBlurValidation(e: Event) {
+    const target = e.target as HTMLInputElement;
+    
+    if (target && target.name && target.value) {
+      const validationResult = validate(target.name, target.value);
+
+      console.log(validationResult);
+      if (!validationResult.isValid) {
+        this.setProps({
+          ...this.props,
+          additionalClasses: `${this.props.additionalClasses ? `${this.props.additionalClasses} ` : ''}input_invalid`,
+        });
+      } else {
+        let updatedClasses: string = '';
+        if (typeof this.props.additionalClasses === 'string') updatedClasses = (this.props.additionalClasses || '').replace('input_invalid', '').trim();
+
+        this.setProps({
+          ...this.props,
+          additionalClasses: updatedClasses,
+        });
+      }
     }
   }
 
@@ -58,6 +83,14 @@ class Form extends BaseComponent {
 
     if (Array.isArray(this.props.textFields)) {
       this.props.textFields.forEach((textField: BaseComponent) => {
+        const input = textField.children.input;
+        
+        input.setProps({
+          ...input.props,
+          events: {
+            blur: (event: Event) => this.onBlurValidation(event)
+          }
+        })
         formElement.appendChild(textField.getContent());
       });
     }

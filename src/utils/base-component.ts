@@ -96,7 +96,7 @@ abstract class BaseComponent {
     if (!nextProps) {
       return;
     }
-    console.log(this.props, nextProps);
+
     Object.assign(this.props, nextProps);
   };
 
