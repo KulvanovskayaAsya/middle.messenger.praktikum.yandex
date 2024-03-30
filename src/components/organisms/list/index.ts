@@ -1,8 +1,8 @@
 import BaseComponent from '../../../utils/base-component';
 import './list.scss';
 
-interface IListProps {
-  [key: string]: BaseComponent[];
+export interface IListProps {
+  list: BaseComponent[];
 }
 
 class List extends BaseComponent {
@@ -14,6 +14,7 @@ class List extends BaseComponent {
     const elementsList = document.createElement('section');
     elementsList.classList.add('list');
 
+    // опять же не выходит типизировать
     this.props.list.forEach((item) => {
       elementsList.appendChild(item.getContent());
     });

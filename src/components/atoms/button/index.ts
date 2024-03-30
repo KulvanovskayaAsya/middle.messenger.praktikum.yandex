@@ -7,12 +7,38 @@ export interface IButtonProps {
   icon?: string;
   additionalClasses?: string;
   hrefPage?: string;
-  onClick?: () => void;
+  events?: Record<string, (e: Event) => void>;
+}
+
+function grabFormValues(e: Event): void {
+  const buttonElement = e.currentTarget as HTMLElement;
+  const form = buttonElement.closest('form');
+
+  if (form) {
+    const formData: Record<string, string> = {};
+    const formElements = form.elements;
+    
+    for (let i = 0; i < formElements.length; i++) {
+      const element = formElements[i] as HTMLInputElement;
+      if (element.name) {
+        formData[element.name] = element.value;
+      }
+    }
+    
+    console.log(formData);
+  } else {
+    console.log('Форма не найдена');
+  }
 }
 
 class Button extends BaseComponent {
   constructor(props: IButtonProps) {
-    super(props);
+    super({
+      ...props,
+      events: {
+        click: (e: Event) => grabFormValues(e)
+      }
+    });
   }
 
   render(): HTMLElement {

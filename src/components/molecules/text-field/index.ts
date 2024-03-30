@@ -5,7 +5,7 @@ import template from "./text-field.hbs?raw";
 import Input, { IInputProps } from "../../atoms/input";
 import Label, { ILabelProps } from "../../atoms/label";
 
-interface ITextFieldProps {
+export interface ITextFieldProps {
   input: IInputProps;
   label: ILabelProps;
 }

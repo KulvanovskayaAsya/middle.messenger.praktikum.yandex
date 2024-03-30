@@ -20,7 +20,7 @@ const fields = profileForm.map(field => new TextField({
     inputType: field.type
   },
   label: {
-    id: field.id,
+    forInputId: field.id,
     label: field.label
   }
 }));
@@ -28,26 +28,30 @@ const fields = profileForm.map(field => new TextField({
 const submitButton = new Button({
   text: 'Сохранить',
   hrefPage: 'chatPage',
-  additionalClasses: 'button_primary',
-  onClick: () => {
-    console.log('Форма отправлена');
-  }
+  additionalClasses: 'button_primary'
 });
 
 class ProfilePage extends BaseComponent {
   constructor(props: IProfilePageProps) {
     super({ 
       ...props,
+      backLink: new Link({
+        text: 'Вернуться к чатам',
+        hrefLink: '#',
+        hrefPage: 'chatPage',
+        additionalClasses: 'link_back'
+      }),
       avatar: new Avatar({
         src: 'images/avatar.png',
+        alt: 'Аватар вашего профиля',
         additionalClasses: 'avatar_large'
       }),
       form: new Form({
         textFields: fields,
         button: submitButton
       }),
-      link: new Link({
-        link: '#',
+      changePasswordlink: new Link({
+        hrefLink: '#',
         text: 'Изменить пароль',
         hrefPage: 'changePasswordPage',
         additionalClasses: 'link_forward profile-form__change-password-link'

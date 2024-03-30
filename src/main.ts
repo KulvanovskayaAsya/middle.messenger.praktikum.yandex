@@ -3,13 +3,15 @@ import RegistrationPage from './pages/registration';
 import ChatPage from './pages/chat';
 import ProfilePage from './pages/profile';
 import ChangePasswordPage from './pages/change-password';
+import ErrorPage404 from './pages/error404';
+import ErrorPage500 from './pages/error500';
 
 interface IPage {
   getContent: () => HTMLElement;
 }
 
 interface IPageConstructor {
-  new (): IPage;
+  new(args?: any): IPage;
 }
 
 const pageConstructors: Record<string, IPageConstructor> = {
@@ -17,9 +19,9 @@ const pageConstructors: Record<string, IPageConstructor> = {
   registrationPage: RegistrationPage,
   chatPage: ChatPage,
   profilePage: ProfilePage,
-  changePasswordPage: ChangePasswordPage
-  // errorPage404: ErrorPage404,
-  // errorPage500: ErrorPage500,
+  changePasswordPage: ChangePasswordPage,
+  errorPage404: ErrorPage404,
+  errorPage500: ErrorPage500,
 };
 
 function showPage(pageId: string): void {
@@ -34,7 +36,6 @@ function showPage(pageId: string): void {
 }
 
 document.addEventListener('click', (e) => {
-  console.log(e)
   const target = e.target as HTMLElement;
   const pageId = target.getAttribute('data-page');
 

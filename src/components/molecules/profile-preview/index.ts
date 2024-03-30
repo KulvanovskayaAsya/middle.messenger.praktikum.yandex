@@ -5,7 +5,7 @@ import template from './profile-preview.hbs?raw';
 import Avatar, { IAvatarProps } from '../../atoms/avatar';
 import PageTitle, { IPageTitleProps } from '../../atoms/page-title';
 
-interface IProfilePreviewProps {
+export interface IProfilePreviewProps {
   avatar: IAvatarProps;
   profileName: IPageTitleProps;
   nickname: string;

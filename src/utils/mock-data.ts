@@ -30,7 +30,10 @@ export const changePasswordForm = [
 export const chatsList = [
   {
     id: 1,
-    avatar: { src: '/images/avatar4.png'},
+    avatar: { 
+      src: '/images/avatar4.png',
+      alt: 'Аватар пользователя Яра'
+    },
     name: 'Яра',
     date: 'пн',
     lastMessage: 'Здравствуйте! Я представитель компании Oriflame. Не хотите посмотреть наш каталог?',
@@ -38,7 +41,10 @@ export const chatsList = [
   },
   {
     id: 2,
-    avatar: { src: '/images/avatar2.png'},
+    avatar: { 
+      src: '/images/avatar2.png',
+      alt: 'Аватар пользователя Бора-Бора'
+    },
     name: 'Бора-Бора',
     date: 'пн',
     lastMessage: 'Я тебя жду!!! Хватит опаздывать...',
@@ -46,7 +52,10 @@ export const chatsList = [
   },
   {
     id: 3,
-    avatar: { src: '/images/avatar3.png'},
+    avatar: { 
+      src: '/images/avatar3.png',
+      alt: 'Аватар пользователя Лизок'
+    },
     name: 'Лизок',
     date: 'ср',
     lastMessage: 'Привет! Как дела?',
@@ -54,7 +63,10 @@ export const chatsList = [
   },
   {
     id: 4,
-    avatar: { src: '/images/avatar4.png'},
+    avatar: { 
+      src: '/images/avatar4.png',
+      alt: 'Аватар пользователя Анна'
+    },
     name: 'Анна',
     date: 'вт',
     lastMessage: 'Давай встретимся завтра.',
@@ -62,7 +74,10 @@ export const chatsList = [
   },
   {
     id: 5,
-    avatar: { src: '/images/avatar7.png'},
+    avatar: { 
+      src: '/images/avatar7.png',
+      alt: 'Аватар пользователя Олег'
+    },
     name: 'Олег',
     date: 'ср',
     lastMessage: 'Это был отличный день!',
@@ -70,7 +85,10 @@ export const chatsList = [
   },
   {
     id: 6,
-    avatar: { src: '/images/avatar6.png'},
+    avatar: { 
+      src: '/images/avatar6.png',
+      alt: 'Аватар пользователя Елена'
+    },
     name: 'Елена',
     date: 'вт',
     lastMessage: 'Не могу сегодня поговорить, напишу позже.',
@@ -78,7 +96,10 @@ export const chatsList = [
   },
   {
     id: 7,
-    avatar: { src: '/images/avatar7.png'},
+    avatar: { 
+      src: '/images/avatar7.png',
+      alt: 'Аватар пользователя Дмитрий'
+    },
     name: 'Дмитрий',
     date: 'чт',
     lastMessage: 'Все в порядке, только немного занят. Поговорим позже?',
@@ -86,10 +107,13 @@ export const chatsList = [
   },
   {
     id: 8,
-    avatar: { src: '/images/avatar2.png'},
+    avatar: { 
+      src: '/images/avatar2.png',
+      alt: 'Аватар пользователя Ирина'
+    },
     name: 'Ирина',
     date: 'пт',
     lastMessage: 'Как насчет похода в кино на выходных?',
     unreadedCount: 5,
   },
-]
+];

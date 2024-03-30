@@ -8,19 +8,32 @@ import Link from '../../components/atoms/link';
 import PageTitle from '../../components/atoms/page-title';
 
 import { authenticationForm } from '../../utils/mock-data';
+import validate from '../../utils/validation';
 
 interface ILoginPageProps {
-  
+  modalTitle: PageTitle;
+  form: Form;
+  registrationLink: Link;
 }
 
 const fields = authenticationForm.map(field => new TextField({
   input: {
     id: field.id,
     name: field.name,
-    inputType: field.type
+    inputType: field.type,
+    //не понимаю, в чем проблема с доступом к полям таргета((
+    events: {
+      blur: (e: Event) => {
+        const validationResult = validate(e.target.name, e.target.value);
+        console.log(validationResult);
+        if(!validationResult.isValid) {
+          // навесить класс
+        }
+      }
+    }
   },
   label: {
-    id: field.id,
+    forInputId: field.id,
     label: field.label
   }
 }));
@@ -28,32 +41,29 @@ const fields = authenticationForm.map(field => new TextField({
 const submitButton = new Button({
   text: 'Войти',
   additionalClasses: 'button_primary',
-  hrefPage: 'chatPage',
-  onClick: () => {
-    console.log('Форма отправлена');
-  }
+  hrefPage: 'chatPage'
 });
 
 class LoginPage extends BaseComponent {
   constructor(props: ILoginPageProps) {
     super({ 
       ...props,
-      pageTitle: new PageTitle({
+      modalTitle: new PageTitle({
         text: 'Вход'
       }),
       form: new Form({
         textFields: fields,
         button: submitButton
       }),
-      link: new Link({
-        link: '#',
+      registrationLink: new Link({
+        hrefLink: '#',
         text: 'Нет аккаунта?',
         hrefPage: 'registrationPage'
       })
     });
   }
 
-  render() {
+  render(): HTMLElement {
     return this.compile(template, this.props);
   }
 }

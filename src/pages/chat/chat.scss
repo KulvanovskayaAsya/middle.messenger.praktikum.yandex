@@ -8,6 +8,9 @@
 
 .chat-page__side-column {
   flex: 0 1 360px;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing__medium;
 }
 
 .chat-page__messenger {

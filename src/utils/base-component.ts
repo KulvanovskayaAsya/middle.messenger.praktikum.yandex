@@ -12,20 +12,13 @@ enum EVENTS {
 };
 
 type Props = {
-	events?: Record<string, (e: Event) => void>,
 	[key: string]: unknown;
+	events?: Record<string, (e: Event) => void>;
 };
 type Children = Record<string, BaseComponent>;
-/* обработчик заранее неизвестен и может возвращать любое значение или не возвращать ничего */
-type EventHandlers = {
-  [K in keyof GlobalEventHandlersEventMap]?: (this: GlobalEventHandlers, ev: GlobalEventHandlersEventMap[K]) => any
-};
 
-type PropsAndChildren = {
-	// children?: Children,
-  // props?: Props,
-  // events?: EventHandlers;
-};
+//не получается типизировать
+type PropsAndChildren = {};
 
 abstract class BaseComponent {
 	static LIFECICLE_EVENTS = EVENTS;
@@ -90,9 +83,11 @@ abstract class BaseComponent {
     return this._element;
   }
 
-  public getContent() {
-    if (this._element !== null)
+  public getContent(): HTMLElement {
+    if (this._element !== null) 
       return this._element;
+
+    throw new Error("Element is not created");
   }
 
   public setProps = (nextProps: Props): void => {
@@ -150,7 +145,7 @@ abstract class BaseComponent {
 
   abstract render(): HTMLElement;
 
-	compile(template: string, props: Props) {
+	compile(template: string, props: Props): HTMLElement {
 		const propsAndStubs = { ...props };
 	
 		Object.entries(this.children).forEach(([key, child]) => {
@@ -159,15 +154,20 @@ abstract class BaseComponent {
 	
 		const fragment = document.createElement('template');
 		fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
-	
-		Object.values(this.children).forEach(child => {
-			const stub = fragment.content.querySelector(`[data-id='id-${child._id}']`);
-			if (stub) {
-				stub.replaceWith(child.getContent() ?? '');
-			}
-		});
 
-		return fragment.content.firstElementChild;
+    if (!fragment.content.firstElementChild) {
+      throw new Error("Template did not produce any content");
+    }
+
+    Object.values(this.children).forEach(child => {
+      const stub = fragment.content.querySelector(`[data-id='id-${child._id}']`);
+      if (stub) {
+        const stubElement = stub;
+        stubElement.replaceWith(child.getContent() ?? document.createElement('div'));
+      }
+    });
+
+		return fragment.content.firstElementChild as HTMLElement;
 	}
 
   _addEvents() {

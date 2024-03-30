@@ -1,18 +1,12 @@
 @import 'src/assets/variables.scss';
 
-.errorPageWrapper {
+.error-page-wrapper {
 	position: relative;
 	height: 100vh;
 	width: 100vw;
 }
 
-.errorPageWrapper__link {
-	position: absolute;
-	top: $spacing__large;
-	left: $spacing__large;
-}
-
-.errorPageWrapper__image {
+.error-page-wrapper__image {
 	height: 90%;
 	position: absolute;
 	bottom: 0;

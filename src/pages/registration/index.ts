@@ -10,10 +10,11 @@ import PageTitle from '../../components/atoms/page-title';
 import { registrationForm } from '../../utils/mock-data';
 
 interface IRegistrationPageProps {
-  // Можно добавить свойства, если они потребуются
+  modalTitle: PageTitle;
+  form: Form;
+  loginLink: Link;
 }
 
-// Определение полей для формы регистрации
 const fields = registrationForm.map(field => new TextField({
   input: {
     id: field.id,
@@ -21,7 +22,7 @@ const fields = registrationForm.map(field => new TextField({
     inputType: field.type
   },
   label: {
-    id: field.id,
+    forInputId: field.id,
     label: field.label
   }
 }));
@@ -29,32 +30,29 @@ const fields = registrationForm.map(field => new TextField({
 const submitButton = new Button({
   text: 'Зарегистрироваться',
   hrefPage: 'chatPage',
-  additionalClasses: 'button_primary',
-  onClick: () => {
-    console.log('Форма регистрации отправлена');
-  }
+  additionalClasses: 'button_primary'
 });
 
 class RegistrationPage extends BaseComponent {
   constructor(props: IRegistrationPageProps) {
     super({
       ...props,
-      pageTitle: new PageTitle({
+      modalTitle: new PageTitle({
         text: 'Регистрация'
       }),
       form: new Form({
         textFields: fields,
         button: submitButton
       }),
-      link: new Link({
-        link: '#',
+      loginLink: new Link({
+        hrefLink: '#',
         text: 'Есть аккаунт?',
         hrefPage: 'loginPage'
       })
     });
   }
 
-  render() {
+  render(): HTMLElement {
     return this.compile(template, this.props);
   }
 }

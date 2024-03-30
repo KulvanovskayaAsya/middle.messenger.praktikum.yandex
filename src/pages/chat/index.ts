@@ -4,11 +4,16 @@ import './chat.scss';
 
 import Chat from '../../components/molecules/chat';
 import List from '../../components/organisms/list';
+import ProfilePreview from '../../components/molecules/profile-preview';
+import TextField from '../../components/molecules/text-field';
 
 import { chatsList } from '../../utils/mock-data';
-import ProfilePreview from '../../components/molecules/profile-preview';
+
 interface IChatPageProps {
-  
+  profilePreview: ProfilePreview;
+  searchBox: TextField;
+  chatsList: List;
+  messagesList?: List;
 }
 
 const list = chatsList.map(chat => new Chat({
@@ -16,12 +21,13 @@ const list = chatsList.map(chat => new Chat({
   name: chat.name,
   lastMessage: chat.lastMessage,
   unreadedCount: chat.unreadedCount,
-  date: chat.date
+  lastMessageDate: chat.date
 }));
 
 const profilePreview = new ProfilePreview({
   avatar: {
-    src: 'images/avatar.png'
+    src: 'images/avatar.png',
+    alt: 'Аватар пользователя Кульвановской Аси'
   },
   profileName: {
     text: 'Кульвановская Ася'
@@ -34,9 +40,17 @@ class ChatPage extends BaseComponent {
     super({
       ...props,
       profilePreview: profilePreview,
-      list: new List({
-        list
-      })
+      searchBox: new TextField({
+        input: {
+          id: 'searchBox',
+          name: 'search'
+        },
+        label: {
+          forInputId: 'searchBox',
+          label: 'Искать...'
+        }
+      }),
+      chatsList: new List({list})
     });
   }
 
