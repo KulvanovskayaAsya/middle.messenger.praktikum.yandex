@@ -18,17 +18,18 @@ class Input extends BaseComponent {
     super({ 
       ...props,
       events: {
-        blur: (event: Event) => {
+        input: (event: Event) => {
           const target = event.target as HTMLInputElement;
-          if(target) {
+          if (target) {
             this.setProps({
               ...this.props,
               value: target.value
             });
-          }
 
-          this.onBlurValidation(event);
-        }
+            console.log(this.props)
+          }
+        },
+        blur: (event: Event) => this.onBlurValidation(event)
       }
     });
   }
