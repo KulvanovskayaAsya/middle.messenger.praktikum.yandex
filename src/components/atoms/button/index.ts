@@ -12,15 +12,10 @@ interface IButtonProps {
 
 class Button extends BaseComponent {
   constructor(props: IButtonProps) {
-    super({ 
-			...props, 
-			events: { 
-				click: props.onClick
-			} 
-		});
+    super(props);
   }
 
-  render(): string {
+  render(): HTMLElement {
     return this.compile(template, this.props);
   }
 }

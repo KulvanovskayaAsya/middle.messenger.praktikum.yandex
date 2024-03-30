@@ -3,8 +3,9 @@ import './avatar.scss';
 import template from './avatar.hbs?raw';
 
 interface IAvatarProps {
-	src: string,
-	additionalClasses?: string
+	src: string;
+	alt: string;
+	additionalClasses?: string;
 }
 
 class Avatar extends BaseComponent {
@@ -12,7 +13,7 @@ class Avatar extends BaseComponent {
 		super(props);
 	}
 
-	render() {
+	render(): HTMLElement {
 		return this.compile(template, this.props);
 	}
 }

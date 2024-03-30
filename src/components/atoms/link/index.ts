@@ -3,7 +3,7 @@ import './link.scss';
 import template from './link.hbs?raw';
 
 interface ILinkProps {
-  link: string,
+  hrefLink: string,
   text: string,
   additionalClasses?: string,
   hrefPage: string
@@ -14,7 +14,7 @@ class Link extends BaseComponent {
     super(props);
   }
 
-	render() {
+	render(): HTMLElement {
     return this.compile(template, this.props);
   }
 }

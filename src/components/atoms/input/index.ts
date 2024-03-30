@@ -11,17 +11,10 @@ interface IInputProps {
 
 class Input extends BaseComponent {
   constructor(props: IInputProps) {
-    super({ 
-      ...props,
-      events: {
-        blur: event => {
-          console.log(event.target);
-        }
-      }
-    });
+    super(props);
   }
 
-	render() {
+	render(): HTMLElement {
     return this.compile(template, this.props);
   }
 }

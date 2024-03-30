@@ -3,7 +3,7 @@ import './label.scss';
 import template from './label.hbs?raw';
 
 interface ILabelProps {
-  id: string,
+  forInputId: string,
   additionalClasses?: string,
   label: string
 }
@@ -13,7 +13,7 @@ class Label extends BaseComponent {
     super(props);
   }
 
-	render() {
+	render(): HTMLElement {
     return this.compile(template, this.props);
   }
 }

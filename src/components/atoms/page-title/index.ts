@@ -12,7 +12,7 @@ class PageTitle extends BaseComponent {
     super(props);
   }
 
-	render() {
+	render(): HTMLElement {
     return this.compile(template, this.props);
   }
 }
