@@ -43,11 +43,9 @@ class Button extends BaseComponent {
     if (!isValidForm) {
       this.setProps({
         ...this.props,
-        isDesabled: true,
+        isDisabled: true,
       });
     }
-
-    console.log(this.props);
 
     console.log(formData);
   }

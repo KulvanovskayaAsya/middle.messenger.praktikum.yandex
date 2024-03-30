@@ -132,7 +132,7 @@ abstract class BaseComponent {
   }
 
   public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-    return isObjectsEqual(oldProps, newProps);
+    return !isObjectsEqual(oldProps, newProps);
   }
 
   private _render(): void {
