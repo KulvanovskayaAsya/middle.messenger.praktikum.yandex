@@ -6,8 +6,11 @@
   },
   "type": "module",
   "scripts": {
+    "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint:css": "stylelint '**/*.scss' --fix",
+    "lint:types": "tsc --noEmit",
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:types",
     "dev": "vite --port 3000 --host",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx && stylelint '**/*.css' && tsc --noEmit",
     "build": "vite build",
     "start": "npm run build && node server.js"
   },
@@ -20,6 +23,10 @@
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-plugin-import": "^2.29.1",
     "sass": "^1.72.0",
+    "stylelint": "^16.3.1",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-config-standard-scss": "^13.0.0",
+    "stylelint-scss": "^6.2.1",
     "typescript": "^5.2.2",
     "vite": "^5.1.6"
   },
