@@ -49,11 +49,11 @@ class Input extends BaseComponent {
           additionalClasses: `${this.props.additionalClasses ? this.props.additionalClasses + ' ' : ''}input_invalid`
         });
       } else {
-        let updatedClasses: string;
+        let updatedClasses: string = '';
         if(typeof this.props.additionalClasses == 'string')
           updatedClasses = (this.props.additionalClasses || '').replace('input_invalid', '').trim();
         
-          this.setProps({
+        this.setProps({
           ...this.props,
           additionalClasses: updatedClasses
         });
