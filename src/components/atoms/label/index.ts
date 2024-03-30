@@ -2,7 +2,7 @@ import BaseComponent from '../../../utils/base-component';
 import './label.scss';
 import template from './label.hbs?raw';
 
-interface ILabelProps {
+export interface ILabelProps {
   forInputId: string,
   additionalClasses?: string,
   label: string

@@ -2,7 +2,7 @@ import BaseComponent from '../../../utils/base-component';
 import './page-title.scss';
 import template from './page-title.hbs?raw';
 
-interface IPageTitleProps {
+export interface IPageTitleProps {
   text: string,
   additionalClasses?: string
 }

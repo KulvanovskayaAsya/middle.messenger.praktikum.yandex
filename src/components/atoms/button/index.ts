@@ -2,7 +2,7 @@ import BaseComponent from '../../../utils/base-component';
 import './button.scss';
 import template from './button.hbs?raw';
 
-interface IButtonProps {
+export interface IButtonProps {
   text?: string;
   icon?: string;
   additionalClasses?: string;

@@ -2,7 +2,7 @@ import BaseComponent from "../../../utils/base-component";
 import "./input.scss";
 import template from "./input.hbs?raw";
 
-interface IInputProps {
+export interface IInputProps {
 	id: string,
 	additionalClasses?: string,
   inputType?: string,

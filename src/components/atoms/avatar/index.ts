@@ -2,7 +2,7 @@ import BaseComponent from '../../../utils/base-component';
 import './avatar.scss';
 import template from './avatar.hbs?raw';
 
-interface IAvatarProps {
+export interface IAvatarProps {
 	src: string;
 	alt: string;
 	additionalClasses?: string;
