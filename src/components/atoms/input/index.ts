@@ -1,8 +1,10 @@
 import BaseComponent from '../../../utils/base-component';
+import { Props } from '../../../utils/base-component';
 import './input.scss';
 import template from './input.hbs?raw';
 
 import validate from '../../../utils/validation';
+// import isObjectsEqual from '../../../utils/object-comparing';
 
 export interface IInputProps {
   id: string;
@@ -37,6 +39,14 @@ class Input extends BaseComponent {
   render(): HTMLElement {
     return this.compile(template, this.props);
   }
+
+  // override componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+  //   if (oldProps.value !== newProps.value) {
+  //     this.setProps({ value: newProps.text });
+  //   }
+
+  //   return isObjectsEqual(oldProps, newProps);
+  // }
 
   onBlurValidation(e: Event) {
     const target = e.target as HTMLInputElement;

@@ -11,12 +11,22 @@
   display: flex;
   flex-direction: column;
   gap: $spacing__medium;
+  max-height: calc(100vh - 2 * #{$spacing__medium});
+  overflow: auto;
+  padding-right: $spacing__medium;
 }
 
 .chat-page__messenger {
   flex: 1;
+  position: relative;
+}
+
+.messanger {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+}
+
+.messenger__message-input {
+  position: absolute;
+  inset: auto 0 0 0;
 }

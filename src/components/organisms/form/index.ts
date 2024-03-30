@@ -19,7 +19,7 @@ class Form extends BaseComponent {
     formElement.classList.add('form');
 
     // всё та же проблема типизации children/props
-    this.props.textFields.forEach((textField) => {
+    this.props.textFields.forEach((textField: BaseComponent) => {
       formElement.appendChild(textField.getContent());
     });
 

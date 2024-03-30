@@ -1,0 +1,11 @@
+<div class='message'>
+  <p class='message__text'>
+    {{ text }}
+  </p>
+  {{#if mediaSrc}}
+    <img alt='{{ mediaAlt }}' src='{{ mediaSrc }}' />
+  {{/if}}
+  <span class='message__date'>
+    {{ date }}
+  </span>
+</div>

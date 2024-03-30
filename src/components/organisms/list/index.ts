@@ -15,7 +15,7 @@ class List extends BaseComponent {
     elementsList.classList.add('list');
 
     // опять же не выходит типизировать
-    this.props.list.forEach((item) => {
+    this.props.list.forEach((item: BaseComponent) => {
       elementsList.appendChild(item.getContent());
     });
 

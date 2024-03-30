@@ -1,0 +1,20 @@
+@import 'src/assets/variables';
+
+.message {
+  width: fit-content;
+	display: flex;
+  flex-direction: column;
+	gap: $spacing__medium;
+	padding: $spacing__medium;
+	background-color: $color__surface;
+	border-radius: $border-radius_large;
+}
+
+.message__text {
+  color: $color-text__light_accent;
+}
+
+.message__date {
+  align-self: flex-end;
+  font: 400 10px / 10px $font-family__secondary;
+}

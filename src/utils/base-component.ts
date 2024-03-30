@@ -11,7 +11,7 @@ enum EVENTS {
   FLOW_RENDER = 'flow:render',
 }
 
-type Props = {
+export type Props = {
   [key: string]: unknown;
   events?: Record<string, (e: Event) => void>;
 };
@@ -96,7 +96,7 @@ abstract class BaseComponent {
     if (!nextProps) {
       return;
     }
-
+    console.log(this.props, nextProps);
     Object.assign(this.props, nextProps);
   };
 

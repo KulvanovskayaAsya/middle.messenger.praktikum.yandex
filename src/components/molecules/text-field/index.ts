@@ -8,6 +8,7 @@ import Label, { ILabelProps } from '../../atoms/label';
 export interface ITextFieldProps {
   input: IInputProps;
   label: ILabelProps;
+  additionalClasses?: string;
 }
 
 class TextField extends BaseComponent {
