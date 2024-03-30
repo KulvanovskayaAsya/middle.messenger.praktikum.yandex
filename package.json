@@ -7,13 +7,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000 --host",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx && stylelint '**/*.css' && tsc --noEmit",
     "build": "vite build",
     "start": "npm run build && node server.js"
   },
   "devDependencies": {
     "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-plugin-import": "^2.29.1",
     "sass": "^1.72.0",
     "typescript": "^5.2.2",
     "vite": "^5.1.6"

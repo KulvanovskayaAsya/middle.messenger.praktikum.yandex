@@ -15,40 +15,40 @@ interface ILoginPageProps {
   registrationLink: Link;
 }
 
-const fields = authenticationForm.map(field => new TextField({
+const fields = authenticationForm.map((field) => new TextField({
   input: {
     id: field.id,
     name: field.name,
-    inputType: field.type
+    inputType: field.type,
   },
   label: {
     forInputId: field.id,
-    label: field.label
-  }
+    label: field.label,
+  },
 }));
 
 const submitButton = new Button({
   text: 'Войти',
   additionalClasses: 'button_primary',
-  hrefPage: 'chatPage'
+  hrefPage: 'chatPage',
 });
 
 class LoginPage extends BaseComponent {
   constructor(props: ILoginPageProps) {
-    super({ 
+    super({
       ...props,
       modalTitle: new PageTitle({
-        text: 'Вход'
+        text: 'Вход',
       }),
       form: new Form({
         textFields: fields,
-        button: submitButton
+        button: submitButton,
       }),
       registrationLink: new Link({
         hrefLink: '#',
         text: 'Нет аккаунта?',
-        hrefPage: 'registrationPage'
-      })
+        hrefPage: 'registrationPage',
+      }),
     });
   }
 

@@ -15,22 +15,22 @@ interface IRegistrationPageProps {
   loginLink: Link;
 }
 
-const fields = registrationForm.map(field => new TextField({
+const fields = registrationForm.map((field) => new TextField({
   input: {
     id: field.id,
     name: field.name,
-    inputType: field.type
+    inputType: field.type,
   },
   label: {
     forInputId: field.id,
-    label: field.label
-  }
+    label: field.label,
+  },
 }));
 
 const submitButton = new Button({
   text: 'Зарегистрироваться',
   hrefPage: 'chatPage',
-  additionalClasses: 'button_primary'
+  additionalClasses: 'button_primary',
 });
 
 class RegistrationPage extends BaseComponent {
@@ -38,17 +38,17 @@ class RegistrationPage extends BaseComponent {
     super({
       ...props,
       modalTitle: new PageTitle({
-        text: 'Регистрация'
+        text: 'Регистрация',
       }),
       form: new Form({
         textFields: fields,
-        button: submitButton
+        button: submitButton,
       }),
       loginLink: new Link({
         hrefLink: '#',
         text: 'Есть аккаунт?',
-        hrefPage: 'loginPage'
-      })
+        hrefPage: 'loginPage',
+      }),
     });
   }
 

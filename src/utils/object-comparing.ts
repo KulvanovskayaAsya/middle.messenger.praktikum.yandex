@@ -1,3 +1,8 @@
+// сравнение с null и проверка типа доступны для любых значений, при этом предугадать типы невозможно
+function isObject(object: any): boolean {
+  return object != null && typeof object === 'object';
+}
+
 function isObjectsEqual<T>(object1: T, object2: T): boolean {
   if (object1 === object2) {
     return true;
@@ -25,11 +30,6 @@ function isObjectsEqual<T>(object1: T, object2: T): boolean {
   }
 
   return true;
-}
-
-//сравнение с null и проверка типа доступны для любых значений, при этом предугадать типы невозможно
-function isObject(object: any): boolean {
-  return object != null && typeof object === 'object';
 }
 
 export default isObjectsEqual;

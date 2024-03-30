@@ -1,13 +1,13 @@
-import BaseComponent from "../../../utils/base-component";
-import "./input.scss";
-import template from "./input.hbs?raw";
+import BaseComponent from '../../../utils/base-component';
+import './input.scss';
+import template from './input.hbs?raw';
 
-import validate from "../../../utils/validation";
+import validate from '../../../utils/validation';
 
 export interface IInputProps {
-	id: string;
+  id: string;
   value?: string;
-	additionalClasses?: string;
+  additionalClasses?: string;
   inputType?: string;
   name: string;
   events?: Record<string, (e: Event) => void>;
@@ -15,7 +15,7 @@ export interface IInputProps {
 
 class Input extends BaseComponent {
   constructor(props: IInputProps) {
-    super({ 
+    super({
       ...props,
       events: {
         input: (event: Event) => {
@@ -23,18 +23,18 @@ class Input extends BaseComponent {
           if (target) {
             this.setProps({
               ...this.props,
-              value: target.value
+              value: target.value,
             });
 
-            console.log(this.props)
+            console.log(this.props);
           }
         },
-        blur: (event: Event) => this.onBlurValidation(event)
-      }
+        blur: (event: Event) => this.onBlurValidation(event),
+      },
     });
   }
 
-	render(): HTMLElement {
+  render(): HTMLElement {
     return this.compile(template, this.props);
   }
 
@@ -44,19 +44,18 @@ class Input extends BaseComponent {
       const validationResult = validate(target.name, target.value);
 
       console.log(validationResult);
-      if(!validationResult.isValid) {
+      if (!validationResult.isValid) {
         this.setProps({
           ...this.props,
-          additionalClasses: `${this.props.additionalClasses ? this.props.additionalClasses + ' ' : ''}input_invalid`
+          additionalClasses: `${this.props.additionalClasses ? `${this.props.additionalClasses} ` : ''}input_invalid`,
         });
       } else {
         let updatedClasses: string = '';
-        if(typeof this.props.additionalClasses == 'string')
-          updatedClasses = (this.props.additionalClasses || '').replace('input_invalid', '').trim();
-        
+        if (typeof this.props.additionalClasses === 'string') updatedClasses = (this.props.additionalClasses || '').replace('input_invalid', '').trim();
+
         this.setProps({
           ...this.props,
-          additionalClasses: updatedClasses
+          additionalClasses: updatedClasses,
         });
       }
     }

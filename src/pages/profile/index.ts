@@ -10,52 +10,52 @@ import Avatar from '../../components/atoms/avatar';
 import { profileForm } from '../../utils/mock-data';
 
 interface IProfilePageProps {
-  
+
 }
 
-const fields = profileForm.map(field => new TextField({
+const fields = profileForm.map((field) => new TextField({
   input: {
     id: field.id,
     name: field.name,
-    inputType: field.type
+    inputType: field.type,
   },
   label: {
     forInputId: field.id,
-    label: field.label
-  }
+    label: field.label,
+  },
 }));
 
 const submitButton = new Button({
   text: 'Сохранить',
   hrefPage: 'chatPage',
-  additionalClasses: 'button_primary'
+  additionalClasses: 'button_primary',
 });
 
 class ProfilePage extends BaseComponent {
   constructor(props: IProfilePageProps) {
-    super({ 
+    super({
       ...props,
       backLink: new Link({
         text: 'Вернуться к чатам',
         hrefLink: '#',
         hrefPage: 'chatPage',
-        additionalClasses: 'link_back'
+        additionalClasses: 'link_back',
       }),
       avatar: new Avatar({
         src: 'images/avatar.png',
         alt: 'Аватар вашего профиля',
-        additionalClasses: 'avatar_large'
+        additionalClasses: 'avatar_large',
       }),
       form: new Form({
         textFields: fields,
-        button: submitButton
+        button: submitButton,
       }),
       changePasswordlink: new Link({
         hrefLink: '#',
         text: 'Изменить пароль',
         hrefPage: 'changePasswordPage',
-        additionalClasses: 'link_forward profile-form__change-password-link'
-      })
+        additionalClasses: 'link_forward profile-form__change-password-link',
+      }),
     });
   }
 

@@ -3,19 +3,19 @@ import './avatar.scss';
 import template from './avatar.hbs?raw';
 
 export interface IAvatarProps {
-	src: string;
-	alt: string;
-	additionalClasses?: string;
+  src: string;
+  alt: string;
+  additionalClasses?: string;
 }
 
 class Avatar extends BaseComponent {
-	constructor(props: IAvatarProps) {
-		super(props);
-	}
+  constructor(props: IAvatarProps) {
+    super(props);
+  }
 
-	render(): HTMLElement {
-		return this.compile(template, this.props);
-	}
+  render(): HTMLElement {
+    return this.compile(template, this.props);
+  }
 }
 
 export default Avatar;

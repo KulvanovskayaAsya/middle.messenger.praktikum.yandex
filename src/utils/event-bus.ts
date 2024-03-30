@@ -1,11 +1,11 @@
 type EventName = string;
-/*any используется для универсальности, поскольку конкретные типы аргументов слушателей неизвестны */
+/* any используется для универсальности, поскольку конкретные типы аргументов слушателей неизвестны */
 type Listener = (...args: any[]) => void;
 
 type ListenersList = Record<EventName, Listener[]>;
 
 class EventBus {
-	private listeners: ListenersList = {};
+  private listeners: ListenersList = {};
 
   public on(event: EventName, callback: Listener): void {
     if (!this.listeners[event]) {
@@ -21,7 +21,7 @@ class EventBus {
     }
 
     this.listeners[event] = this.listeners[event].filter(
-      (listener) => listener !== callback
+      (listener) => listener !== callback,
     );
   }
 

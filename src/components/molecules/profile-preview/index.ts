@@ -16,7 +16,7 @@ class ProfilePreview extends BaseComponent {
     super({
       ...props,
       avatar: new Avatar({ ...props.avatar }),
-      profileName: new PageTitle({ ...props.profileName })
+      profileName: new PageTitle({ ...props.profileName }),
     });
   }
 

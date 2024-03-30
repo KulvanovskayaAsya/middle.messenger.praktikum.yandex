@@ -14,38 +14,38 @@ interface IChangePasswordPageProps {
   form: IFormProps
 }
 
-const fields = changePasswordForm.map(field => new TextField({
+const fields = changePasswordForm.map((field) => new TextField({
   input: {
     id: field.id,
     name: field.name,
-    inputType: field.type
+    inputType: field.type,
   },
   label: {
     forInputId: field.id,
-    label: field.label
-  }
+    label: field.label,
+  },
 }));
 
 const submitButton = new Button({
   text: 'Сохранить',
   hrefPage: 'chatPage',
-  additionalClasses: 'button_primary'
+  additionalClasses: 'button_primary',
 });
 
 class ChangePasswordPage extends BaseComponent {
   constructor(props: IChangePasswordPageProps) {
-    super({ 
+    super({
       ...props,
       backLink: new Link({
         text: 'Вернуться к профилю',
         hrefLink: '#',
         hrefPage: 'profilePage',
-        additionalClasses: 'link_back'
+        additionalClasses: 'link_back',
       }),
       form: new Form({
         textFields: fields,
-        button: submitButton
-      })
+        button: submitButton,
+      }),
     });
   }
 

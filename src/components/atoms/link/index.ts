@@ -14,7 +14,7 @@ class Link extends BaseComponent {
     super(props);
   }
 
-	render(): HTMLElement {
+  render(): HTMLElement {
     return this.compile(template, this.props);
   }
 }

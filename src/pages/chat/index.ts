@@ -16,41 +16,41 @@ interface IChatPageProps {
   messagesList?: List;
 }
 
-const list = chatsList.map(chat => new Chat({
+const list = chatsList.map((chat) => new Chat({
   avatar: chat.avatar,
   name: chat.name,
   lastMessage: chat.lastMessage,
   unreadedCount: chat.unreadedCount,
-  lastMessageDate: chat.date
+  lastMessageDate: chat.date,
 }));
 
 const profilePreview = new ProfilePreview({
   avatar: {
     src: 'images/avatar.png',
-    alt: 'Аватар пользователя Кульвановской Аси'
+    alt: 'Аватар пользователя Кульвановской Аси',
   },
   profileName: {
-    text: 'Кульвановская Ася'
+    text: 'Кульвановская Ася',
   },
-  nickname: '@tychka'
+  nickname: '@tychka',
 });
 
 class ChatPage extends BaseComponent {
   constructor(props: IChatPageProps) {
     super({
       ...props,
-      profilePreview: profilePreview,
+      profilePreview,
       searchBox: new TextField({
         input: {
           id: 'searchBox',
-          name: 'search'
+          name: 'search',
         },
         label: {
           forInputId: 'searchBox',
-          label: 'Искать...'
-        }
+          label: 'Искать...',
+        },
       }),
-      chatsList: new List({list})
+      chatsList: new List({ list }),
     });
   }
 

@@ -1,15 +1,23 @@
 export const authenticationForm = [
-	{ id: 'login', name: 'login', label: 'Логин' },
-	{ id: 'password', name: 'password', label: 'Пароль', type: 'password' }
-]
+  { id: 'login', name: 'login', label: 'Логин' },
+  {
+    id: 'password', name: 'password', label: 'Пароль', type: 'password',
+  },
+];
 
 export const registrationForm = [
   { id: 'first_name', name: 'first_name', label: 'Имя' },
   { id: 'second_name', name: 'second_name', label: 'Фамилия' },
   { id: 'login', name: 'login', label: 'Логин' },
-  { id: 'email', name: 'email', label: 'Email', type: 'email' },
-  { id: 'password', name: 'password', label: 'Пароль', type: 'password' },
-  { id: 'phone', name: 'phone', label: 'Телефон', type: 'tel' }
+  {
+    id: 'email', name: 'email', label: 'Email', type: 'email',
+  },
+  {
+    id: 'password', name: 'password', label: 'Пароль', type: 'password',
+  },
+  {
+    id: 'phone', name: 'phone', label: 'Телефон', type: 'tel',
+  },
 ];
 
 export const profileForm = [
@@ -17,22 +25,32 @@ export const profileForm = [
   { id: 'second_name', name: 'second_name', label: 'Фамилия' },
   { id: 'display_name', name: 'display_name', label: 'Отображаемое имя' },
   { id: 'login', name: 'login', label: 'Логин' },
-  { id: 'email', name: 'email', label: 'Email', type: 'email' },
-  { id: 'phone', name: 'phone', label: 'Телефон', type: 'tel' }
+  {
+    id: 'email', name: 'email', label: 'Email', type: 'email',
+  },
+  {
+    id: 'phone', name: 'phone', label: 'Телефон', type: 'tel',
+  },
 ];
 
 export const changePasswordForm = [
-  { id: 'old_password', name: 'old_password', label: 'Старый пароль', type: 'password' },
-  { id: 'new_password', name: 'new_password', label: 'Новый пароль', type: 'password' },
-  { id: 'new_password_copy', name: 'new_password_copy', label: 'Повторите новый пароль', type: 'password' }
+  {
+    id: 'old_password', name: 'old_password', label: 'Старый пароль', type: 'password',
+  },
+  {
+    id: 'new_password', name: 'new_password', label: 'Новый пароль', type: 'password',
+  },
+  {
+    id: 'new_password_copy', name: 'new_password_copy', label: 'Повторите новый пароль', type: 'password',
+  },
 ];
 
 export const chatsList = [
   {
     id: 1,
-    avatar: { 
+    avatar: {
       src: '/images/avatar4.png',
-      alt: 'Аватар пользователя Яра'
+      alt: 'Аватар пользователя Яра',
     },
     name: 'Яра',
     date: 'пн',
@@ -41,9 +59,9 @@ export const chatsList = [
   },
   {
     id: 2,
-    avatar: { 
+    avatar: {
       src: '/images/avatar2.png',
-      alt: 'Аватар пользователя Бора-Бора'
+      alt: 'Аватар пользователя Бора-Бора',
     },
     name: 'Бора-Бора',
     date: 'пн',
@@ -52,9 +70,9 @@ export const chatsList = [
   },
   {
     id: 3,
-    avatar: { 
+    avatar: {
       src: '/images/avatar3.png',
-      alt: 'Аватар пользователя Лизок'
+      alt: 'Аватар пользователя Лизок',
     },
     name: 'Лизок',
     date: 'ср',
@@ -63,9 +81,9 @@ export const chatsList = [
   },
   {
     id: 4,
-    avatar: { 
+    avatar: {
       src: '/images/avatar4.png',
-      alt: 'Аватар пользователя Анна'
+      alt: 'Аватар пользователя Анна',
     },
     name: 'Анна',
     date: 'вт',
@@ -74,9 +92,9 @@ export const chatsList = [
   },
   {
     id: 5,
-    avatar: { 
+    avatar: {
       src: '/images/avatar7.png',
-      alt: 'Аватар пользователя Олег'
+      alt: 'Аватар пользователя Олег',
     },
     name: 'Олег',
     date: 'ср',
@@ -85,9 +103,9 @@ export const chatsList = [
   },
   {
     id: 6,
-    avatar: { 
+    avatar: {
       src: '/images/avatar6.png',
-      alt: 'Аватар пользователя Елена'
+      alt: 'Аватар пользователя Елена',
     },
     name: 'Елена',
     date: 'вт',
@@ -96,9 +114,9 @@ export const chatsList = [
   },
   {
     id: 7,
-    avatar: { 
+    avatar: {
       src: '/images/avatar7.png',
-      alt: 'Аватар пользователя Дмитрий'
+      alt: 'Аватар пользователя Дмитрий',
     },
     name: 'Дмитрий',
     date: 'чт',
@@ -107,9 +125,9 @@ export const chatsList = [
   },
   {
     id: 8,
-    avatar: { 
+    avatar: {
       src: '/images/avatar2.png',
-      alt: 'Аватар пользователя Ирина'
+      alt: 'Аватар пользователя Ирина',
     },
     name: 'Ирина',
     date: 'пт',

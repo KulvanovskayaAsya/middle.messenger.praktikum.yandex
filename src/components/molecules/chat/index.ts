@@ -16,7 +16,7 @@ class Chat extends BaseComponent {
   constructor(props: ChatProps) {
     super({
       ...props,
-      avatar: new Avatar ({ ...props.avatar, additionalClasses: 'chat__avatar' })
+      avatar: new Avatar({ ...props.avatar, additionalClasses: 'chat__avatar' }),
     });
   }
 

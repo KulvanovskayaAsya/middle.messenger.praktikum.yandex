@@ -53,7 +53,7 @@ class Form extends BaseComponent {
     //   console.log(child.getContent())
     //   formElement.appendChild(child.getContent());
     // });
-    
+
     Object.values(this.children).forEach((child) => {
       formElement.appendChild(child.getContent());
     });

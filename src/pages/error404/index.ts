@@ -9,14 +9,14 @@ class ErrorPage404 extends BaseComponent {
   constructor(props: IErrorPageProps) {
     super({
       ...props,
-    backLink: new Link({
-      hrefLink: '#',
-      hrefPage: 'chatPage',
-      text: 'Вернуться к чатам',
-      additionalClasses: 'link_back error-page-wrapper__link'
-    }),
-    errorImgSrc: 'images/error404.svg'
-  });
+      backLink: new Link({
+        hrefLink: '#',
+        hrefPage: 'chatPage',
+        text: 'Вернуться к чатам',
+        additionalClasses: 'link_back error-page-wrapper__link',
+      }),
+      errorImgSrc: 'images/error404.svg',
+    });
   }
 
   render() {
