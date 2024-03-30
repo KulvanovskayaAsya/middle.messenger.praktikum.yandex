@@ -137,7 +137,7 @@ abstract class BaseComponent {
     const block = this.render();
 		this._removeEvents();
     if (!this._element) {
-      this._element = document.createElement('div'); // или любой другой тег, подходящий для вашего компонента
+      this._element = document.createElement('div');
   }
     this._element = block;
 		this._addEvents();

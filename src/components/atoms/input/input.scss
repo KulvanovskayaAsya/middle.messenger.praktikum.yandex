@@ -9,7 +9,13 @@
 	padding: $spacing__medium;
 	font-size: inherit;
 
+	&_invalid {
+		border: 1px solid $color__error;
+		outline: 2px solid $color__error;
+	}
+
 	&:focus {
+		border: 2px solid $color__primary;
 		outline: 2px solid $color__primary;
 	}
 

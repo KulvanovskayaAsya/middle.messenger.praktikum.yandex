@@ -27,7 +27,9 @@ const fields = authenticationForm.map(field => new TextField({
         const validationResult = validate(e.target.name, e.target.value);
         console.log(validationResult);
         if(!validationResult.isValid) {
-          // навесить класс
+          e.target.classList.add('input_invalid');
+        } else {
+          e.target.classList.remove('input_invalid');
         }
       }
     }

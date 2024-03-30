@@ -1,4 +1,4 @@
-import './registration.scss'; // Предполагаем, что у вас есть свои стили
+import './registration.scss';
 import template from './registration.hbs?raw';
 import BaseComponent from '../../utils/base-component';
 import Form from '../../components/organisms/form';
