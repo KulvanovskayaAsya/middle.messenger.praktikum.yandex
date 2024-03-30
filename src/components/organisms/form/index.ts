@@ -43,38 +43,41 @@ class Form extends BaseComponent {
 
     if (form) {
       const isValidForm = this.grabFormValues(form);
+
       if (!isValidForm) {
         this.children.button.setProps({
           isDisabled: true
         });
       }
+      console.log(this.children.button.props)
     } else {
       throw new Error('Форма не найдена');
     }
   }
 
-  onBlurValidation(e: Event) {
+  handleInputBlur(e: Event) {
     const target = e.target as HTMLInputElement;
-    
-    if (target && target.name && target.value) {
-      const validationResult = validate(target.name, target.value);
+    console.log(target);
 
-      console.log(validationResult);
-      if (!validationResult.isValid) {
-        this.setProps({
-          ...this.props,
-          additionalClasses: `${this.props.additionalClasses ? `${this.props.additionalClasses} ` : ''}input_invalid`,
-        });
-      } else {
-        let updatedClasses: string = '';
-        if (typeof this.props.additionalClasses === 'string') updatedClasses = (this.props.additionalClasses || '').replace('input_invalid', '').trim();
+    // if (target && target.name && target.value) {
+    //   const validationResult = validate(target.name, target.value);
 
-        this.setProps({
-          ...this.props,
-          additionalClasses: updatedClasses,
-        });
-      }
-    }
+    //   console.log(validationResult);
+    //   if (!validationResult.isValid) {
+    //     this.setProps({
+    //       ...this.props,
+    //       additionalClasses: `${this.props.additionalClasses ? `${this.props.additionalClasses} ` : ''}input_invalid`,
+    //     });
+    //   } else {
+    //     let updatedClasses: string = '';
+    //     if (typeof this.props.additionalClasses === 'string') updatedClasses = (this.props.additionalClasses || '').replace('input_invalid', '').trim();
+
+    //     this.setProps({
+    //       ...this.props,
+    //       additionalClasses: updatedClasses,
+    //     });
+    //   }
+    // }
   }
 
   render(): HTMLElement {
@@ -88,9 +91,10 @@ class Form extends BaseComponent {
         input.setProps({
           ...input.props,
           events: {
-            blur: (event: Event) => this.onBlurValidation(event)
+            blur: (event: Event) => this.handleInputBlur(event)
           }
         })
+
         formElement.appendChild(textField.getContent());
       });
     }

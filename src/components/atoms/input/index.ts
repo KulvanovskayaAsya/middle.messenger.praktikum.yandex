@@ -22,6 +22,7 @@ class Input extends BaseComponent {
       events: {
         input: (event: Event) => {
           const target = event.target as HTMLInputElement;
+          console.log(target.value)
           
           if (target) {
             this.setProps({
