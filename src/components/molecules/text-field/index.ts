@@ -1,21 +1,13 @@
 import BaseComponent from "../../../utils/base-component";
 import "./text-field.scss";
 import template from "./text-field.hbs?raw";
-import Input from "../../atoms/input";
-import Label from "../../atoms/label";
+
+import Input, { IInputProps } from "../../atoms/input";
+import Label, { ILabelProps } from "../../atoms/label";
 
 interface ITextFieldProps {
-  input: { 
-    id: string,
-    name: string,
-    inputType?: string,
-    additionalClasses?: string 
-  },
-  label: { 
-    id: string, 
-    label: string,
-    additionalClasses?: string 
-  }
+  input: IInputProps;
+  label: ILabelProps;
 }
 
 class TextField extends BaseComponent {
@@ -27,7 +19,7 @@ class TextField extends BaseComponent {
     });
   }
 
-	render() {
+	render(): HTMLElement {
 		return this.compile(template, this.props);
 	}
 }

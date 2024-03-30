@@ -1,14 +1,15 @@
 import BaseComponent from '../../../utils/base-component';
 import './chat.scss';
 import template from './chat.hbs?raw';
-import Avatar from '../../atoms/avatar';
 
-type ChatProps = {
-  avatar: string,
-  name: string,
-  lastMessage: string,
-  unreadedCount: number,
-  date: string
+import Avatar, { IAvatarProps } from '../../atoms/avatar';
+
+export interface ChatProps {
+  avatar: IAvatarProps;
+  name: string;
+  lastMessage: string;
+  unreadedCount: number;
+  lastMessageDate: string;
 }
 
 class Chat extends BaseComponent {
@@ -19,7 +20,7 @@ class Chat extends BaseComponent {
     });
   }
 
-  render() {
+  render(): HTMLElement {
     return this.compile(template, this.props);
   }
 }
