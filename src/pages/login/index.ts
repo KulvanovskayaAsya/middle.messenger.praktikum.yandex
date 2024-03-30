@@ -8,7 +8,6 @@ import Link from '../../components/atoms/link';
 import PageTitle from '../../components/atoms/page-title';
 
 import { authenticationForm } from '../../utils/mock-data';
-import validate from '../../utils/validation';
 
 interface ILoginPageProps {
   modalTitle: PageTitle;
@@ -20,19 +19,7 @@ const fields = authenticationForm.map(field => new TextField({
   input: {
     id: field.id,
     name: field.name,
-    inputType: field.type,
-    //не понимаю, в чем проблема с доступом к полям таргета((
-    events: {
-      blur: (e: Event) => {
-        const validationResult = validate(e.target.name, e.target.value);
-        console.log(validationResult);
-        if(!validationResult.isValid) {
-          e.target.classList.add('input_invalid');
-        } else {
-          e.target.classList.remove('input_invalid');
-        }
-      }
-    }
+    inputType: field.type
   },
   label: {
     forInputId: field.id,

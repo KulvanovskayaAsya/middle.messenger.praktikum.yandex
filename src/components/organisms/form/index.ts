@@ -4,8 +4,6 @@ import './form.scss';
 import TextField from '../../molecules/text-field';
 import Button from '../../atoms/button';
 
-import validate from '../../../utils/validation';
-
 export interface IFormProps {
   textFields: TextField[];
   button?: Button;
@@ -22,14 +20,6 @@ class Form extends BaseComponent {
 
     // всё та же проблема типизации children/props
     this.props.textFields.forEach((textField) => {
-      if (! textField.children.input.props.events) {
-        textField.children.input.props.events = {};
-      }
-      
-      textField.children.input.props.events.blur = (e: Event) => {
-        console.log(validate(e.target.name, e.target.value))
-      }
-
       formElement.appendChild(textField.getContent());
     });
 
