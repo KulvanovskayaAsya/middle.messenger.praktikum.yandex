@@ -1,6 +1,9 @@
 <main>
-  {{#> Modal title='Авторизация'}}
-    {{> Form submitButtonText='Войти' hrefPage='ChatPage' }}
-    {{> Link link='#' hrefPage='RegistrationPage' text='Нет аккаунта?' }}
-  {{/ Modal}}
+	<a class='link' href='#' data-page='errorPage404'>Страница 404</a>
+	<a class='link' href='#' data-page='errorPage500'>Страница 500</a>
+  <div class='modal'>
+    {{{ modalTitle }}}
+    {{{ form }}}
+    {{{ registrationLink }}}
+  </div>
 </main>

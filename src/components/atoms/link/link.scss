@@ -1,0 +1,40 @@
+@import 'src/assets/variables';
+
+.link {
+	position: relative;
+	color: $color__primary_light;
+	text-decoration: none;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    background-image: url('/src/assets/icons/backArrow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+	&_back {
+		font: 800 18px/18px $font-family__secondary;
+    padding-left: 3rem;
+
+    &::before {
+      height: 2rem;
+      width: 2rem;
+      left: 0;
+    }
+	}
+
+  &_forward {
+    padding-right: 1.5rem;
+
+    &::before {
+      height: 1rem;
+      width: 1rem;
+      right: 0;
+      transform: translateY(-50%) rotateY(180deg);
+    }
+	}
+}

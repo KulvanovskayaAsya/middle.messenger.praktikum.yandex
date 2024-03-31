@@ -1,83 +1,50 @@
-import Handlebars from 'handlebars';
-import * as Atoms from './atoms/index';
-import * as Molecules from './molecules/index';
-import * as Organisms from './organisms/index';
-import * as Pages from './pages/index';
+import LoginPage from './pages/login';
+import RegistrationPage from './pages/registration';
+import ChatPage from './pages/chat';
+import ProfilePage from './pages/profile';
+import ChangePasswordPage from './pages/change-password';
+import ErrorPage404 from './pages/error404';
+import ErrorPage500 from './pages/error500';
 
-import * as Forms from './utils/mockData';
-
-Object.entries(Forms).forEach(([formName, formData]) => {
-  Handlebars.registerHelper(formName, () => formData);
-});
-
-Handlebars.registerHelper('inputType', function(type) {
-  return new Handlebars.SafeString(type || 'text');
-});
-
-[Atoms, Molecules, Organisms, Pages].forEach((componentSet) => {
-  Object.entries(componentSet).forEach(([name, component]) => {
-    Handlebars.registerPartial(name, component);
-  });
-});
-
-function renderPage(pageName: keyof typeof Pages, context: Object) {
-  const pageTemplate = Handlebars.compile(Pages[pageName]);
-  const html = pageTemplate(context);
-  document.body.innerHTML = html;
+interface IPage {
+  getContent: () => HTMLElement;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderPage('LoginPage', { formFields: Forms.authenticationForm });
-});
+interface IPageConstructor {
+  new(args?: any): IPage;
+}
 
-document.addEventListener('click', e => {
+const pageConstructors: Record<string, IPageConstructor> = {
+  loginPage: LoginPage,
+  registrationPage: RegistrationPage,
+  chatPage: ChatPage,
+  profilePage: ProfilePage,
+  changePasswordPage: ChangePasswordPage,
+  errorPage404: ErrorPage404,
+  errorPage500: ErrorPage500,
+};
+
+function showPage(pageId: string): void {
+  const appElement = document.getElementById('app');
+  const PageConstructor = pageConstructors[pageId];
+
+  if (appElement && PageConstructor) {
+    const pageInstance = new PageConstructor();
+    appElement.innerHTML = '';
+    appElement.appendChild(pageInstance.getContent());
+  }
+}
+
+document.addEventListener('click', (e) => {
   const target = e.target as HTMLElement;
-  const page = target.getAttribute('data-page');
+  const pageId = target.getAttribute('data-page');
 
-  if (page) {
+  if (pageId && pageConstructors[pageId]) {
     e.preventDefault();
-    
-		const isErrorPage = page === 'ErrorPage404' || page === 'ErrorPage500';
-    const context = getPageContext(page);
-		const pageName = isErrorPage ? 'ErrorPage' : page as keyof typeof Pages;
-    
-    renderPage(pageName, context);
+    showPage(pageId);
   }
 });
 
-function getPageContext(page: string) {
-	switch(page) {
-		case 'LoginPage': 
-			return {
-				formFields: Forms.authenticationForm
-			};
-	
-		case 'RegistrationPage':
-			return {
-				formFields: Forms.registrationForm
-			};
-		
-		case 'ErrorPage404':
-			return {
-				errorImgSrc: '/images/error404.svg'
-			};
-
-		case 'ErrorPage500':
-			return {
-				errorImgSrc: '/images/error500.svg'
-			};
-
-		case 'ProfilePage': 
-			return {
-				formFields: Forms.profileForm
-			};
-		
-		case 'ChangePasswordPage': 
-			return {
-				formFields: Forms.changePasswordForm
-			};
-
-		default:
-			return {};
-	}
-}
+document.addEventListener('DOMContentLoaded', () => {
+  showPage('loginPage');
+});

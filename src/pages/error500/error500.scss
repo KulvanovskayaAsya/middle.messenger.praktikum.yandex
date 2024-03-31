@@ -1,0 +1,15 @@
+@import 'src/assets/variables';
+
+.error-page-wrapper {
+	position: relative;
+	height: 100vh;
+	width: 100vw;
+}
+
+.error-page-wrapper__image {
+	height: 90%;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+}

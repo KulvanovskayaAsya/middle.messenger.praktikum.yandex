@@ -1,11 +1,17 @@
-<main>
-	{{> PageTitle text='CHAT PAGE'}}
-
-	<nav class="navigation">
-		{{> Link link='#' hrefPage='LoginPage' text='Авторизация' }}
-		{{> Link link='#' hrefPage='RegistrationPage' text='Регистрация' }}
-		{{> Link link='#' hrefPage='ErrorPage404' text='Страница 404' }}
-		{{> Link link='#' hrefPage='ErrorPage500' text='Страница 500' }}
-		{{> Link link='#' hrefPage='ProfilePage' text='Профиль' }}
-	</nav>
+<main class='chat-page'>
+	<div class='chat-page__side-column'>
+		{{{ profilePreview }}}
+		{{{ searchBox }}}
+		{{{ chatsList }}}
+	</div>
+	<div class='messenger chat-page__messenger'>
+		{{{ messagesList }}}
+		{{#if messagesList}}
+			{{{ messagesList }}}
+			{{{ messageInput }}}
+			{{{ sendButton }}}
+		{{else}}
+			Выберите диалог для начала общения
+		{{/if}}
+	</div>
 </main>
