@@ -20,9 +20,13 @@ class Input extends BaseComponent {
       events: {
         input: (event: Event) => {
           const target = event.target as HTMLInputElement;
-          console.log(target.value)
+          console.log('oninput value = ', target.value)
           
           if (target) {
+            console.log('input set props: ', {
+              ...this.props,
+              value: target.value,
+            })
             this.setProps({
               ...this.props,
               value: target.value,
@@ -47,6 +51,7 @@ class Input extends BaseComponent {
           ...this.props,
           additionalClasses: `${this.props.additionalClasses ? `${this.props.additionalClasses} ` : ''}input_invalid`,
         });
+        console.log('need add invalid class', this.props)
       } else {
         let updatedClasses: string = '';
         if (typeof this.props.additionalClasses === 'string') updatedClasses = (this.props.additionalClasses || '').replace('input_invalid', '').trim();
@@ -60,6 +65,7 @@ class Input extends BaseComponent {
   }
 
   render(): HTMLElement {
+    console.log('render props: ', this.props)
     return this.compile(template, this.props);
   }
 }

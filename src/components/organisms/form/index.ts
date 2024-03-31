@@ -43,15 +43,15 @@ class Form extends BaseComponent {
 
     if (form) {
       const isValidForm = this.grabFormValues(form);
+      console.log('Форма не валидна!');
 
       if (!isValidForm) {
         this.children.button.setProps({
           isDisabled: true
         });
       }
-      console.log(this.children.button.props)
     } else {
-      throw new Error('Форма не найдена');
+      throw new Error('Форма не найдена!');
     }
   }
 
