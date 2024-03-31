@@ -16,12 +16,12 @@ interface IPageConstructor {
 
 const pageConstructors: Record<string, IPageConstructor> = {
   loginPage: LoginPage,
-  registrationPage: RegistrationPage,
-  chatPage: ChatPage,
-  profilePage: ProfilePage,
-  changePasswordPage: ChangePasswordPage,
-  errorPage404: ErrorPage404,
-  errorPage500: ErrorPage500,
+  // registrationPage: RegistrationPage,
+  // chatPage: ChatPage,
+  // profilePage: ProfilePage,
+  // changePasswordPage: ChangePasswordPage,
+  // errorPage404: ErrorPage404,
+  // errorPage500: ErrorPage500,
 };
 
 function showPage(pageId: string): void {

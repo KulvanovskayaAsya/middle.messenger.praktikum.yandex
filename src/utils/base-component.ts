@@ -174,9 +174,11 @@ abstract class BaseComponent {
 
   _addEvents() {
     const { events } = this.props;
+    console.log('events ', events)
 
     if (events) {
       Object.keys(events).forEach((eventName) => {
+        console.log('addEvents ', eventName)
         this._element?.addEventListener(eventName, events[eventName]);
       });
     }

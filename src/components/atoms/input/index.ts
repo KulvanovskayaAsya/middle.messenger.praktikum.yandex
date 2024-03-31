@@ -29,9 +29,7 @@ class Input extends BaseComponent {
             });
           }
         },
-        events: {
-          blur: (event: Event) => this.handleInputBlur(event)
-        }
+        blur: (event: Event) => this.handleInputBlur(event)
       },
     });
   }
