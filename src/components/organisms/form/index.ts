@@ -47,7 +47,7 @@ class Form extends BaseComponent {
 
       if (!isValidForm) {
         this.children.button.setProps({
-          isDisabled: true
+          isDisabled: true,
         });
       }
     } else {
@@ -71,8 +71,8 @@ class Form extends BaseComponent {
           ...child.props,
           events: {
             click: (event: Event) => this.handleFormSubmit(event),
-          }
-        })
+          },
+        });
       }
 
       formElement.appendChild(child.getContent());

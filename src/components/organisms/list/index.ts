@@ -14,7 +14,7 @@ class List extends BaseComponent {
     const elementsList = document.createElement('section');
     elementsList.classList.add('list');
 
-    if(Array.isArray(this.props.list)) {
+    if (Array.isArray(this.props.list)) {
       this.props.list.forEach((item: BaseComponent) => {
         elementsList.appendChild(item.getContent());
       });

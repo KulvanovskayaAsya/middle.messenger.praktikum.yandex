@@ -24,12 +24,12 @@ const chats = chatsList.map((chat) => new Chat({
   name: chat.name,
   lastMessage: chat.lastMessage,
   unreadedCount: chat.unreadedCount,
-  lastMessageDate: chat.date
+  lastMessageDate: chat.date,
 }));
 
 const messages = messagesList.map((message) => new Message({
   text: message.text,
-  date: message.date
+  date: message.date,
 }));
 
 const profilePreview = new ProfilePreview({
@@ -63,14 +63,14 @@ class ChatPage extends BaseComponent {
       messageInput: new TextField({
         input: {
           id: 'messageBox',
-          name: 'message'
+          name: 'message',
         },
         label: {
           forInputId: 'messageBox',
-          label: 'Сообщение...'
+          label: 'Сообщение...',
         },
-        additionalClasses: 'messenger__message-input'
-      })
+        additionalClasses: 'messenger__message-input',
+      }),
     });
   }
 

@@ -141,6 +141,7 @@ abstract class BaseComponent {
     if (!this._element) {
       this._element = document.createElement('div');
     }
+    this._element.replaceWith(block);
     this._element = block;
     this._addEvents();
   }
@@ -177,7 +178,6 @@ abstract class BaseComponent {
 
     if (events) {
       Object.keys(events).forEach((eventName) => {
-        console.log('eventName = ', eventName)
         this._element?.addEventListener(eventName, events[eventName]);
       });
     }
