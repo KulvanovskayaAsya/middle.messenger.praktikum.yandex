@@ -28,7 +28,7 @@ class Input extends BaseComponent {
               value: target.value,
             });
           }
-        }
+        },
       },
     });
   }

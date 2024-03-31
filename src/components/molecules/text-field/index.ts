@@ -23,7 +23,7 @@ class TextField extends BaseComponent {
         additionalClasses: 'text-field__input',
         events: {
           blur: (event: Event) => this.handleInputBlur(event),
-        }
+        },
       }),
       label: new Label({ ...props.label, additionalClasses: 'text-field__label' }),
     });
@@ -38,7 +38,7 @@ class TextField extends BaseComponent {
 
       this.setProps({
         ...this.props,
-        errorMessage: validationResult.message
+        errorMessage: validationResult.message,
       });
 
       if (!validationResult.isValid) {
