@@ -55,46 +55,12 @@ class Form extends BaseComponent {
     }
   }
 
-  handleInputBlur(e: Event) {
-    const target = e.target as HTMLInputElement;
-    console.log(target);
-
-    // if (target && target.name && target.value) {
-    //   const validationResult = validate(target.name, target.value);
-
-    //   console.log(validationResult);
-    //   if (!validationResult.isValid) {
-    //     this.setProps({
-    //       ...this.props,
-    //       additionalClasses: `${this.props.additionalClasses ? `${this.props.additionalClasses} ` : ''}input_invalid`,
-    //     });
-    //   } else {
-    //     let updatedClasses: string = '';
-    //     if (typeof this.props.additionalClasses === 'string') updatedClasses = (this.props.additionalClasses || '').replace('input_invalid', '').trim();
-
-    //     this.setProps({
-    //       ...this.props,
-    //       additionalClasses: updatedClasses,
-    //     });
-    //   }
-    // }
-  }
-
   render(): HTMLElement {
     const formElement = document.createElement('form');
     formElement.classList.add('form');
 
     if (Array.isArray(this.props.textFields)) {
       this.props.textFields.forEach((textField: BaseComponent) => {
-        const input = textField.children.input;
-        
-        input.setProps({
-          ...input.props,
-          events: {
-            blur: (event: Event) => this.handleInputBlur(event)
-          }
-        })
-
         formElement.appendChild(textField.getContent());
       });
     }
