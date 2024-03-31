@@ -21,3 +21,9 @@
 	padding: $spacing__extra-small;
   background-color: $color__surface;
 }
+
+.text-field__error {
+	margin-top: $spacing__extra-small;
+	color: $color__error;
+	font: $font__label_small;
+}
