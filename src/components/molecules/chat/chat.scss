@@ -1,0 +1,58 @@
+@import 'src/assets/variables';
+
+.chat {
+	display: flex;
+	gap: $spacing__medium;
+	padding: $spacing__medium;
+	background-color: $color__surface;
+	border-radius: $border-radius_large;
+}
+
+.chat__avatar {
+	height: 100%;
+	aspect-ratio: 1/1;
+}
+
+.chat__content {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing__extra-small;
+}
+
+.chat__name {
+	font: 800 18px/18px $font-family__secondary;
+	color: $color-text__light_accent;
+	margin-bottom: $spacing__extra-small;
+}
+
+.chat__message {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+  -webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+
+.chat__unreaded-info {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-left: auto;
+}
+
+.chat__unreaded-count {
+	height: 1rem;
+	width: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	vertical-align: middle;
+	background-color: $color__primary;
+	border-radius: $border-radius_circle;
+	color: $color-text__dark_accent;
+	font: 800 10px/10px $font-family__primary;
+}
+
+.chat__unreaded-date {
+	font: 800 12px/1rem $font-family__secondary;
+}

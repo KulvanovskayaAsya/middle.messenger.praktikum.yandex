@@ -1,4 +1,4 @@
-@import "./assets/variables.scss";
+@import "./assets/variables";
 
 html,
 body {
@@ -22,7 +22,43 @@ body {
   justify-content: center;
 }
 
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl, dd {
+  margin: 0;
+  padding: 0;
+}
+
 button {
   font-size: inherit;
   line-height: inherit;
+}
+
+a, 
+button {
+  cursor: pointer;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+  padding: $spacing__large;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing__modal;
+  width: fit-content;
+  padding: $spacing__extra-large;
+  background-color: $color__surface;
+  border-radius: $border-radius_large;
 }

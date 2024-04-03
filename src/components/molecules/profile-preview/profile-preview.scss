@@ -1,0 +1,19 @@
+@import 'src/assets/variables';
+
+.profile-preview {
+	display: flex;
+	gap: $spacing__medium;
+	padding: $spacing__medium;
+	background-color: $color__surface;
+	border-radius: $border-radius_large;
+}
+
+.profile-preview__name {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing__small;
+}
+
+.profile-preview__real-name {
+	text-align: start;
+}
