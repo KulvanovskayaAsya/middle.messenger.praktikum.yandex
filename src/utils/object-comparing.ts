@@ -3,7 +3,7 @@ function isObject(object: any): boolean {
   return object != null && typeof object === 'object';
 }
 
-function isObjectsEqual<T>(object1: T, object2: T): boolean {
+function isEqual<T>(object1: T, object2: T): boolean {
   if (object1 === object2) {
     return true;
   }
@@ -24,7 +24,7 @@ function isObjectsEqual<T>(object1: T, object2: T): boolean {
     const val2 = object2[key];
     const areObjects = isObject(val1) && isObject(val2);
 
-    if ((areObjects && !isObjectsEqual(val1, val2)) || (!areObjects && val1 !== val2)) {
+    if ((areObjects && !isEqual(val1, val2)) || (!areObjects && val1 !== val2)) {
       return false;
     }
   }
@@ -32,4 +32,4 @@ function isObjectsEqual<T>(object1: T, object2: T): boolean {
   return true;
 }
 
-export default isObjectsEqual;
+export default isEqual;

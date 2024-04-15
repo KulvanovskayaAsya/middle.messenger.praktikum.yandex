@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Handlebars from 'handlebars';
 
 import EventBus from './event-bus';
-import isObjectsEqual from './object-comparing';
+import isEqual from './object-comparing';
 
 enum EVENTS {
   INIT = 'init',
@@ -17,20 +17,18 @@ export type Props = {
 };
 type Children = Record<string, BaseComponent>;
 
-// не получается типизировать
-type PropsAndChildren = {};
+type PropsAndChildren = {
+  [key: string]: BaseComponent | unknown;
+};
 
 abstract class BaseComponent {
   static LIFECICLE_EVENTS = EVENTS;
 
   private _id: string;
-
   private _element: HTMLElement | null = null;
-
   private eventBus: EventBus;
 
   public props: Props;
-
   public children: Children;
 
   constructor(propsAndChildren: PropsAndChildren = {}) {
@@ -132,7 +130,7 @@ abstract class BaseComponent {
   }
 
   public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-    return !isObjectsEqual(oldProps, newProps);
+    return !isEqual(oldProps, newProps);
   }
 
   private _render(): void {

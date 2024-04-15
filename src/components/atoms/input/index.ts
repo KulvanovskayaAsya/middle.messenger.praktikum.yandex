@@ -2,7 +2,7 @@ import BaseComponent, { Props } from '../../../utils/base-component';
 import './input.scss';
 import template from './input.hbs?raw';
 
-import isObjectsEqual from '../../../utils/object-comparing';
+import isEqual from '../../../utils/object-comparing';
 
 export interface IInputProps {
   id: string;
@@ -37,7 +37,7 @@ class Input extends BaseComponent {
     const { value: oldValue, ...oldPropsWithoutValue } = oldProps;
     const { value: newValue, ...newPropsWithoutValue } = newProps;
   
-    return !isObjectsEqual(oldPropsWithoutValue, newPropsWithoutValue);
+    return !isEqual(oldPropsWithoutValue, newPropsWithoutValue);
   }
 
   render(): HTMLElement {
