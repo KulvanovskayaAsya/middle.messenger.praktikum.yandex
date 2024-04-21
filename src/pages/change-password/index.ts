@@ -38,8 +38,7 @@ class ChangePasswordPage extends BaseComponent {
       ...props,
       backLink: new Link({
         text: 'Вернуться к профилю',
-        hrefLink: '#',
-        hrefPage: 'profilePage',
+        hrefPage: '/settings',
         additionalClasses: 'link_back',
       }),
       form: new Form({

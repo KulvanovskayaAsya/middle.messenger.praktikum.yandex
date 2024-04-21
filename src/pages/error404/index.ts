@@ -10,8 +10,7 @@ class ErrorPage404 extends BaseComponent {
     super({
       ...props,
       backLink: new Link({
-        hrefLink: '#',
-        hrefPage: 'chatPage',
+        hrefPage: '/messanger',
         text: 'Вернуться к чатам',
         additionalClasses: 'link_back error-page-wrapper__link',
       }),

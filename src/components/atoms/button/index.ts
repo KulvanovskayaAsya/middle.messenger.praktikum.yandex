@@ -2,6 +2,8 @@ import BaseComponent from '../../../utils/base-component';
 import './button.scss';
 import template from './button.hbs?raw';
 
+import Router from '../../../router';
+
 export interface IButtonProps {
   text?: string;
   icon?: string;
@@ -13,7 +15,15 @@ export interface IButtonProps {
 
 class Button extends BaseComponent {
   constructor(props: IButtonProps) {
-    super(props);
+    super({
+      ...props,
+      events: {
+        click: () => {
+          if(props.hrefPage)
+            Router.go(props.hrefPage);
+        },
+      }
+    });
   }
 
   render(): HTMLElement {

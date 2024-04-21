@@ -1,13 +1,14 @@
 import './profile.scss';
 import template from './profile.hbs?raw';
-import BaseComponent from '../../utils/base-component';
-import Form from '../../components/organisms/form';
-import TextField from '../../components/molecules/text-field';
-import Button from '../../components/atoms/button';
-import Link from '../../components/atoms/link';
-import Avatar from '../../components/atoms/avatar';
 
-import { profileForm } from '../../utils/mock-data';
+import BaseComponent from '@utils/base-component';
+import Form from '@components/organisms/form';
+import TextField from '@components/molecules/text-field';
+import Button from '@components/atoms/button';
+import Link from '@components/atoms/link';
+import Avatar from '@components/atoms/avatar';
+
+import { profileForm } from '@utils/mock-data';
 
 interface IProfilePageProps {
 
@@ -27,7 +28,7 @@ const fields = profileForm.map((field) => new TextField({
 
 const submitButton = new Button({
   text: 'Сохранить',
-  hrefPage: 'chatPage',
+  hrefPage: '/messanger',
   additionalClasses: 'button_primary',
 });
 
@@ -37,8 +38,7 @@ class ProfilePage extends BaseComponent {
       ...props,
       backLink: new Link({
         text: 'Вернуться к чатам',
-        hrefLink: '#',
-        hrefPage: 'chatPage',
+        hrefPage: '/messanger',
         additionalClasses: 'link_back',
       }),
       avatar: new Avatar({
@@ -51,9 +51,8 @@ class ProfilePage extends BaseComponent {
         button: submitButton,
       }),
       changePasswordlink: new Link({
-        hrefLink: '#',
         text: 'Изменить пароль',
-        hrefPage: 'changePasswordPage',
+        hrefPage: '/change-password',
         additionalClasses: 'link_forward profile-form__change-password-link',
       }),
     });
