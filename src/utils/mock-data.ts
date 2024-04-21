@@ -9,15 +9,9 @@ export const registrationForm = [
   { id: 'first_name', name: 'first_name', label: 'Имя' },
   { id: 'second_name', name: 'second_name', label: 'Фамилия' },
   { id: 'login', name: 'login', label: 'Логин' },
-  {
-    id: 'email', name: 'email', label: 'Email', type: 'email',
-  },
-  {
-    id: 'password', name: 'password', label: 'Пароль', type: 'password',
-  },
-  {
-    id: 'phone', name: 'phone', label: 'Телефон', type: 'tel',
-  },
+  { id: 'email', name: 'email', label: 'Email', type: 'email' },
+  { id: 'password', name: 'password', label: 'Пароль', type: 'password' },
+  { id: 'phone', name: 'phone', label: 'Телефон', type: 'tel' },
 ];
 
 export const profileForm = [

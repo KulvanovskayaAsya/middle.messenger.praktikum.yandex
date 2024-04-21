@@ -17,8 +17,8 @@ export type Props = {
 };
 type Children = Record<string, BaseComponent>;
 
+// не получилось типизировать
 type PropsAndChildren = {
-  [key: string]: BaseComponent | unknown;
 };
 
 abstract class BaseComponent {
