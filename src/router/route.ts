@@ -1,6 +1,14 @@
 import BaseComponent from '../utils/base-component';
 import isEqual from '../utils/object-comparing';
 
+interface IPage {
+  getContent: () => HTMLElement;
+}
+
+interface IPageConstructor {
+  new(args?: any): IPage;
+}
+
 function render(query: string, block: BaseComponent): HTMLElement | null {
   const root = document.querySelector(query);
   if (root) {
@@ -17,11 +25,11 @@ interface RouteProps {
 
 class Route {
   private _pathname: string;
-  private _componentName: new() => BaseComponent;
+  private _componentName: IPageConstructor;
   private _block: BaseComponent | null;
   private _props: RouteProps;
   
-  constructor(pathname: string, view: new() => BaseComponent, props: RouteProps) {
+  constructor(pathname: string, view: IPageConstructor, props: RouteProps) {
     this._pathname = pathname;
     this._componentName = view;
     this._block = null;
