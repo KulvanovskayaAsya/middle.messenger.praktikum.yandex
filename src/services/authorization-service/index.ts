@@ -16,7 +16,6 @@ class AuthorizationService {
       router.go('/messenger');
       return response;
     } catch (error) {
-      console.log(error)
       alert("Ошибка входа: " + error);
       return null;
     }
@@ -34,6 +33,42 @@ class AuthorizationService {
       return response;
     } catch (error) {
       alert("Ошибка регистрации: " + error);
+      return null;
+    }
+  }
+
+  public async getUser() {
+    try {
+      const response = await this.API.getUser();
+      store.set('profileInfo', {
+        ...store.getState().profileInfo,
+        response,
+      });
+      return response;
+    } catch (error) {
+      console.error("Ошибка получения данных пользователя:", error);
+      alert("Ошибка получения данных пользователя: " + error);
+      return null;
+    }
+  }
+
+  public async logout() {
+    try {
+      const response = await this.API.logout();
+      store.set('profileInfo', {
+        first_name: '',
+        second_name: '',
+        display_name: '',
+        login: '',
+        email: '',
+        phone: ''
+      });
+
+      router.go('/login');
+      return response;
+    } catch (error) {
+      console.error("Ошибка выхода:", error);
+      alert("Ошибка выхода: " + error);
       return null;
     }
   }
