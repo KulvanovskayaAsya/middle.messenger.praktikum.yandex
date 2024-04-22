@@ -31,7 +31,6 @@ const fields = registrationForm.map((field) => new TextField({
 
 const submitButton = new Button({
   text: 'Зарегистрироваться',
-  hrefPage: '/messanger',
   additionalClasses: 'button_primary',
 });
 
@@ -71,11 +70,10 @@ class RegistrationPage extends BaseComponent {
     event.preventDefault();
     const registrationData = this.registrationForm.grabFormValues(this.registrationForm);
 
-    console.log(this.registrationForm)
+    console.log(registrationData)
     
     try {
-      const response = await this.authService.signup(registrationData);
-      console.log(response);
+      await this.authService.register(registrationData);
     } catch (error) {
       console.error(error);
     }

@@ -66,10 +66,12 @@ class HTTPTransport implements IHTTP {
       xhr.withCredentials = withCreditals;
 
       xhr.onload = () => {
+        const responseData = xhr.response;
+
         if (xhr.status >= 200 && xhr.status < 300) {
-          resolve(xhr.response);
+          resolve(responseData);
         } else {
-          reject(xhr.response);
+          reject(responseData);
         }
       };
       

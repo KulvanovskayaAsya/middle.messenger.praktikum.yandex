@@ -1,4 +1,5 @@
 import EventBus from '@/utils/event-bus';
+import initialState from '@/store/initial-state';
 
 export enum StoreEvents {
   Updated = 'updated',
@@ -52,17 +53,11 @@ class Store<State extends Record<string, any>> extends EventBus {
     return this.state;
   }
 
-  public set(path: string, value: unknown): void {
+  public setState(path: string, value: unknown): void {
     console.log(path, value);
     set(this.state, path, value);
     this.emit(StoreEvents.Updated);
   }
-
-  public update(nextState: Partial<State>): void {
-    const previousState = { ...this.state };
-    this.state = { ...this.state, ...nextState };
-    this.emit(StoreEvents.Updated, previousState, nextState);
-  }
 }
 
-export default new Store<Record<string, any>>({});
+export default new Store<Record<string, any>>(initialState);

@@ -67,7 +67,7 @@ const validate = (fieldName: string, value: string): ValidationResult => {
 
   const validator = validators[fieldName];
   if (!validator) {
-    return { isValid: false, message: 'Валидация для данного поля не предусмотрена.' };
+    return { isValid: true, message: '' };
   }
 
   return validator(value);

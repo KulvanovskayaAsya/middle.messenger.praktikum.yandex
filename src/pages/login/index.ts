@@ -71,8 +71,7 @@ class LoginPage extends BaseComponent {
     const loginData = this.loginForm.grabFormValues(this.loginForm);
     
     try {
-      const response = await this.authService.signin(loginData);
-      console.log(response);
+      await this.authService.authorize(loginData);
     } catch (error) {
       console.error(error);
     }

@@ -2,7 +2,7 @@ import BaseAPI from '@/api/base-api';
 
 const API_BASE_PATH = '/auth';
 
-export type RegisterData = {
+export type SignUpData = {
   first_name: string
   second_name: string
   login: string
@@ -11,22 +11,21 @@ export type RegisterData = {
   phone: string
 }
 
-export type LoginData = {
+export type SignInData = {
   login: string
   password: string
 }
-
 
 class AuthorizationAPI extends BaseAPI {
   constructor() {
     super(API_BASE_PATH);
   }
 
-  signin(data: LoginData) {
+  signIn(data: SignInData) {
     return this.http.post('/signin', { data });
   }
 
-  signup(data: RegisterData) {
+  signUp(data: SignUpData) {
     return this.http.post('/signup', { data });
   }
 

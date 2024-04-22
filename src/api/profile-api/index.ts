@@ -21,17 +21,17 @@ class ProfileAPI extends BaseAPI {
     super(API_BASE_PATH);
   }
 
-  updateProfile(data: Record<string, any>) {
+  changeProfile(data: Record<string, any>) {
     return this.http.put(`/profile`, { data });
   }
 
-  updateAvatar(avatar: File) {
+  changeAvatar(avatar: File) {
     const data = new FormData();
     data.append('avatar', avatar);
     return this.http.put(`/profile/avatar`, { data });
   }
 
-  updatePassword(data: PasswordData) {
+  changePassword(data: PasswordData) {
     return this.http.put(`/password`, { data });
   }
 

@@ -1,76 +1,56 @@
 import store from '@/store';
 import router from '@/router';
-import AuthorizationAPI, { LoginData, RegisterData } from '@/api/authorization-api';
+import AuthorizationAPI, { SignInData, SignUpData } from '@/api/authorization-api';
+import initialState, { ProfileInfo } from '@/store/initial-state';
 
 class AuthorizationService {
   API: AuthorizationAPI = new AuthorizationAPI();
 
-  public async signin(data: LoginData) {
+  public async authorize(data: SignInData) {
     try {
-      const response = await this.API.signin(data);
-      store.set('profileInfo', {
-        ...store.getState().profileInfo,
-        response,
-      });
-      
+      await this.API.signIn(data);
+
+      const profileInfo = this._getProfileInfo();
+      this._setStoreProfileInfo(profileInfo);
+
       router.go('/messenger');
-      return response;
     } catch (error) {
-      alert("Ошибка входа: " + error);
-      return null;
+      alert('Ошибка входа: ' + error);
     }
   }
 
-  public async signup(data: RegisterData) {
+  public async register(data: SignUpData) {
     try {
-      const response = await this.API.signup(data);
-      store.set('profileInfo', {
-        ...store.getState().profileInfo,
-        response,
-      });
+      await this.API.signUp(data);
+
+      const profileInfo = this._getProfileInfo();
+      this._setStoreProfileInfo(profileInfo);
 
       router.go('/messenger');
-      return response;
     } catch (error) {
-      alert("Ошибка регистрации: " + error);
-      return null;
-    }
-  }
-
-  public async getUser() {
-    try {
-      const response = await this.API.getUser();
-      store.set('profileInfo', {
-        ...store.getState().profileInfo,
-        response,
-      });
-      return response;
-    } catch (error) {
-      console.error("Ошибка получения данных пользователя:", error);
-      alert("Ошибка получения данных пользователя: " + error);
-      return null;
+      alert('Ошибка регистрации: ' + error);
     }
   }
 
   public async logout() {
     try {
-      const response = await this.API.logout();
-      store.set('profileInfo', {
-        first_name: '',
-        second_name: '',
-        display_name: '',
-        login: '',
-        email: '',
-        phone: ''
-      });
+      await this.API.logout();
 
+      this._setStoreProfileInfo(initialState.profileInfo);
       router.go('/login');
-      return response;
     } catch (error) {
-      console.error("Ошибка выхода:", error);
-      alert("Ошибка выхода: " + error);
-      return null;
+      alert('Ошибка выхода: ' + error);
     }
+  }
+
+  private async _getProfileInfo() {
+    return JSON.parse(await this.API.getUser() as string);
+  }
+
+  private async _setStoreProfileInfo(profileInfo: ProfileInfo) {
+    store.setState('profileInfo', {
+      ...profileInfo
+    });
   }
 }
 
