@@ -9,6 +9,7 @@ type Options = {
   method?: HttpMethods;
   headers?: Record<string, string>;
   data?: Record<string, string>;
+  withCreditals?: boolean;
   timeout?: number;
   retries?: number;
 };
@@ -49,9 +50,7 @@ class HTTPTransport implements IHTTP {
   delete: HTTPMethod = (url, options) => this.request(url, { ...options, method: HttpMethods.DELETE });
 
   request: HTTPMethod = (url, options) => {
-    const {
-      method, headers = {}, data, timeout = 5000,
-    } = options;
+    const { method, headers = {}, data, withCreditals = true, timeout = 1000 } = options;
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -64,19 +63,19 @@ class HTTPTransport implements IHTTP {
       });
 
       xhr.timeout = timeout;
-      xhr.withCredentials = true;
+      xhr.withCredentials = withCreditals;
 
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
-          resolve(xhr);
+          resolve(xhr.response);
         } else {
-          reject(new Error(xhr.response?.reason));
+          reject(xhr.response);
         }
       };
       
-      xhr.onabort = () => reject(new Error("Запрос был прерван"));
-      xhr.onerror = () => reject(new Error("Сетевая ошибка"));
-      xhr.ontimeout = () => reject(new Error("Время запроса истекло"));
+      xhr.onabort = () => reject(new Error('Запрос был прерван'));
+      xhr.onerror = () => reject(new Error('Сетевая ошибка'));
+      xhr.ontimeout = () => reject(new Error('Время запроса истекло'));
 
       if (method === HttpMethods.GET || !data) {
         xhr.send();
