@@ -76,8 +76,19 @@ class ProfilePage extends BaseComponent {
   }
 
   private _fillForm() {
-    const { profileInfo }: ProfileInfo = this.profileService.getProfileInfo();
-    console.log(profileInfo);
+    // const { profileInfo }: ProfileInfo = this.profileService.getProfileInfo();
+    // console.log(profileInfo);
+
+    const profileInfo = {
+      id: 285,
+      first_name: 'Asya',
+      second_name: 'Asyayayay',
+      display_name: 'Tychka',
+      login: 'Asya999Asya',
+      avatar: null,
+      email: 'asya12@mail.ru',
+      phone: '803345378173'
+  }
 
     this.profileForm.setFieldValue('first_name', profileInfo.first_name);
     this.profileForm.setFieldValue('second_name', profileInfo.second_name);

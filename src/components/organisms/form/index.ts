@@ -58,17 +58,19 @@ class Form extends BaseComponent {
   }
 
   public setFieldValue(fieldName: string, value: string): void {
-    console.log(fieldName, value)
     if (isArray(this.props.textFields)) {
-      this.props.textFields.forEach((textField: BaseComponent) => {
-        const input = textField.children[fieldName];
-        if (input instanceof BaseComponent) {
-          input.setProps({
-            ...input.props,
-            value: value
-          });
-        }
+      const textField = this.props.textFields.find((textField: TextField) => {
+        const inputName = textField.children.input.props.name;
+        return inputName === fieldName;
       });
+
+      if (textField instanceof TextField) {
+        const input = textField.children.input;
+        input.setProps({
+          ...input.props,
+          value: value
+        });
+      }
     }
   }
 }
