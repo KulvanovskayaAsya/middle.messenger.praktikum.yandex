@@ -10,15 +10,15 @@ function connect(mapStateToProps: (state: Indexed) => Indexed) {
   return function(Component: typeof BaseComponent) {
     return class extends Component {
       constructor(props: any) {
-        super(props);
-        this.state = mapStateToProps(store.getState());
+        let state = mapStateToProps(store.getState());
+        super({...props, ...state});
 
         store.on(StoreEvents.Updated, () => {
           const newState = mapStateToProps(store.getState());
           
-          if (!isEqual(this.state, newState)) {
+          if (!isEqual(state, newState)) {
             this.setProps({ ...newState });
-            this.state = newState;
+            state = newState;
           }
         });
       }
