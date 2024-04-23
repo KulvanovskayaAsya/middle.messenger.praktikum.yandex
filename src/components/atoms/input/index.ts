@@ -33,12 +33,12 @@ class Input extends BaseComponent {
     });
   }
 
-  public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-    const { value: oldValue, ...oldPropsWithoutValue } = oldProps;
-    const { value: newValue, ...newPropsWithoutValue } = newProps;
+  // public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+  //   const { value: oldValue, ...oldPropsWithoutValue } = oldProps;
+  //   const { value: newValue, ...newPropsWithoutValue } = newProps;
   
-    return !isEqual(oldPropsWithoutValue, newPropsWithoutValue);
-  }
+  //   return !isEqual(oldPropsWithoutValue, newPropsWithoutValue);
+  // }
 
   render(): HTMLElement {
     return this.compile(template, this.props);

@@ -11,6 +11,7 @@ import Avatar from '@components/atoms/avatar';
 import { profileForm } from '@utils/mock-data';
 import ProfileService from '@/services/profile-service';
 import { withProfile } from '@/store/HOC';
+import { ProfileInfo } from '@/store/initial-state';
 
 interface IProfilePageProps {
   backLink: Link;
@@ -74,10 +75,15 @@ class ProfilePage extends BaseComponent {
   }
 
   private _fillForm() {
-    const profileInfo = this.profileService.getProfileInfo();
+    const profileInfo: ProfileInfo = this.profileService.getProfileInfo();
     console.log(profileInfo);
 
-    this.profileForm.setFieldValue('first_name', 'asya');
+    this.profileForm.setFieldValue('first_name', profileInfo.first_name);
+    this.profileForm.setFieldValue('second_name', profileInfo.second_name);
+    this.profileForm.setFieldValue('display_name', profileInfo.display_name);
+    this.profileForm.setFieldValue('login', profileInfo.login);
+    this.profileForm.setFieldValue('email', profileInfo.email);
+    this.profileForm.setFieldValue('phone', profileInfo.phone);
   }
 
   render() {

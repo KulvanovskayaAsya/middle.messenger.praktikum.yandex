@@ -41,6 +41,7 @@ const profilePreview = new ProfilePreview({
     text: 'Кульвановская Ася',
   },
   nickname: '@tychka',
+  hrefPage: '/settings'
 });
 
 class ChatPage extends BaseComponent {

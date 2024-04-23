@@ -8,6 +8,7 @@ class AuthorizationService {
 
   public async authorize(data: SignInData) {
     try {
+      await this.API.logout();
       await this.API.signIn(data);
 
       const profileInfo = await this._getProfileInfo();
