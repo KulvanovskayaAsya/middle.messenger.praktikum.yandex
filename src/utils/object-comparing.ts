@@ -1,30 +1,34 @@
-// сравнение с null и проверка типа доступны для любых значений, при этом предугадать типы невозможно
-function isObject(object: any): boolean {
-  return object != null && typeof object === 'object';
-}
+import { isArray, isPlainObject } from '@utils/type-check';
 
-function isEqual<T>(object1: T, object2: T): boolean {
-  if (object1 === object2) {
+function isEqual<T>(lhs: T, rhs: T): boolean {
+  if (lhs === rhs) {
     return true;
   }
 
-  if (typeof object1 !== 'object' || object1 === null || typeof object2 !== 'object' || object2 === null) {
+  if (!isPlainObject(lhs) || !isPlainObject(rhs)) {
     return false;
   }
 
-  const keys1 = Object.keys(object1) as (keyof T)[];
-  const keys2 = Object.keys(object2) as (keyof T)[];
+  const keys1 = Object.keys(lhs) as (keyof T)[];
+  const keys2 = Object.keys(rhs) as (keyof T)[];
 
   if (keys1.length !== keys2.length) {
     return false;
   }
 
   for (const key of keys1) {
-    const val1 = object1[key];
-    const val2 = object2[key];
-    const areObjects = isObject(val1) && isObject(val2);
+    const value1 = lhs[key];
+    const value2 = rhs[key];
 
-    if ((areObjects && !isEqual(val1, val2)) || (!areObjects && val1 !== val2)) {
+    if (isArray(value1) && isArray(value2)) {
+      if (!isEqual(value1, value2)) {
+        return false;
+      }
+    } else if (isPlainObject(value1) && isPlainObject(value2)) {
+      if (!isEqual(value1, value2)) {
+        return false;
+      }
+    } else if (value1 !== value2) {
       return false;
     }
   }

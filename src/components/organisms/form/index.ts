@@ -5,6 +5,7 @@ import TextField from '@components/molecules/text-field';
 import Button from '@components/atoms/button';
 
 import validate from '@utils/validation';
+import { isArray } from '@/utils/type-check';
 
 export interface IFormProps {
   textFields: TextField[];
@@ -23,7 +24,7 @@ class Form extends BaseComponent {
 
     const formBtn = this.compile(`{{{button}}}`, this.props);
 
-    if (Array.isArray(this.props.textFields)) {
+    if (isArray(this.props.textFields)) {
       this.props.textFields.forEach((textField: BaseComponent) => {
         form.appendChild(textField.getContent());
       });
@@ -54,6 +55,18 @@ class Form extends BaseComponent {
     }
 
     return formData;
+  }
+
+  public setFieldValue(fieldName: string, value: string): void {    
+    if (isArray(this.props.textFields)) {
+      this.props.textFields.forEach((textField: BaseComponent) => {
+        const input = textField.children.input;
+        input.setProps({
+          ...input.props,
+          value: value
+        });
+      });
+    }
   }
 }
 

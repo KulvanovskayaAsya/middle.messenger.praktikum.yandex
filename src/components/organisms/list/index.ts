@@ -1,4 +1,5 @@
-import BaseComponent from '../../../utils/base-component';
+import { isArray } from '@utils/type-check';
+import BaseComponent from '@utils/base-component';
 import './list.scss';
 
 export interface IListProps {
@@ -14,7 +15,7 @@ class List extends BaseComponent {
     const elementsList = document.createElement('section');
     elementsList.classList.add('list');
 
-    if (Array.isArray(this.props.list)) {
+    if (isArray(this.props.list)) {
       this.props.list.forEach((item: BaseComponent) => {
         elementsList.appendChild(item.getContent());
       });
