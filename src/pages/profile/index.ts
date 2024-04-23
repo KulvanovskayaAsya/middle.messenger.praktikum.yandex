@@ -1,7 +1,7 @@
 import './profile.scss';
 import template from './profile.hbs?raw';
 
-import BaseComponent from '@utils/base-component';
+import BaseComponent, { Props } from '@utils/base-component';
 import Form from '@components/organisms/form';
 import TextField from '@components/molecules/text-field';
 import Button from '@components/atoms/button';
@@ -12,6 +12,7 @@ import { profileForm } from '@utils/mock-data';
 import ProfileService from '@/services/profile-service';
 import { withProfile } from '@/store/HOC';
 import { ProfileInfo } from '@/store/initial-state';
+import isEqual from '@/utils/object-comparing';
 
 interface IProfilePageProps {
   backLink: Link;
@@ -75,7 +76,7 @@ class ProfilePage extends BaseComponent {
   }
 
   private _fillForm() {
-    const profileInfo: ProfileInfo = this.profileService.getProfileInfo();
+    const { profileInfo }: ProfileInfo = this.profileService.getProfileInfo();
     console.log(profileInfo);
 
     this.profileForm.setFieldValue('first_name', profileInfo.first_name);

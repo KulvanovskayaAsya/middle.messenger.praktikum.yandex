@@ -57,14 +57,17 @@ class Form extends BaseComponent {
     return formData;
   }
 
-  public setFieldValue(fieldName: string, value: string): void {    
+  public setFieldValue(fieldName: string, value: string): void {
+    console.log(fieldName, value)
     if (isArray(this.props.textFields)) {
       this.props.textFields.forEach((textField: BaseComponent) => {
-        const input = textField.children.input;
-        input.setProps({
-          ...input.props,
-          value: value
-        });
+        const input = textField.children[fieldName];
+        if (input instanceof BaseComponent) {
+          input.setProps({
+            ...input.props,
+            value: value
+          });
+        }
       });
     }
   }
