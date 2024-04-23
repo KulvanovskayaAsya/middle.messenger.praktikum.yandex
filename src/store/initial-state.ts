@@ -9,12 +9,23 @@ export type ProfileInfo = {
   email: string;
 } | {};
 
+export type ChatInfo = {
+  id: 3368,
+  title: 'test chat 2',
+  avatar: null,
+  created_by: 285,
+  unread_count: 0,
+  last_message: null
+} | {};
+
 export type StoreState = {
   profileInfo: ProfileInfo;
+  chatsList: ChatInfo[];
 }
 
 const initialState: StoreState = {
-  profileInfo: {}
+  profileInfo: {},
+  chatsList: []
 }
 
 export default initialState;
