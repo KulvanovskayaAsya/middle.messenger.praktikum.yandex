@@ -10,7 +10,7 @@ class AuthorizationService {
     try {
       await this.API.signIn(data);
 
-      const profileInfo = this._getProfileInfo();
+      const profileInfo = await this._getProfileInfo();
       this._setStoreProfileInfo(profileInfo);
 
       router.go('/messenger');
@@ -23,7 +23,7 @@ class AuthorizationService {
     try {
       await this.API.signUp(data);
 
-      const profileInfo = this._getProfileInfo();
+      const profileInfo = await this._getProfileInfo();
       this._setStoreProfileInfo(profileInfo);
 
       router.go('/messenger');
