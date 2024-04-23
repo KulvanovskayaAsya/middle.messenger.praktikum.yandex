@@ -23,22 +23,16 @@ class Input extends BaseComponent {
           const target = event.target as HTMLInputElement;
           
           if (target) {
-            this.setProps({
-              ...this.props,
-              value: target.value,
-            });
+            this.setAttribute('value', target.value);
           }
         },
       },
     });
   }
 
-  // public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-  //   const { value: oldValue, ...oldPropsWithoutValue } = oldProps;
-  //   const { value: newValue, ...newPropsWithoutValue } = newProps;
-  
-  //   return !isEqual(oldPropsWithoutValue, newPropsWithoutValue);
-  // }
+  public setAttribute(attr: string, value: string) {
+    this._element?.setAttribute(attr, value);
+  }
 
   render(): HTMLElement {
     return this.compile(template, this.props);
