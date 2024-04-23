@@ -10,6 +10,8 @@ import ProfilePreview from '../../components/molecules/profile-preview';
 import TextField from '../../components/molecules/text-field';
 
 import { chatsList, messagesList } from '../../utils/mock-data';
+import ChatService from '@/services/chat-service';
+import { ChatInfo } from '@/store/initial-state';
 
 interface IChatPageProps {
   profilePreview: ProfilePreview;
@@ -34,7 +36,7 @@ const messages = messagesList.map((message) => new Message({
 
 const profilePreview = new ProfilePreview({
   avatar: {
-    src: 'images/avatar.png',
+    src: 'images/no-avatar.png',
     alt: 'Аватар пользователя Кульвановской Аси',
   },
   profileName: {
@@ -45,6 +47,8 @@ const profilePreview = new ProfilePreview({
 });
 
 class ChatPage extends BaseComponent {
+  chatService: ChatService = new ChatService();
+
   constructor(props: IChatPageProps) {
     super({
       ...props,
@@ -73,6 +77,13 @@ class ChatPage extends BaseComponent {
         additionalClasses: 'messenger__message-input',
       }),
     });
+
+    this._fillChats();
+  }
+
+  private async _fillChats() {
+    const chatsList: ChatInfo[] = await this.chatService.getChatsList();
+    console.log(chatsList)
   }
 
   render() {
