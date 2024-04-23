@@ -1,7 +1,7 @@
 import './profile.scss';
 import template from './profile.hbs?raw';
 
-import BaseComponent, { Props } from '@utils/base-component';
+import BaseComponent from '@utils/base-component';
 import Form from '@components/organisms/form';
 import TextField from '@components/molecules/text-field';
 import Button from '@components/atoms/button';
@@ -12,7 +12,6 @@ import { profileForm } from '@utils/mock-data';
 import ProfileService from '@/services/profile-service';
 import { withProfile } from '@/store/HOC';
 import { ProfileInfo } from '@/store/initial-state';
-import isEqual from '@/utils/object-comparing';
 
 interface IProfilePageProps {
   backLink: Link;
@@ -59,7 +58,7 @@ class ProfilePage extends BaseComponent {
         additionalClasses: 'link_back',
       }),
       avatar: new Avatar({
-        src: 'images/avatar.png',
+        src: 'images/no-avatar.png',
         alt: 'Аватар вашего профиля',
         additionalClasses: 'avatar_large',
       }),
@@ -72,23 +71,13 @@ class ProfilePage extends BaseComponent {
     });
 
     this.profileForm = form;
-    this._fillForm();
+    this._fillProfile();
   }
 
-  private _fillForm() {
-    // const { profileInfo }: ProfileInfo = this.profileService.getProfileInfo();
-    // console.log(profileInfo);
-
-    const profileInfo = {
-      id: 285,
-      first_name: 'Asya',
-      second_name: 'Asyayayay',
-      display_name: 'Tychka',
-      login: 'Asya999Asya',
-      avatar: null,
-      email: 'asya12@mail.ru',
-      phone: '803345378173'
-  }
+  private _fillProfile() {
+    const { profileInfo }: ProfileInfo = this.profileService.getProfileInfo();
+  
+    // здесь надо проверить, есть ли значение в profileInfo.avatar и, если есть, передать в дочерний компонент Avatar src=profileInfo.avatar
 
     this.profileForm.setFieldValue('first_name', profileInfo.first_name);
     this.profileForm.setFieldValue('second_name', profileInfo.second_name);
@@ -105,12 +94,9 @@ class ProfilePage extends BaseComponent {
   async handleFormSubmit(event: Event) {
     event.preventDefault();
     const profileData = this.profileForm.grabFormValues(this.profileForm);
+    console.log(profileData)
     
-    try {
-      await this.profileService.editProfile(profileData);
-    } catch (error) {
-      console.error(error);
-    }
+    await this.profileService.changeProfile(profileData);
   }
 }
 
