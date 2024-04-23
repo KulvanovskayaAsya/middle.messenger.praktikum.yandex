@@ -9,7 +9,7 @@ import PageTitle from '@components/atoms/page-title';
 
 import { registrationForm } from '@utils/mock-data';
 import AuthorizationService from '@services/authorization-service';
-import connect from '@utils/HOC';
+import connect from '@/store/HOC';
 
 interface IRegistrationPageProps {
   modalTitle: PageTitle;

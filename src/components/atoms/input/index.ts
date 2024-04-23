@@ -1,8 +1,8 @@
-import BaseComponent, { Props } from '../../../utils/base-component';
+import BaseComponent, { Props } from '@utils/base-component';
 import './input.scss';
 import template from './input.hbs?raw';
 
-import isEqual from '../../../utils/object-comparing';
+import isEqual from '@utils/object-comparing';
 
 export interface IInputProps {
   id: string;
