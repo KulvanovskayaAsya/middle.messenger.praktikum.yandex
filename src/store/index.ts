@@ -1,6 +1,8 @@
 import EventBus from '@/utils/event-bus';
 import initialState from '@/store/initial-state';
 
+import { isPlainObject } from '@/utils/type-check';
+
 export enum StoreEvents {
   Updated = 'updated',
 }
@@ -8,10 +10,6 @@ export enum StoreEvents {
 type Indexed<T = unknown> = {
   [key: string]: T;
 };
-
-function isObject(item: unknown): boolean {
-  return typeof item === 'object' && !Array.isArray(item) && item !== null;
-}
 
 function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
   if(typeof path !== 'string') {
@@ -29,7 +27,7 @@ function set(object: Indexed | unknown, path: string, value: unknown): Indexed |
   for (let i = 0; i < keysCount; i++) {
     const key = keysArray[i];
     
-    if (!isObject(current[key])) {
+    if (!isPlainObject(current[key])) {
       current[key] = {};
     }
     
@@ -54,7 +52,6 @@ class Store<State extends Record<string, any>> extends EventBus {
   }
 
   public setState(path: string, value: unknown): void {
-    console.log(path, value);
     set(this.state, path, value);
     this.emit(StoreEvents.Updated);
   }
