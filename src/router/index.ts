@@ -1,5 +1,5 @@
 import Route from '@/router/route';
-// import store from '@/store';
+import store from '@/store';
 
 interface IPage {
   getContent: () => HTMLElement;
@@ -19,10 +19,10 @@ class Router {
     this._rootQuery = rootQuery;
   }
 
-  // private _isAuthenticated() {
-  //   const profileInfo = store.getState().profileInfo;
-  //   return profileInfo && Object.keys(profileInfo).length > 0;
-  // }
+  private _isAuthenticated() {
+    const profileInfo = store.getState().profileInfo;
+    return profileInfo && Object.keys(profileInfo).length > 0;
+  }
 
   public use(pathname: string, block: IPageConstructor): Router {
     const route = new Route(pathname, block, {rootQuery: this._rootQuery});
@@ -40,18 +40,16 @@ class Router {
 
   private _onRoute(pathname: string): void {
     const route = this.getRoute(pathname);
-
-    console.log(pathname, route)
     
     if (!route) {
       this.go('/404');
       return;
     }
 
-    // if (pathname !== '/' && !this._isAuthenticated()) {
-    //   this.go('/');
-    //   return;
-    // }
+    if (pathname !== '/' && !this._isAuthenticated()) {
+      this.go('/');
+      return;
+    }
 
     if (this._currentRoute && this._currentRoute !== route) {
       this._currentRoute.leave();

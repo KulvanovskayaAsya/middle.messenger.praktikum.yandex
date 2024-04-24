@@ -70,11 +70,7 @@ class LoginPage extends BaseComponent {
     event.preventDefault();
     const loginData = this.loginForm.grabFormValues(this.loginForm);
     
-    try {
-      await this.authService.authorize(loginData);
-    } catch (error) {
-      console.error(error);
-    }
+    await this.authService.authorize(loginData);
   }
 }
 

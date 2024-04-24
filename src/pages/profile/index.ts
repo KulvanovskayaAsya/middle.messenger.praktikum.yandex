@@ -75,7 +75,7 @@ class ProfilePage extends BaseComponent {
   }
 
   private _fillProfile() {
-    const { profileInfo }: ProfileInfo = this.profileService.getProfileInfo();
+    const profileInfo: ProfileInfo = this.profileService.getProfileInfo();
   
     // здесь надо проверить, есть ли значение в profileInfo.avatar и, если есть, передать в дочерний компонент Avatar src=profileInfo.avatar
 

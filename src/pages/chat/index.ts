@@ -23,6 +23,8 @@ interface IChatPageProps {
   sendButtn: Button;
 }
 
+const RESOURCES_BASE_URL = 'https://ya-praktikum.tech/api/v2/resources';
+
 const chats = chatsList.map((chat) => new Chat({
   avatar: chat.avatar,
   name: chat.name,
@@ -37,25 +39,28 @@ const messages = messagesList.map((message) => new Message({
 }));
 
 const profileService = new ProfileService();
+const chatService = new ChatService();
 
 class ChatPage extends BaseComponent {
-  chatService: ChatService = new ChatService();
-  profileService: ProfileService = new ProfileService();
-
-  chatsList: any[] = [];
-
   constructor(props: IChatPageProps) {
+    const profileInfo = profileService.getProfileInfo();
+    const chatsList = chatService.getChatsList();
+
+    console.log(chatsList)
+
+    const profileAvatar = profileInfo.avatar ? `${RESOURCES_BASE_URL}${profileInfo.avatar}` : 'images/no-avatar.png';
+
     super({
       ...props,
       profilePreview: new ProfilePreview({
         avatar: {
-          src: 'images/no-avatar.png',
-          alt: 'Аватар пользователя Кульвановской Аси',
+          src: profileAvatar,
+          alt: `Аватар пользователя ${profileInfo.display_name}`,
         },
         profileName: {
-          text: 'Кульвановская Ася',
+          text: `${profileInfo.first_name} ${profileInfo.second_name}`,
         },
-        nickname: profileService.getProfileInfo().profileInfo.display_name,
+        nickname: profileInfo.display_name,
         hrefPage: '/settings'
       }),
       searchBox: new TextField({
@@ -68,7 +73,7 @@ class ChatPage extends BaseComponent {
           label: 'Искать...',
         },
       }),
-      chatsList: new List({ list: [] }), //new List({ list: chats })
+      chatsList: new List({ list: chatsList }), //new List({ list: chats })
       messagesList: new List({ list: messages }),
       messageInput: new TextField({
         input: {
@@ -81,19 +86,6 @@ class ChatPage extends BaseComponent {
         },
         additionalClasses: 'messenger__message-input',
       }),
-    });
-
-    this._fillChats();
-  }
-
-  private async _fillChats() {
-    const chatsList: ChatInfo[] = await this.chatService.getChatsList();
-    this.chatsList = chatsList;
-
-    console.log(this.chatsList)
-
-    this.setProps({ 
-      messagesList: new List({ list: this.chatsList }) 
     });
   }
 

@@ -6,7 +6,7 @@ class ProfileService {
   API: ProfileAPI = new ProfileAPI();
 
   getProfileInfo(): ProfileInfo {
-    return store.getState();
+    return store.getState().profileInfo;
   }
 
   public async changeProfile(data: ProfileInfo) {

@@ -70,11 +70,7 @@ class RegistrationPage extends BaseComponent {
     event.preventDefault();
     const registrationData = this.registrationForm.grabFormValues(this.registrationForm);
     
-    try {
-      await this.authService.register(registrationData);
-    } catch (error) {
-      console.error(error);
-    }
+    await this.authService.register(registrationData);
   }
 }
 

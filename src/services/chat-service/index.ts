@@ -9,7 +9,9 @@ class ChatService {
     try {
       const profileChats = JSON.parse(await this.API.getChats() as string);
 
+      console.log(profileChats)
       this._setStoreChatsList(profileChats);
+      return await profileChats;
     } catch (error) {
       alert('Ошибка получения чатов: ' + error);
     }

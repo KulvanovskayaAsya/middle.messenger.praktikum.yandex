@@ -7,7 +7,7 @@ export type ProfileInfo = {
   login: string;
   avatar?: string;
   email: string;
-} | {};
+};
 
 export type ChatInfo = {
   id: 3368,
@@ -16,11 +16,11 @@ export type ChatInfo = {
   created_by: 285,
   unread_count: 0,
   last_message: null
-} | {};
+};
 
 export type StoreState = {
-  profileInfo: ProfileInfo;
-  chatsList: ChatInfo[];
+  profileInfo: ProfileInfo | {};
+  chatsList: ChatInfo[] | [];
 }
 
 const initialState: StoreState = {
