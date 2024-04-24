@@ -54,7 +54,7 @@ class ProfilePage extends BaseComponent {
       ...props,
       backLink: new Link({
         text: 'Вернуться к чатам',
-        hrefPage: '/messanger',
+        hrefPage: '/messenger',
         additionalClasses: 'link_back',
       }),
       avatar: new Avatar({

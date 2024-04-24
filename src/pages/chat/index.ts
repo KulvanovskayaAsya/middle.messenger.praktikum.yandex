@@ -2,16 +2,18 @@ import BaseComponent from '../../utils/base-component';
 import template from './chat.hbs?raw';
 import './chat.scss';
 
-import Message from '../../components/atoms/message';
-import Button from '../../components/atoms/button';
-import Chat from '../../components/molecules/chat';
-import List from '../../components/organisms/list';
-import ProfilePreview from '../../components/molecules/profile-preview';
-import TextField from '../../components/molecules/text-field';
+import Message from '@components/atoms/message';
+import Button from '@components/atoms/button';
+import Chat from '@components/molecules/chat';
+import List from '@components/organisms/list';
+import ProfilePreview from '@components/molecules/profile-preview';
+import TextField from '@components/molecules/text-field';
 
-import { chatsList, messagesList } from '../../utils/mock-data';
+import { chatsList, messagesList, profileForm } from '@utils/mock-data';
 import ChatService from '@/services/chat-service';
 import { ChatInfo } from '@/store/initial-state';
+import ProfileService from '@/services/profile-service';
+import { withProfile } from '@/store/HOC';
 
 interface IChatPageProps {
   profilePreview: ProfilePreview;
@@ -34,25 +36,28 @@ const messages = messagesList.map((message) => new Message({
   date: message.date,
 }));
 
-const profilePreview = new ProfilePreview({
-  avatar: {
-    src: 'images/no-avatar.png',
-    alt: 'Аватар пользователя Кульвановской Аси',
-  },
-  profileName: {
-    text: 'Кульвановская Ася',
-  },
-  nickname: '@tychka',
-  hrefPage: '/settings'
-});
+const profileService = new ProfileService();
 
 class ChatPage extends BaseComponent {
   chatService: ChatService = new ChatService();
+  profileService: ProfileService = new ProfileService();
+
+  chatsList: any[] = [];
 
   constructor(props: IChatPageProps) {
     super({
       ...props,
-      profilePreview,
+      profilePreview: new ProfilePreview({
+        avatar: {
+          src: 'images/no-avatar.png',
+          alt: 'Аватар пользователя Кульвановской Аси',
+        },
+        profileName: {
+          text: 'Кульвановская Ася',
+        },
+        nickname: profileService.getProfileInfo().profileInfo.display_name,
+        hrefPage: '/settings'
+      }),
       searchBox: new TextField({
         input: {
           id: 'searchBox',
@@ -63,7 +68,7 @@ class ChatPage extends BaseComponent {
           label: 'Искать...',
         },
       }),
-      chatsList: new List({ list: chats }),
+      chatsList: new List({ list: [] }), //new List({ list: chats })
       messagesList: new List({ list: messages }),
       messageInput: new TextField({
         input: {
@@ -83,7 +88,13 @@ class ChatPage extends BaseComponent {
 
   private async _fillChats() {
     const chatsList: ChatInfo[] = await this.chatService.getChatsList();
-    console.log(chatsList)
+    this.chatsList = chatsList;
+
+    console.log(this.chatsList)
+
+    this.setProps({ 
+      messagesList: new List({ list: this.chatsList }) 
+    });
   }
 
   render() {
@@ -91,4 +102,4 @@ class ChatPage extends BaseComponent {
   }
 }
 
-export default ChatPage;
+export default withProfile(ChatPage);

@@ -12,6 +12,7 @@ class List extends BaseComponent {
   }
 
   render(): HTMLElement {
+    console.log(this.props)
     const elementsList = document.createElement('section');
     elementsList.classList.add('list');
 

@@ -6,6 +6,7 @@ class ProfileService {
   API: ProfileAPI = new ProfileAPI();
 
   getProfileInfo(): ProfileInfo {
+    console.log(store.getState())
     return store.getState();
   }
 

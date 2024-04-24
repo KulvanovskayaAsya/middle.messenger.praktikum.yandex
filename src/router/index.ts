@@ -48,6 +48,8 @@ class Router {
 
   private _onRoute(pathname: string): void {
     const route = this.getRoute(pathname);
+
+    console.log(pathname, route)
     
     if (!route) {
       this.go('/404');

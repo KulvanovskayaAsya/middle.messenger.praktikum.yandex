@@ -10,7 +10,7 @@ class ErrorPage500 extends BaseComponent {
     super({
       ...props,
       backLink: new Link({
-        hrefPage: '/messanger',
+        hrefPage: '/messenger',
         text: 'Вернуться к чатам',
         additionalClasses: 'link_back error-page-wrapper__link',
       }),
