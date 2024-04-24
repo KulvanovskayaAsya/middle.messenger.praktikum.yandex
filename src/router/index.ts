@@ -1,30 +1,22 @@
 import Route from '@/router/route';
-import store from '@/store';
+// import store from '@/store';
 
 interface IPage {
   getContent: () => HTMLElement;
 }
 
 interface IPageConstructor {
-  new(args?: any): IPage;
+  new(args?: unknown): IPage;
 }
 
 class Router {
-  private static _instance: Router;
-
   private _routes: Route[] = [];
   private _history: History = window.history;
   private _currentRoute: Route | null = null;
   private _rootQuery: string = '';
 
-  constructor(rootQuery: string) {
-    if (Router._instance) {
-      return Router._instance;
-    }
-    
+  constructor(rootQuery: string) {   
     this._rootQuery = rootQuery;
-
-    Router._instance = this;
   }
 
   // private _isAuthenticated() {
