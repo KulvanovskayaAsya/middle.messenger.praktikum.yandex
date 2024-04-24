@@ -46,7 +46,6 @@ class TextField extends BaseComponent {
           ...childInput.props,
           additionalClasses: `${childInput.props.additionalClasses ? `${childInput.props.additionalClasses} ` : ''}input_invalid`,
         });
-        console.log(validationResult.message);
       } else {
         let updatedClasses: string = '';
         if (typeof childInput.props.additionalClasses === 'string') updatedClasses = (childInput.props.additionalClasses || '').replace('input_invalid', '').trim();

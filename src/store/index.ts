@@ -52,7 +52,6 @@ class Store<State extends Record<string, any>> extends EventBus {
   }
 
   public setState(path: string, value: unknown): void {
-    console.log(path, value)
     set(this.state, path, value);
     this.emit(StoreEvents.Updated);
   }

@@ -94,7 +94,6 @@ class ProfilePage extends BaseComponent {
   async handleFormSubmit(event: Event) {
     event.preventDefault();
     const profileData = this.profileForm.grabFormValues(this.profileForm);
-    console.log(profileData)
     
     await this.profileService.changeProfile(profileData);
   }

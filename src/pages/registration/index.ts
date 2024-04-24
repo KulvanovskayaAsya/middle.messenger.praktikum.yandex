@@ -69,8 +69,6 @@ class RegistrationPage extends BaseComponent {
   async handleFormSubmit (event: Event) {
     event.preventDefault();
     const registrationData = this.registrationForm.grabFormValues(this.registrationForm);
-
-    console.log(registrationData)
     
     try {
       await this.authService.register(registrationData);
