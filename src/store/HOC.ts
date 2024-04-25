@@ -27,6 +27,9 @@ function connect(mapStateToProps: (state: Indexed) => Indexed) {
 }
 
 export const withProfile = connect(state => ({ profile: state.profileInfo }));
-export const withChats = connect(state => ({ chats: state.chatsList }))
+export const withChats = connect(state => ({ 
+  chats: state.chatsList,
+  profile: state.profileInfo
+}));
 
 export default connect;

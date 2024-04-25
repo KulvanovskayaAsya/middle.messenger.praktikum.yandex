@@ -1,4 +1,4 @@
-import BaseComponent from '../../../utils/base-component';
+import BaseComponent from '@utils/base-component';
 import './avatar.scss';
 import template from './avatar.hbs?raw';
 

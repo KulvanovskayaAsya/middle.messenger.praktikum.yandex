@@ -8,6 +8,7 @@ export interface IListProps {
 
 class List extends BaseComponent {
   constructor(props: IListProps) {
+    console.log(props);
     super(props);
   }
 

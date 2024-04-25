@@ -14,37 +14,34 @@ import { withProfile } from '@/store/HOC';
 import { ProfileInfo } from '@/store/initial-state';
 
 interface IProfilePageProps {
-  backLink: Link;
-  avatar: Avatar;
-  form: Form;
-  changePasswordLink: Link;
+  profile: ProfileInfo
 }
-
-const fields = profileForm.map((field) => new TextField({
-  input: {
-    id: field.id,
-    name: field.name,
-    inputType: field.type,
-  },
-  label: {
-    forInputId: field.id,
-    label: field.label,
-  },
-}));
-
-const submitButton = new Button({
-  text: 'Сохранить',
-  additionalClasses: 'button_primary',
-});
 
 class ProfilePage extends BaseComponent {
   profileForm: Form;
   profileService: ProfileService = new ProfileService();
 
-  constructor(props: IProfilePageProps) {
+  constructor({ profile, ...props}: IProfilePageProps) {
+    console.log(profile)
+    const fields = profileForm.map((field) => new TextField({
+      input: {
+        id: field.id,
+        name: field.name,
+        inputType: field.type || 'text',
+        value: profile[field.name]
+      },
+      label: {
+        forInputId: field.id,
+        label: field.label,
+      },
+    }));
+
     const form = new Form({
       textFields: fields,
-      button: submitButton,
+      button: new Button({
+        text: 'Сохранить',
+        additionalClasses: 'button_primary',
+      }),
       events: {
         submit: (event: Event) => this.handleFormSubmit(event),
       }
@@ -71,20 +68,6 @@ class ProfilePage extends BaseComponent {
     });
 
     this.profileForm = form;
-    this._fillProfile();
-  }
-
-  private _fillProfile() {
-    const profileInfo: ProfileInfo = this.profileService.getProfileInfo();
-  
-    // здесь надо проверить, есть ли значение в profileInfo.avatar и, если есть, передать в дочерний компонент Avatar src=profileInfo.avatar
-
-    this.profileForm.setFieldValue('first_name', profileInfo.first_name);
-    this.profileForm.setFieldValue('second_name', profileInfo.second_name);
-    this.profileForm.setFieldValue('display_name', profileInfo.display_name);
-    this.profileForm.setFieldValue('login', profileInfo.login);
-    this.profileForm.setFieldValue('email', profileInfo.email);
-    this.profileForm.setFieldValue('phone', profileInfo.phone);
   }
 
   render() {

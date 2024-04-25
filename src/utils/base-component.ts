@@ -130,6 +130,8 @@ abstract class BaseComponent {
   }
 
   public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+    // console.log(isEqual(oldProps, newProps))
+    // console.log(oldProps, newProps)
     return !isEqual(oldProps, newProps);
   }
 

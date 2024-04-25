@@ -5,13 +5,15 @@ import { ChatInfo } from '@/store/initial-state';
 class ChatService {
   API: ChatAPI = new ChatAPI();
 
+  constructor() {
+    this.getChatsList();
+  }
+
   public async getChatsList() {
     try {
       const profileChats = JSON.parse(await this.API.getChats() as string);
 
-      console.log(profileChats)
       this._setStoreChatsList(profileChats);
-      return await profileChats;
     } catch (error) {
       alert('Ошибка получения чатов: ' + error);
     }
@@ -22,7 +24,6 @@ class ChatService {
       ...chatInfo
     });
   }
-
   // public async createChat(data: { title: string }) {
   //   try {
   //     const response = await this.API.createChat(data);

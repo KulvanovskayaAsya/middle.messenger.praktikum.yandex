@@ -3,64 +3,48 @@ import template from './chat.hbs?raw';
 import './chat.scss';
 
 import Message from '@components/atoms/message';
-import Button from '@components/atoms/button';
 import Chat from '@components/molecules/chat';
 import List from '@components/organisms/list';
 import ProfilePreview from '@components/molecules/profile-preview';
 import TextField from '@components/molecules/text-field';
 
-import { chatsList, messagesList, profileForm } from '@utils/mock-data';
+import { messagesList } from '@utils/mock-data';
 import ChatService from '@/services/chat-service';
-import { ChatInfo } from '@/store/initial-state';
+import { ChatInfo, ProfileInfo } from '@/store/initial-state';
 import ProfileService from '@/services/profile-service';
-import { withProfile } from '@/store/HOC';
+import { withChats } from '@/store/HOC';
 
 interface IChatPageProps {
-  profilePreview: ProfilePreview;
-  searchBox: TextField;
-  chatsList?: List;
-  messagesList?: List;
-  sendButtn: Button;
+  profile: ProfileInfo,
+  chats: ChatInfo[]
 }
 
 const RESOURCES_BASE_URL = 'https://ya-praktikum.tech/api/v2/resources';
-
-const chats = chatsList.map((chat) => new Chat({
-  avatar: chat.avatar,
-  name: chat.name,
-  lastMessage: chat.lastMessage,
-  unreadedCount: chat.unreadedCount,
-  lastMessageDate: chat.date,
-}));
 
 const messages = messagesList.map((message) => new Message({
   text: message.text,
   date: message.date,
 }));
 
-const profileService = new ProfileService();
-const chatService = new ChatService();
-
 class ChatPage extends BaseComponent {
-  constructor(props: IChatPageProps) {
-    const profileInfo = profileService.getProfileInfo();
-    const chatsList = chatService.getChatsList();
+  profileService: ProfileService = new ProfileService();
+  chatService: ChatService = new ChatService();
 
-    console.log(chatsList)
-
-    const profileAvatar = profileInfo.avatar ? `${RESOURCES_BASE_URL}${profileInfo.avatar}` : 'images/no-avatar.png';
+  constructor({ profile, chats, ...props }: IChatPageProps) {
+    console.log('ChatPage ', chats)
+    const profileAvatar = profile.avatar ? `${RESOURCES_BASE_URL}${profile.avatar}` : 'images/no-avatar.png';
 
     super({
       ...props,
       profilePreview: new ProfilePreview({
         avatar: {
           src: profileAvatar,
-          alt: `Аватар пользователя ${profileInfo.display_name}`,
+          alt: `Аватар пользователя ${profile.display_name}`,
         },
         profileName: {
-          text: `${profileInfo.first_name} ${profileInfo.second_name}`,
+          text: `${profile.first_name} ${profile.second_name}`,
         },
-        nickname: profileInfo.display_name,
+        nickname: profile.display_name,
         hrefPage: '/settings'
       }),
       searchBox: new TextField({
@@ -73,7 +57,17 @@ class ChatPage extends BaseComponent {
           label: 'Искать...',
         },
       }),
-      chatsList: new List({ list: chatsList }), //new List({ list: chats })
+      chatsList: new List({ 
+        list: chats.map((chat) => new Chat({
+          avatar: {
+            src: chat.avatar ? `${RESOURCES_BASE_URL}${chat.avatar}` : 'images/no-avatar.png',
+            alt: `Аватар чата ${chat.title}`
+          },
+          name: chat.title,
+          lastMessage: chat.last_message || 'Нет сообщений',
+          unreadedCount: chat.unread_count
+        }))
+      }),
       messagesList: new List({ list: messages }),
       messageInput: new TextField({
         input: {
@@ -90,8 +84,9 @@ class ChatPage extends BaseComponent {
   }
 
   render() {
+    console.log(this.props)
     return this.compile(template, this.props);
   }
 }
 
-export default withProfile(ChatPage);
+export default withChats(ChatPage);

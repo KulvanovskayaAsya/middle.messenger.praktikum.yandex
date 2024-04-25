@@ -9,7 +9,6 @@ export interface ChatProps {
   name: string;
   lastMessage: string;
   unreadedCount: number;
-  lastMessageDate: string;
 }
 
 class Chat extends BaseComponent {
