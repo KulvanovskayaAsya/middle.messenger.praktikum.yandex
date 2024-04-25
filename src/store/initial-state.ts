@@ -10,12 +10,12 @@ export type ProfileInfo = {
 };
 
 export type ChatInfo = {
-  id: 3368,
-  title: 'test chat 2',
-  avatar: null,
-  created_by: 285,
-  unread_count: 0,
-  last_message: null
+  id: number,
+  title: string,
+  avatar: string,
+  created_by: number,
+  unread_count: number,
+  last_message: string
 };
 
 export type StoreState = {

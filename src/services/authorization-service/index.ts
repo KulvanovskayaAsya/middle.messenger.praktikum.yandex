@@ -12,11 +12,11 @@ class AuthorizationService {
 
       const profileInfo = await this._getProfileInfo();
       this._setStoreProfileInfo(profileInfo);
-
-      router.go('/messenger');
     } catch (error) {
       alert('Ошибка входа: ' + error);
     }
+
+    router.go('/messenger');
   }
 
   public async register(data: SignUpData) {
@@ -25,11 +25,11 @@ class AuthorizationService {
 
       const profileInfo = await this._getProfileInfo();
       this._setStoreProfileInfo(profileInfo);
-
-      router.go('/messenger');
     } catch (error) {
       alert('Ошибка регистрации: ' + error);
     }
+
+    router.go('/messenger');
   }
 
   public async logout() {
@@ -37,10 +37,11 @@ class AuthorizationService {
       await this.API.logout();
 
       this._setStoreProfileInfo(initialState.profileInfo);
-      router.go('/login');
     } catch (error) {
       alert('Ошибка выхода: ' + error);
     }
+    
+    router.go('/login');
   }
 
   private async _getProfileInfo() {

@@ -34,6 +34,8 @@ class ChatPage extends BaseComponent {
     console.log('ChatPage ', chats)
     const profileAvatar = profile.avatar ? `${RESOURCES_BASE_URL}${profile.avatar}` : 'images/no-avatar.png';
 
+    console.log(chats)
+
     super({
       ...props,
       profilePreview: new ProfilePreview({
@@ -57,6 +59,7 @@ class ChatPage extends BaseComponent {
           label: 'Искать...',
         },
       }),
+
       chatsList: new List({ 
         list: chats.map((chat) => new Chat({
           avatar: {
@@ -68,7 +71,7 @@ class ChatPage extends BaseComponent {
           unreadedCount: chat.unread_count
         }))
       }),
-      // messagesList: new List({ list: messages }),
+      // // messagesList: new List({ list: messages }),
       messageInput: new TextField({
         input: {
           id: 'messageBox',
@@ -84,6 +87,7 @@ class ChatPage extends BaseComponent {
   }
 
   render() {
+    console.log('ChatPage render = ', this.props, this.children)
     return this.compile(template, this.props);
   }
 }
