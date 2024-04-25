@@ -46,7 +46,7 @@ class Router {
       return;
     }
 
-    if (pathname !== '/' && !this._isAuthenticated()) {
+    if (pathname !== '/' && pathname !== '/sign-up' && !this._isAuthenticated()) {
       this.go('/');
       return;
     }
