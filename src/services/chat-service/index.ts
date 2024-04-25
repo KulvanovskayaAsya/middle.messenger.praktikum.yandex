@@ -20,9 +20,11 @@ class ChatService {
   }
 
   private async _setStoreChatsList(chatInfo: ChatInfo[]) {
-    store.setState('chatsList', {
-      ...chatInfo
-    });
+    const currentChatsList = store.getState().chatsList || []; // Получаем текущий список или пустой массив, если его нет
+    store.setState('chatsList', [...currentChatsList, ...chatInfo]); 
+    // store.setState('chatsList', {
+    //   ...chatInfo
+    // });
   }
   // public async createChat(data: { title: string }) {
   //   try {

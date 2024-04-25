@@ -59,7 +59,7 @@ class ChatPage extends BaseComponent {
       }),
 
       chatsList: new List({ 
-        list: Object.entries(chats).map(([key, chat]) => {
+        list: chats.map((chat) => {
           return new Chat({
             avatar: {
               src: chat.avatar ? `${RESOURCES_BASE_URL}${chat.avatar}` : 'images/no-avatar.png',
