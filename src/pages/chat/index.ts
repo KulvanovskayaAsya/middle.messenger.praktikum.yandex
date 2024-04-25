@@ -68,7 +68,7 @@ class ChatPage extends BaseComponent {
           unreadedCount: chat.unread_count
         }))
       }),
-      messagesList: new List({ list: messages }),
+      // messagesList: new List({ list: messages }),
       messageInput: new TextField({
         input: {
           id: 'messageBox',
@@ -84,7 +84,6 @@ class ChatPage extends BaseComponent {
   }
 
   render() {
-    console.log(this.props)
     return this.compile(template, this.props);
   }
 }

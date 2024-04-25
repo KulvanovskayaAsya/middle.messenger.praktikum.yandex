@@ -49,6 +49,7 @@ abstract class BaseComponent {
     const props: Props = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
+      console.log(key,value)
       if (value instanceof BaseComponent) {
         children[key] = value;
       } else {
@@ -56,6 +57,7 @@ abstract class BaseComponent {
       }
     });
 
+    console.log(this, children);
     return { children, props };
   }
 
@@ -124,14 +126,14 @@ abstract class BaseComponent {
       newProps as Props,
     );
 
+    // console.log('shouldUpdate = ', shouldUpdate);
+
     if (shouldUpdate) {
       this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_RENDER);
     }
   }
 
   public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-    // console.log(isEqual(oldProps, newProps))
-    // console.log(oldProps, newProps)
     return !isEqual(oldProps, newProps);
   }
 
