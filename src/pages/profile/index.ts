@@ -22,7 +22,6 @@ class ProfilePage extends BaseComponent {
   profileService: ProfileService = new ProfileService();
 
   constructor({ profile, ...props}: IProfilePageProps) {
-    console.log(profile)
     const fields = profileForm.map((field) => new TextField({
       input: {
         id: field.id,

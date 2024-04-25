@@ -29,11 +29,11 @@ class ProfileService {
     }
   }
 
-  public async changePassword(oldPassword: string, newPassword: string) {
+  public async changePassword(data: any) {
     try {
       const dataForAPI = {
-        oldPassword: oldPassword,
-        newPassword: newPassword
+        oldPassword: data.old_password,
+        newPassword: data.new_password
       };
 
       await this.API.changePassword(dataForAPI);

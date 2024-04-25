@@ -8,6 +8,7 @@ import Link, { ILinkProps } from '../../components/atoms/link';
 import Form, { IFormProps } from '../../components/organisms/form';
 
 import { changePasswordForm } from '../../utils/mock-data';
+import ProfileService from '@/services/profile-service';
 
 interface IChangePasswordPageProps {
   backLink: ILinkProps,
@@ -26,14 +27,22 @@ const fields = changePasswordForm.map((field) => new TextField({
   },
 }));
 
-const submitButton = new Button({
-  text: 'Сохранить',
-  hrefPage: 'chatPage',
-  additionalClasses: 'button_primary',
-});
-
 class ChangePasswordPage extends BaseComponent {
+  changePasswordForm: Form;
+  profileService: ProfileService = new ProfileService();
+
   constructor(props: IChangePasswordPageProps) {
+    const form = new Form({
+      textFields: fields,
+      button: new Button({
+        text: 'Сохранить',
+        additionalClasses: 'button_primary',
+      }),
+      events: {
+        submit: (event: Event) => this.handleFormSubmit(event),
+      }
+    });
+
     super({
       ...props,
       backLink: new Link({
@@ -41,15 +50,21 @@ class ChangePasswordPage extends BaseComponent {
         hrefPage: '/settings',
         additionalClasses: 'link_back',
       }),
-      form: new Form({
-        textFields: fields,
-        button: submitButton,
-      }),
+      form: form,
     });
+
+    this.changePasswordForm = form;
   }
 
   render() {
     return this.compile(template, this.props);
+  }
+
+  async handleFormSubmit (event: Event) {
+    event.preventDefault();
+    const changePasswordData = this.changePasswordForm.grabFormValues(this.changePasswordForm);
+    
+    await this.profileService.changePassword(changePasswordData);
   }
 }
 
