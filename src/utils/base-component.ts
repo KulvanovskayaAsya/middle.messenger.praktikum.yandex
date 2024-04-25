@@ -49,7 +49,7 @@ abstract class BaseComponent {
     const props: Props = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
-      // console.log(key,value)
+      console.log(key,value)
       if (value instanceof BaseComponent) {
         children[key] = value;
       } else {

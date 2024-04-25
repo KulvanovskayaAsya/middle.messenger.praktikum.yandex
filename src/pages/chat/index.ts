@@ -8,7 +8,7 @@ import List from '@components/organisms/list';
 import ProfilePreview from '@components/molecules/profile-preview';
 import TextField from '@components/molecules/text-field';
 
-import { messagesList } from '@utils/mock-data';
+import { chatsList, messagesList } from '@utils/mock-data';
 import ChatService from '@/services/chat-service';
 import { ChatInfo, ProfileInfo } from '@/store/initial-state';
 import ProfileService from '@/services/profile-service';
@@ -69,6 +69,17 @@ class ChatPage extends BaseComponent {
           unreadedCount: chat.unread_count
         }))
       }),
+      // chatsList: new List({ 
+      //   list: chatsList.map((chat) => new Chat({
+      //     avatar: {
+      //       src: chat.avatar ? `${RESOURCES_BASE_URL}${chat.avatar}` : 'images/no-avatar.png',
+      //       alt: `Аватар чата ${chat.title}`
+      //     },
+      //     name: chat.title,
+      //     lastMessage: chat.last_message || 'Нет сообщений',
+      //     unreadedCount: chat.unread_count
+      //   }))
+      // }),
       // // messagesList: new List({ list: messages }),
       messageInput: new TextField({
         input: {
