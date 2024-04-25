@@ -49,7 +49,6 @@ abstract class BaseComponent {
     const props: Props = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
-      console.log(key,value)
       if (value instanceof BaseComponent) {
         children[key] = value;
       } else {
@@ -57,7 +56,6 @@ abstract class BaseComponent {
       }
     });
 
-    // console.log(this, children);
     return { children, props };
   }
 
@@ -125,8 +123,6 @@ abstract class BaseComponent {
       oldProps as Props,
       newProps as Props,
     );
-
-    // console.log('shouldUpdate = ', shouldUpdate);
 
     if (shouldUpdate) {
       this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_RENDER);

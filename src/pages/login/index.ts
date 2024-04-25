@@ -9,7 +9,7 @@ import PageTitle from '@components/atoms/page-title';
 
 import { authenticationForm } from '@utils/mock-data';
 import AuthorizationService from '@/services/authorization-service';
-import connect from '@/store/HOC';
+import { withProfile } from '@/store/HOC';
 
 interface ILoginPageProps {
   modalTitle: PageTitle;
@@ -29,11 +29,6 @@ const fields = authenticationForm.map((field) => new TextField({
   },
 }));
 
-const submitButton = new Button({
-  text: 'Войти',
-  additionalClasses: 'button_primary'
-});
-
 class LoginPage extends BaseComponent {
   loginForm: Form;
   authService: AuthorizationService = new AuthorizationService();
@@ -41,7 +36,10 @@ class LoginPage extends BaseComponent {
   constructor(props: ILoginPageProps) {
     const form = new Form({
       textFields: fields,
-      button: submitButton,
+      button: new Button({
+        text: 'Войти',
+        additionalClasses: 'button_primary'
+      }),
       events: {
         submit: (event: Event) => this.handleFormSubmit(event),
       }
@@ -74,8 +72,4 @@ class LoginPage extends BaseComponent {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  profileInfo: state.profileInfo,
-});
-
-export default connect(mapStateToProps)(LoginPage);
+export default withProfile(LoginPage);

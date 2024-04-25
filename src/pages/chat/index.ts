@@ -59,15 +59,17 @@ class ChatPage extends BaseComponent {
       }),
 
       chatsList: new List({ 
-        list: chats.map((chat) => new Chat({
-          avatar: {
-            src: chat.avatar ? `${RESOURCES_BASE_URL}${chat.avatar}` : 'images/no-avatar.png',
-            alt: `Аватар чата ${chat.title}`
-          },
-          name: chat.title,
-          lastMessage: chat.last_message || 'Нет сообщений',
-          unreadedCount: chat.unread_count
-        }))
+        list: Object.entries(chats).map(([key, chat]) => {
+          return new Chat({
+            avatar: {
+              src: chat.avatar ? `${RESOURCES_BASE_URL}${chat.avatar}` : 'images/no-avatar.png',
+              alt: `Аватар чата ${chat.title}`
+            },
+            name: chat.title,
+            lastMessage: chat.last_message || 'Нет сообщений',
+            unreadedCount: chat.unread_count
+          })
+        })
       }),
       // chatsList: new List({ 
       //   list: chatsList.map((chat) => new Chat({
@@ -96,7 +98,6 @@ class ChatPage extends BaseComponent {
   }
 
   render() {
-    console.log('ChatPage render = ', this.props, this.children)
     return this.compile(template, this.props);
   }
 }
