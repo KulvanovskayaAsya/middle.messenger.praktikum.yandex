@@ -20,7 +20,7 @@ class ChatService {
   }
 
   private async _setStoreChatsList(chatInfo: ChatInfo[]) {
-    const currentChatsList = store.getState().chatsList || []; // Получаем текущий список или пустой массив, если его нет
+    const currentChatsList = store.getState().chatsList || [];
     store.setState('chatsList', [...currentChatsList, ...chatInfo]); 
     // store.setState('chatsList', {
     //   ...chatInfo
