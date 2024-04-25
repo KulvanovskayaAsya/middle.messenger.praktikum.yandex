@@ -34,8 +34,6 @@ class ChatPage extends BaseComponent {
     console.log('ChatPage ', chats)
     const profileAvatar = profile.avatar ? `${RESOURCES_BASE_URL}${profile.avatar}` : 'images/no-avatar.png';
 
-    console.log(chats)
-
     super({
       ...props,
       profilePreview: new ProfilePreview({

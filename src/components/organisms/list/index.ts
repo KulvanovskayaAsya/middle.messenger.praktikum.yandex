@@ -14,12 +14,13 @@ class List extends BaseComponent {
   }
 
   public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+    console.log('List componentDidUpdate ', oldProps, newProps);
     const shouldUpdate = !isEqual(oldProps.list, newProps.list);
     return shouldUpdate;
   }
 
   render(): HTMLElement {
-    console.log('render', this.props)
+    console.log('List render', this.props, this.children)
     const elementsList = document.createElement('section');
     elementsList.classList.add('list');
 
