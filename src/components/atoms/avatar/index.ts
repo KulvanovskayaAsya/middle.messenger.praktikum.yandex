@@ -13,6 +13,10 @@ class Avatar extends BaseComponent {
     super(props);
   }
 
+  dependsOnProps(): string[] {
+    return [];
+  }
+
   render(): HTMLElement {
     return this.compile(template, this.props);
   }

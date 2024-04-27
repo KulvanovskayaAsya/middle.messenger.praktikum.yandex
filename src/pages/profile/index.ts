@@ -12,16 +12,21 @@ import { profileForm } from '@utils/mock-data';
 import ProfileService from '@/services/profile-service';
 import { withProfile } from '@/store/HOC';
 import { ProfileInfo } from '@/store/initial-state';
+import Input from '@/components/atoms/input';
 
 interface IProfilePageProps {
   profile: ProfileInfo
 }
+
+const RESOURCES_BASE_URL = 'https://ya-praktikum.tech/api/v2/resources';
 
 class ProfilePage extends BaseComponent {
   profileForm: Form;
   profileService: ProfileService = new ProfileService();
 
   constructor({ profile, ...props}: IProfilePageProps) {
+    const profileAvatar = profile.avatar ? `${RESOURCES_BASE_URL}${profile.avatar}` : 'images/no-avatar.png';
+
     const fields = profileForm.map((field) => new TextField({
       input: {
         id: field.id,
@@ -46,6 +51,16 @@ class ProfilePage extends BaseComponent {
       }
     });
 
+    const uploadAvatarInput = new Input({
+      id: 'avatar',
+      name: 'avatar',
+      inputType: 'file',
+      additionalClasses: 'profile-form__upload-avatar',
+      events: {
+        change: (event: Event) => this.handleAvatarChange(event)
+      }
+    });
+
     super({
       ...props,
       backLink: new Link({
@@ -54,10 +69,11 @@ class ProfilePage extends BaseComponent {
         additionalClasses: 'link_back',
       }),
       avatar: new Avatar({
-        src: 'images/no-avatar.png',
+        src: profileAvatar,
         alt: 'Аватар вашего профиля',
         additionalClasses: 'avatar_large',
       }),
+      uploadAvatarInput: uploadAvatarInput,
       form: form,
       changePasswordlink: new Link({
         text: 'Изменить пароль',
@@ -71,6 +87,13 @@ class ProfilePage extends BaseComponent {
 
   render() {
     return this.compile(template, this.props);
+  }
+
+  async handleAvatarChange(event: Event) {
+    event.preventDefault();
+
+    const avatar = event.target.files[0];
+    this.profileService.changeAvatar(avatar);
   }
 
   async handleFormSubmit(event: Event) {

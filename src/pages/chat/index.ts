@@ -1,4 +1,4 @@
-import BaseComponent from '../../utils/base-component';
+import BaseComponent, { Props } from '../../utils/base-component';
 import template from './chat.hbs?raw';
 import './chat.scss';
 
@@ -8,7 +8,7 @@ import List from '@components/organisms/list';
 import ProfilePreview from '@components/molecules/profile-preview';
 import TextField from '@components/molecules/text-field';
 
-import { chatsList, messagesList } from '@utils/mock-data';
+import { messagesList } from '@utils/mock-data';
 import ChatService from '@/services/chat-service';
 import { ChatInfo, ProfileInfo } from '@/store/initial-state';
 import ProfileService from '@/services/profile-service';
@@ -31,7 +31,7 @@ class ChatPage extends BaseComponent {
   chatService: ChatService = new ChatService();
 
   constructor({ profile, chats, ...props }: IChatPageProps) {
-    console.log('ChatPage ', chats)
+    console.log('ChatPage constructor chats props = ', chats);
     const profileAvatar = profile.avatar ? `${RESOURCES_BASE_URL}${profile.avatar}` : 'images/no-avatar.png';
 
     super({
@@ -57,7 +57,7 @@ class ChatPage extends BaseComponent {
           label: 'Искать...',
         },
       }),
-
+      // chatsList: chats,
       chatsList: new List({ 
         list: chats.map((chat) => {
           return new Chat({
@@ -69,19 +69,8 @@ class ChatPage extends BaseComponent {
             lastMessage: chat.last_message || 'Нет сообщений',
             unreadedCount: chat.unread_count
           })
-        })
+        }),
       }),
-      // chatsList: new List({ 
-      //   list: chatsList.map((chat) => new Chat({
-      //     avatar: {
-      //       src: chat.avatar ? `${RESOURCES_BASE_URL}${chat.avatar}` : 'images/no-avatar.png',
-      //       alt: `Аватар чата ${chat.title}`
-      //     },
-      //     name: chat.title,
-      //     lastMessage: chat.last_message || 'Нет сообщений',
-      //     unreadedCount: chat.unread_count
-      //   }))
-      // }),
       // // messagesList: new List({ list: messages }),
       messageInput: new TextField({
         input: {
@@ -97,7 +86,12 @@ class ChatPage extends BaseComponent {
     });
   }
 
+  dependsOnProps(): string[] {
+    return [];
+  }
+
   render() {
+    console.log('ChatPage render chats props = ', this.props);
     return this.compile(template, this.props);
   }
 }

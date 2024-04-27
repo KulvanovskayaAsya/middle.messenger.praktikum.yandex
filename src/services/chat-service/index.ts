@@ -20,12 +20,9 @@ class ChatService {
   }
 
   private async _setStoreChatsList(chatInfo: ChatInfo[]) {
-    const currentChatsList = store.getState().chatsList || [];
-    store.setState('chatsList', [...currentChatsList, ...chatInfo]); 
-    // store.setState('chatsList', {
-    //   ...chatInfo
-    // });
+    store.setState('chatsList', [...chatInfo]);
   }
+  
   // public async createChat(data: { title: string }) {
   //   try {
   //     const response = await this.API.createChat(data);

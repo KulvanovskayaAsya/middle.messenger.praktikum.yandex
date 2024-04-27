@@ -44,6 +44,8 @@ abstract class BaseComponent {
     eventBus.emit(BaseComponent.LIFECICLE_EVENTS.INIT);
   }
 
+  abstract dependsOnProps(): string[];
+
   private _getChildrenAndProps(propsAndChildren: PropsAndChildren): { children: Children; props: Props } {
     const children: Children = {};
     const props: Props = {};
@@ -62,6 +64,7 @@ abstract class BaseComponent {
   private _makePropsProxy(props: Props): Props {
     return new Proxy(props, {
       set: (target: Props, prop: string, value: unknown): boolean => {
+        // console.log('props proxy = ', this, target, prop, value)
         const oldProps = { ...target };
         target[prop] = value;
         this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_CDU, oldProps, target);
@@ -95,6 +98,14 @@ abstract class BaseComponent {
       return;
     }
 
+    console.log('setProps ', nextProps, 'to ', this)
+
+    // if (!isEqual(this.props, nextProps)) {
+    //   const oldProps = { ...this.props };
+    //   Object.assign(this.props, nextProps);
+    //   this._componentDidUpdate(oldProps, nextProps); // Запуск проверки необходимости обновления
+    // }
+
     Object.assign(this.props, nextProps);
   };
 
@@ -124,9 +135,37 @@ abstract class BaseComponent {
       newProps as Props,
     );
 
+    console.log(this, oldProps, newProps, shouldUpdate)
+
     if (shouldUpdate) {
+      console.log(this, 'component shouldUpdate', oldProps, newProps)
       this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_RENDER);
+
+      Object.values(this.children).forEach(child => {
+        const dependencies = child.dependsOnProps();
+        const hasDependencyChanged = dependencies.some(dep => {
+          console.log(dep, oldProps[dep], newProps[dep], !isEqual(oldProps[dep], newProps[dep]));
+
+          child.setProps({
+            ...child.props,
+            list: newProps[dep]
+          })
+
+          return !isEqual(oldProps[dep], newProps[dep])
+        });
+
+        console.log('force rerender ', child, dependencies, 'hasDependencyChanged = ', hasDependencyChanged);
+
+        if (hasDependencyChanged) {
+          child._forceRender();
+        }
+      });
     }
+  }
+
+  private _forceRender(): void {
+    console.log('_forceRender', this);
+    this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_RENDER);
   }
 
   public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
@@ -136,6 +175,8 @@ abstract class BaseComponent {
   private _render(): void {
     const block = this.render();
     this._removeEvents();
+
+    console.log('_render', this, block, this.props)
     if (!this._element) {
       this._element = document.createElement('div');
     }

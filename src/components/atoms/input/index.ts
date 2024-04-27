@@ -1,8 +1,6 @@
-import BaseComponent, { Props } from '@utils/base-component';
+import BaseComponent from '@utils/base-component';
 import './input.scss';
 import template from './input.hbs?raw';
-
-import isEqual from '@utils/object-comparing';
 
 export interface IInputProps {
   id: string;
@@ -28,6 +26,10 @@ class Input extends BaseComponent {
         },
       },
     });
+  }
+
+  dependsOnProps(): string[] {
+    return [];
   }
 
   public setAttribute(attr: string, value: string) {
