@@ -1,29 +1,33 @@
 import { isArray } from '@utils/type-check';
-import BaseComponent from '@utils/base-component';
+import BaseComponent, { Props } from '@utils/base-component';
 import './list.scss';
 
-export interface IListProps {
-  list: BaseComponent[];
+export interface IListProps extends Props {
+  list: object[];
+}
+
+export interface IListFactory {
+  getListItemComponent(props: unknown): BaseComponent;
 }
 
 class List extends BaseComponent {
-  dependsOnProps(): string[] {
-    return ['chats'];
+  private _factory: IListFactory;
+  // private _chatsList: BaseComponent[] = [];
+
+  constructor(props: IListProps, listFactory: IListFactory) {
+    super(props);
+
+    this._factory = listFactory;
   }
 
-  constructor(props: IListProps) {
-    console.log('list constructor props = ', props);
-    super(props);
-  }
   render(): HTMLElement {
-    console.log('list render props = ', this.props);
     const elementsList = document.createElement('section');
     elementsList.classList.add('list');
 
-    if (isArray(this.props.list)) {
-      this.props.list.forEach((item: BaseComponent) => {
-        console.log(item)
-        elementsList.appendChild(item.getContent());
+    if (isArray(this.props.list) && this._factory) {
+      this.props.list.map((item) => {
+        const element = this._factory.getListItemComponent(item);
+        elementsList.appendChild(element.getContent());
       });
     }
 
