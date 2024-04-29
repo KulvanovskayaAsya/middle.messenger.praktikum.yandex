@@ -4,6 +4,8 @@ import Handlebars from 'handlebars';
 import EventBus from './event-bus';
 import isEqual from './object-comparing';
 
+const RESOURCES_BASE_URL = 'https://ya-praktikum.tech/api/v2/resources';
+
 enum EVENTS {
   INIT = 'init',
   FLOW_CDM = 'flow:component-did-mount',
@@ -13,6 +15,7 @@ enum EVENTS {
 
 export type Props = {
   [key: string]: unknown;
+  dependences?: string[] | [];
   events?: Record<string, (e: Event) => void>;
 };
 type Children = Record<string, BaseComponent>;
@@ -24,6 +27,7 @@ type PropsAndChildren = {
 abstract class BaseComponent {
   static LIFECICLE_EVENTS = EVENTS;
 
+  protected _dependences: string[] | [] = [];
   private _id: string;
   private _element: HTMLElement | null = null;
   private eventBus: EventBus;
@@ -35,6 +39,10 @@ abstract class BaseComponent {
     const eventBus = new EventBus();
     const { children, props } = this._getChildrenAndProps(propsAndChildren);
 
+    if(props.dependences) {
+      this._dependences = props.dependences;
+    }
+
     this._id = uuidv4();
     this.props = this._makePropsProxy(props);
     this.children = children;
@@ -44,7 +52,9 @@ abstract class BaseComponent {
     eventBus.emit(BaseComponent.LIFECICLE_EVENTS.INIT);
   }
 
-  abstract dependsOnProps(): string[];
+  dependsOnProps(): string[] {
+    return this._dependences;
+  }
 
   private _getChildrenAndProps(propsAndChildren: PropsAndChildren): { children: Children; props: Props } {
     const children: Children = {};
@@ -64,7 +74,6 @@ abstract class BaseComponent {
   private _makePropsProxy(props: Props): Props {
     return new Proxy(props, {
       set: (target: Props, prop: string, value: unknown): boolean => {
-        // console.log('props proxy = ', this, target, prop, value)
         const oldProps = { ...target };
         target[prop] = value;
         this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_CDU, oldProps, target);
@@ -98,14 +107,6 @@ abstract class BaseComponent {
       return;
     }
 
-    console.log('setProps ', nextProps, 'to ', this)
-
-    // if (!isEqual(this.props, nextProps)) {
-    //   const oldProps = { ...this.props };
-    //   Object.assign(this.props, nextProps);
-    //   this._componentDidUpdate(oldProps, nextProps); // Запуск проверки необходимости обновления
-    // }
-
     Object.assign(this.props, nextProps);
   };
 
@@ -135,26 +136,27 @@ abstract class BaseComponent {
       newProps as Props,
     );
 
-    console.log(this, oldProps, newProps, shouldUpdate)
-
     if (shouldUpdate) {
-      console.log(this, 'component shouldUpdate', oldProps, newProps)
       this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_RENDER);
 
       Object.values(this.children).forEach(child => {
         const dependencies = child.dependsOnProps();
         const hasDependencyChanged = dependencies.some(dep => {
-          console.log(dep, oldProps[dep], newProps[dep], !isEqual(oldProps[dep], newProps[dep]));
-
+          
           child.setProps({
             ...child.props,
             list: newProps[dep]
-          })
+          });
+
+          if(child.props.src) {
+            child.setProps({
+              ...child.props,
+              src: `${RESOURCES_BASE_URL}${newProps[dep].avatar}`
+            });
+          }
 
           return !isEqual(oldProps[dep], newProps[dep])
         });
-
-        console.log('force rerender ', child, dependencies, 'hasDependencyChanged = ', hasDependencyChanged);
 
         if (hasDependencyChanged) {
           child._forceRender();
@@ -164,7 +166,6 @@ abstract class BaseComponent {
   }
 
   private _forceRender(): void {
-    console.log('_forceRender', this);
     this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_RENDER);
   }
 
@@ -176,10 +177,10 @@ abstract class BaseComponent {
     const block = this.render();
     this._removeEvents();
 
-    console.log('_render', this, block, this.props)
     if (!this._element) {
       this._element = document.createElement('div');
     }
+    
     this._element.replaceWith(block);
     this._element = block;
     this._addEvents();

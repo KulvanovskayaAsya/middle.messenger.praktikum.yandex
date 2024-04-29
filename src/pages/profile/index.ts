@@ -72,6 +72,7 @@ class ProfilePage extends BaseComponent {
         src: profileAvatar,
         alt: 'Аватар вашего профиля',
         additionalClasses: 'avatar_large',
+        dependences: ['profile']
       }),
       uploadAvatarInput: uploadAvatarInput,
       form: form,

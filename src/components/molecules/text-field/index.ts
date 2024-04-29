@@ -29,10 +29,6 @@ class TextField extends BaseComponent {
     });
   }
 
-  dependsOnProps(): string[] {
-    return [];
-  }
-
   handleInputBlur(e: Event) {
     const target = e.target as HTMLInputElement;
 

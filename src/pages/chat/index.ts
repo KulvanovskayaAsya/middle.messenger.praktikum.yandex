@@ -1,10 +1,10 @@
-import BaseComponent, { Props } from '../../utils/base-component';
+import BaseComponent from '../../utils/base-component';
 import template from './chat.hbs?raw';
 import './chat.scss';
 
 import Message from '@components/atoms/message';
 import Chat from '@components/molecules/chat';
-import List from '@components/organisms/list';
+import List, { IListFactory } from '@components/organisms/list';
 import ProfilePreview from '@components/molecules/profile-preview';
 import TextField from '@components/molecules/text-field';
 
@@ -15,8 +15,8 @@ import ProfileService from '@/services/profile-service';
 import { withChats } from '@/store/HOC';
 
 interface IChatPageProps {
-  profile: ProfileInfo,
-  chats: ChatInfo[]
+  profile: ProfileInfo;
+  chats: ChatInfo[];
 }
 
 const RESOURCES_BASE_URL = 'https://ya-praktikum.tech/api/v2/resources';
@@ -26,12 +26,25 @@ const messages = messagesList.map((message) => new Message({
   date: message.date,
 }));
 
+export class ChatListFactory implements IListFactory {
+  getListItemComponent(props: unknown): BaseComponent {
+    return new Chat({
+      avatar: {
+        src: props.avatar ? `${RESOURCES_BASE_URL}${props.avatar}` : 'images/no-avatar.png',
+        alt: `Аватар чата ${props.title}`
+      },
+      name: props.title,
+      lastMessage: props.last_message || 'Нет сообщений',
+      unreadedCount: props.unread_count
+    });
+  }
+}
+
 class ChatPage extends BaseComponent {
   profileService: ProfileService = new ProfileService();
   chatService: ChatService = new ChatService();
 
   constructor({ profile, chats, ...props }: IChatPageProps) {
-    console.log('ChatPage constructor chats props = ', chats);
     const profileAvatar = profile.avatar ? `${RESOURCES_BASE_URL}${profile.avatar}` : 'images/no-avatar.png';
 
     super({
@@ -57,21 +70,11 @@ class ChatPage extends BaseComponent {
           label: 'Искать...',
         },
       }),
-      // chatsList: chats,
-      chatsList: new List({ 
-        list: chats.map((chat) => {
-          return new Chat({
-            avatar: {
-              src: chat.avatar ? `${RESOURCES_BASE_URL}${chat.avatar}` : 'images/no-avatar.png',
-              alt: `Аватар чата ${chat.title}`
-            },
-            name: chat.title,
-            lastMessage: chat.last_message || 'Нет сообщений',
-            unreadedCount: chat.unread_count
-          })
-        }),
-      }),
-      // // messagesList: new List({ list: messages }),
+      chatsList: new List({
+        list: chats,
+        dependences: ['chats']
+      }, new ChatListFactory()),
+      // messagesList: new List({ list: messages }),
       messageInput: new TextField({
         input: {
           id: 'messageBox',
@@ -86,12 +89,7 @@ class ChatPage extends BaseComponent {
     });
   }
 
-  dependsOnProps(): string[] {
-    return [];
-  }
-
   render() {
-    console.log('ChatPage render chats props = ', this.props);
     return this.compile(template, this.props);
   }
 }

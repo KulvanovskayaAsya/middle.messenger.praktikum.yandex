@@ -31,19 +31,6 @@ function connect(mapStateToProps: (state: Indexed) => Indexed) {
 
 export const withProfile = connect(state => ({ profile: state.profileInfo }));
 export const withChats = connect(state => ({
-  // chatsList: new List({
-  //   list: (state.chatsList as ChatInfo[]).map((chat) => {
-  //     return new Chat({
-  //       avatar: {
-  //         src: 'images/no-avatar.png',
-  //         alt: `Аватар чата ${chat.title}`
-  //       },
-  //       name: chat.title,
-  //       lastMessage: chat.last_message || 'Нет сообщений',
-  //       unreadedCount: chat.unread_count
-  //     })
-  //   })
-  // }),
   profile: state.profileInfo,
   chats: state.chatsList,
 }));

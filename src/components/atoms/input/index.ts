@@ -28,10 +28,6 @@ class Input extends BaseComponent {
     });
   }
 
-  dependsOnProps(): string[] {
-    return [];
-  }
-
   public setAttribute(attr: string, value: string) {
     this._element?.setAttribute(attr, value);
   }

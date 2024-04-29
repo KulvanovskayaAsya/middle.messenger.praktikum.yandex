@@ -1,8 +1,8 @@
-import BaseComponent from '@utils/base-component';
+import BaseComponent, { Props } from '@utils/base-component';
 import './avatar.scss';
 import template from './avatar.hbs?raw';
 
-export interface IAvatarProps {
+export interface IAvatarProps extends Props {
   src: string;
   alt: string;
   additionalClasses?: string;
@@ -11,10 +11,6 @@ export interface IAvatarProps {
 class Avatar extends BaseComponent {
   constructor(props: IAvatarProps) {
     super(props);
-  }
-
-  dependsOnProps(): string[] {
-    return [];
   }
 
   render(): HTMLElement {

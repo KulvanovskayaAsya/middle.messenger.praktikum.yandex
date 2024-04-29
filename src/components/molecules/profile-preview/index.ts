@@ -28,10 +28,6 @@ class ProfilePreview extends BaseComponent {
     });
   }
 
-  dependsOnProps(): string[] {
-    return [];
-  }
-
   render(): HTMLElement {
     return this.compile(template, this.props);
   }
