@@ -21,4 +21,9 @@
     background-color: $color__secondary;
     color: $color-text__light_accent;
   }
+
+  &_with-icon {
+    background-color: transparent;
+    width: fit-content;
+  }
 }

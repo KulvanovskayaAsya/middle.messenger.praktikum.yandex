@@ -5,6 +5,7 @@
   width: 60px;
   cursor: pointer;
   border-radius: $border-radius_small;
+  object-fit: cover;
 
   &_large {
     height: 140px;

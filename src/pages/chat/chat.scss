@@ -16,17 +16,50 @@
   padding-right: $spacing__medium;
 }
 
-.chat-page__messenger {
-  flex: 1;
-  position: relative;
+.chat-page__manage-chats {
+  display: flex;
+  align-items: center;
+  gap: $spacing__medium;
 }
 
-.messanger {
+.manage-chats__search-chat {
+  flex-grow: 1;
+}
+
+.manage-chats__add-chat {
+  height: 100%;
+  aspect-ratio: 1;
+  border-radius: $border-radius_large;
+  background-color: $color__surface;
+}
+
+.chat-page__messenger {
+  flex: 1;
+  max-height: 100%;
+  overflow-y: hidden;
+}
+
+.chat-page__messenger .list {
+  overflow: auto;
+}
+
+.messenger {
   display: flex;
+  gap: $spacing__medium;
   flex-direction: column;
+  justify-content: flex-end;
+}
+
+.messenger .form {
+  width: auto;
 }
 
 .messenger__message-input {
+  flex-grow: 1;
+}
+
+.messenger__send-button {
   position: absolute;
-  inset: auto 0 0;
+  right: $spacing__large;
+  bottom: $spacing__extra-large;
 }

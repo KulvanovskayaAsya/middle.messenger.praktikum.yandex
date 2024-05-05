@@ -1,8 +1,8 @@
-import BaseComponent from '../../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './avatar.scss';
 import template from './avatar.hbs?raw';
 
-export interface IAvatarProps {
+export interface IAvatarProps extends IProps {
   src: string;
   alt: string;
   additionalClasses?: string;

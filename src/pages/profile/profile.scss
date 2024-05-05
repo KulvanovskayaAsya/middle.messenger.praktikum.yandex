@@ -3,3 +3,19 @@
 .profile-form__change-password-link {
   align-self: flex-start;
 }
+
+.profile-form__upload-container {
+  position: relative;
+}
+
+.profile-form__upload-avatar {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  opacity: 0;
+
+  &:hover {
+    opacity: 1;
+    background-color: rgb(0 0 0 / 80%);
+  }
+}

@@ -1,17 +1,19 @@
-import BaseComponent from '../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './error404.scss';
 import template from './error404.hbs?raw';
-import Link from '../../components/atoms/link';
+import Link from '@components/atoms/link';
 
-interface IErrorPageProps {}
+interface IErrorPageProps extends IProps {
+  backLink: Link;
+  errorImgSrc: string;
+}
 
 class ErrorPage404 extends BaseComponent {
   constructor(props: IErrorPageProps) {
     super({
       ...props,
       backLink: new Link({
-        hrefLink: '#',
-        hrefPage: 'chatPage',
+        hrefPage: '/messenger',
         text: 'Вернуться к чатам',
         additionalClasses: 'link_back error-page-wrapper__link',
       }),
