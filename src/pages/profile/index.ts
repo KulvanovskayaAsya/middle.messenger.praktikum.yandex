@@ -1,7 +1,7 @@
 import './profile.scss';
 import template from './profile.hbs?raw';
 
-import { BasePage, IProps } from '@utils/base-component';
+import BaseComponent, { IProps, IUpdatable } from '@utils/base-component';
 import Form from '@components/organisms/form';
 import TextField from '@components/molecules/text-field';
 import Button from '@components/atoms/button';
@@ -19,7 +19,7 @@ interface IProfilePageProps extends IProps {
   profile: ProfileInfo
 }
 
-class ProfilePage extends BasePage {
+class ProfilePage extends BaseComponent implements IUpdatable {
   profileForm: Form;
 
   constructor({ profile, ...props }: IProfilePageProps) {
