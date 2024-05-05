@@ -1,4 +1,4 @@
-import BaseComponent, { BasePage, IProps } from '@utils/base-component';
+import BaseComponent, { IProps, IUpdatable } from '@utils/base-component';
 import template from './chat.hbs?raw';
 import './chat.scss';
 
@@ -70,7 +70,7 @@ export class MessageFactory implements IListFactory {
   }
 }
 
-class ChatPage extends BasePage {
+class ChatPage extends BaseComponent implements IUpdatable {
   messageForm: Form;
 
   addChatForm: Form;

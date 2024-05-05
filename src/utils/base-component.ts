@@ -18,11 +18,19 @@ export interface IProps {
   additionalClasses?: string;
 }
 
+export interface IUpdatable {
+  updateChildrenDependentProps(newProp: unknown, dependence?: string): void;
+}
+
 type Children = Record<string, BaseComponent>;
 
 type PropsAndChildren = {
   [key: string]: unknown;
 };
+
+function isUpdatable(object: any): object is IUpdatable {
+  return typeof object.updateChildrenDependentProps === 'function';
+}
 
 abstract class BaseComponent {
   static LIFECICLE_EVENTS = EVENTS;
@@ -146,7 +154,7 @@ abstract class BaseComponent {
       Object.values(this.children).forEach(child => {
         const dependencies = child.dependsOnProps();
         const hasDependencyChanged = dependencies.some(dep => {
-          if (this instanceof BasePage) {
+          if (isUpdatable(this)) {
             this.updateChildrenDependentProps(newProps[dep], dep);
           }
 
