@@ -1,17 +1,15 @@
 import store from '@/store';
-import ProfileAPI, { ProfileData, PasswordData } from '@/api/profile-api';
+import ProfileAPI from '@/api/profile-api';
 import { ProfileInfo } from '@/store/initial-state';
 
 class ProfileService {
-  API: ProfileAPI = new ProfileAPI();
-
   getProfileInfo(): ProfileInfo {
     return store.getState().profileInfo;
   }
 
   public async changeProfile(data: ProfileInfo) {
     try {
-      const profileData = JSON.parse(await this.API.changeProfile(data) as string);
+      const profileData = JSON.parse(await ProfileAPI.changeProfile(data) as string);
       
       this._setStoreProfileInfo(profileData);
     } catch (error) {
@@ -21,7 +19,7 @@ class ProfileService {
 
   public async changeAvatar(avatarFile: File) {
     try {
-      const profileData = await JSON.parse(await this.API.changeAvatar(avatarFile) as string);
+      const profileData = await JSON.parse(await ProfileAPI.changeAvatar(avatarFile) as string);
 
       this._setStoreProfileInfo(profileData);
     } catch (error) {
@@ -33,10 +31,10 @@ class ProfileService {
     try {
       const dataForAPI = {
         oldPassword: data.old_password,
-        newPassword: data.new_password
+        newPassword: data.new_password,
       };
 
-      await this.API.changePassword(dataForAPI);
+      await ProfileAPI.changePassword(dataForAPI);
     } catch (error) {
       alert('Ошибка обновления пароля: ' + error);
     }
@@ -44,9 +42,9 @@ class ProfileService {
 
   private async _setStoreProfileInfo(profileInfo: ProfileInfo) {
     store.setState('profileInfo', {
-      ...profileInfo
+      ...profileInfo,
     });
   }
 }
 
-export default ProfileService;
+export default new ProfileService();

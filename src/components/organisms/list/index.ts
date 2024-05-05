@@ -1,8 +1,8 @@
 import { isArray } from '@utils/type-check';
-import BaseComponent, { Props } from '@utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './list.scss';
 
-export interface IListProps extends Props {
+export interface IListProps extends IProps {
   list: object[];
 }
 
@@ -12,7 +12,6 @@ export interface IListFactory {
 
 class List extends BaseComponent {
   private _factory: IListFactory;
-  // private _chatsList: BaseComponent[] = [];
 
   constructor(props: IListProps, listFactory: IListFactory) {
     super(props);

@@ -2,6 +2,15 @@ import BaseAPI from '@/api/base-api';
 
 const API_BASE_PATH = '/chats';
 
+export type ChatData = {
+  title: string;
+};
+
+export type UsersWithChatData = {
+  chatID: string; 
+  userIDs: string[];
+};
+
 class ChatAPI extends BaseAPI {
   constructor() {
     super(API_BASE_PATH);
@@ -11,33 +20,21 @@ class ChatAPI extends BaseAPI {
     return this.http.get('', {});
   }
 
-  createChat(data: { title: string }) {
+  getToken(id: number) {
+    return this.http.post(`/token/${id}`, {});
+  }
+
+  createChat(data: ChatData) {
     return this.http.post('/', { data });
   }
 
-  deleteChat(chatId: string) {
-    return this.http.delete('/', { data: { id: chatId } });
+  getNewMessagesCount(chatID: string) {
+    return this.http.get(`/new/${chatID}`, {});
   }
 
-  getUsersByChatId(chatId: string) {
-    return this.http.get(`/${chatId}/users`, {});
-  }
-
-  getNewMessagesCount(chatId: string) {
-    return this.http.get(`/new/${chatId}`, {});
-  }
-
-  uploadChatAvatar(data: FormData) {
-    return this.http.put('/avatar', { data });
-  }
-
-  addUsersToChat(data: { chatId: string; userIds: string[] }) {
+  addUsersToChat(data: UsersWithChatData) {
     return this.http.put('/users', { data });
-  }
-
-  removeUsersFromChat(data: { chatId: string; userIds: string[] }) {
-    return this.http.delete('/users', { data });
   }
 }
 
-export default ChatAPI;
+export default new ChatAPI();

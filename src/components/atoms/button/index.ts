@@ -1,10 +1,10 @@
-import BaseComponent from '../../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './button.scss';
 import template from './button.hbs?raw';
 
-import Router from '../../../router';
+import router from '@/router';
 
-export interface IButtonProps {
+export interface IButtonProps extends IProps {
   text?: string;
   icon?: string;
   additionalClasses?: string;
@@ -18,11 +18,12 @@ class Button extends BaseComponent {
     super({
       ...props,
       events: {
+        ...props.events,
         click: () => {
-          if(props.hrefPage)
-            Router.go(props.hrefPage);
+          if (props.hrefPage)
+            router.go(props.hrefPage);
         },
-      }
+      },
     });
   }
 

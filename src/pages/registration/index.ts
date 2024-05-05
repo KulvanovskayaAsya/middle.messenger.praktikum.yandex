@@ -1,23 +1,24 @@
 import './registration.scss';
 import template from './registration.hbs?raw';
-import BaseComponent from '@utils/base-component';
+
+import BaseComponent, { IProps } from '@utils/base-component';
 import Form from '@components/organisms/form';
 import TextField from '@components/molecules/text-field';
 import Button from '@components/atoms/button';
 import Link from '@components/atoms/link';
 import PageTitle from '@components/atoms/page-title';
 
-import { registrationForm } from '@utils/mock-data';
+import { registrationFormFields } from '@utils/mock-data';
+import { withProfile } from '@/store/HOC';
 import AuthorizationService from '@services/authorization-service';
-import connect from '@/store/HOC';
 
-interface IRegistrationPageProps {
+interface IRegistrationPageProps extends IProps {
   modalTitle: PageTitle;
   form: Form;
   loginLink: Link;
 }
 
-const fields = registrationForm.map((field) => new TextField({
+const fields = registrationFormFields.map((field) => new TextField({
   input: {
     id: field.id,
     name: field.name,
@@ -36,7 +37,6 @@ const submitButton = new Button({
 
 class RegistrationPage extends BaseComponent {
   registrationForm: Form;
-  authService: AuthorizationService = new AuthorizationService();
 
   constructor(props: IRegistrationPageProps) {
     const form = new Form({
@@ -44,7 +44,7 @@ class RegistrationPage extends BaseComponent {
       button: submitButton,
       events: {
         submit: (event: Event) => this.handleFormSubmit(event),
-      }
+      },
     });
 
     super({
@@ -55,7 +55,7 @@ class RegistrationPage extends BaseComponent {
       form: form,
       loginLink: new Link({
         hrefPage: '/',
-        text: 'Есть аккаунт?'
+        text: 'Есть аккаунт?',
       }),
     });
 
@@ -66,16 +66,12 @@ class RegistrationPage extends BaseComponent {
     return this.compile(template, this.props);
   }
 
-  async handleFormSubmit (event: Event) {
+  async handleFormSubmit(event: Event) {
     event.preventDefault();
     const registrationData = this.registrationForm.grabFormValues(this.registrationForm);
     
-    await this.authService.register(registrationData);
+    await AuthorizationService.register(registrationData);
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  profileInfo: state.profileInfo,
-});
-
-export default connect(mapStateToProps)(RegistrationPage);
+export default withProfile(RegistrationPage);

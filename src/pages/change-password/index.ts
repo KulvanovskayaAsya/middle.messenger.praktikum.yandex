@@ -1,21 +1,21 @@
 import './change-password.scss';
 import template from './change-password.hbs?raw';
-import BaseComponent from '../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 
-import TextField from '../../components/molecules/text-field';
-import Button from '../../components/atoms/button';
-import Link, { ILinkProps } from '../../components/atoms/link';
-import Form, { IFormProps } from '../../components/organisms/form';
+import TextField from '@components/molecules/text-field';
+import Button from '@components/atoms/button';
+import Link, { ILinkProps } from '@components/atoms/link';
+import Form, { IFormProps } from '@components/organisms/form';
 
-import { changePasswordForm } from '../../utils/mock-data';
-import ProfileService from '@/services/profile-service';
+import { changePasswordFormFields } from '@utils/mock-data';
+import profileService from '@services/profile-service';
 
-interface IChangePasswordPageProps {
+interface IChangePasswordPageProps extends IProps {
   backLink: ILinkProps,
   form: IFormProps
 }
 
-const fields = changePasswordForm.map((field) => new TextField({
+const fields = changePasswordFormFields.map((field) => new TextField({
   input: {
     id: field.id,
     name: field.name,
@@ -29,7 +29,6 @@ const fields = changePasswordForm.map((field) => new TextField({
 
 class ChangePasswordPage extends BaseComponent {
   changePasswordForm: Form;
-  profileService: ProfileService = new ProfileService();
 
   constructor(props: IChangePasswordPageProps) {
     const form = new Form({
@@ -40,7 +39,7 @@ class ChangePasswordPage extends BaseComponent {
       }),
       events: {
         submit: (event: Event) => this.handleFormSubmit(event),
-      }
+      },
     });
 
     super({
@@ -60,11 +59,11 @@ class ChangePasswordPage extends BaseComponent {
     return this.compile(template, this.props);
   }
 
-  async handleFormSubmit (event: Event) {
+  async handleFormSubmit(event: Event) {
     event.preventDefault();
     const changePasswordData = this.changePasswordForm.grabFormValues(this.changePasswordForm);
     
-    await this.profileService.changePassword(changePasswordData);
+    await profileService.changePassword(changePasswordData);
   }
 }
 

@@ -1,41 +1,42 @@
 import Route from '@/router/route';
-import store from '@/store';
-
-interface IPage {
-  getContent: () => HTMLElement;
-}
+import BaseComponent from '@/utils/base-component';
+import AuthorizationService from '@services/authorization-service';
 
 interface IPageConstructor {
-  new(args?: unknown): IPage;
+  new(args?: unknown): BaseComponent;
 }
 
 class Router {
   private _routes: Route[] = [];
+
   private _history: History = window.history;
+
   private _currentRoute: Route | null = null;
+
   private _rootQuery: string = '';
 
   constructor(rootQuery: string) {   
     this._rootQuery = rootQuery;
   }
 
-  private _isAuthenticated() {
-    const profileInfo = store.getState().profileInfo;
-    return profileInfo && Object.keys(profileInfo).length > 0;
-  }
-
   public use(pathname: string, block: IPageConstructor): Router {
-    const route = new Route(pathname, block, {rootQuery: this._rootQuery});
+    const route = new Route(pathname, block, { rootQuery: this._rootQuery });
     this._routes.push(route);
     return this;
   }
 
-  public start(): void {
+  public async start(): Promise<void> {
     window.addEventListener('popstate', () => {
       this._onRoute(window.location.pathname);
     });
     
     this._onRoute(window.location.pathname);
+
+    try {
+      await AuthorizationService.updateProfileInfo();
+    } catch (error) {
+      this.go('/');
+    }
   }
 
   private _onRoute(pathname: string): void {
@@ -43,11 +44,6 @@ class Router {
     
     if (!route) {
       this.go('/404');
-      return;
-    }
-
-    if (pathname !== '/' && pathname !== '/sign-up' && !this._isAuthenticated()) {
-      this.go('/');
       return;
     }
 

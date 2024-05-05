@@ -1,12 +1,8 @@
-import BaseComponent from '../utils/base-component';
-import isEqual from '../utils/object-comparing';
-
-interface IPage {
-  getContent: () => HTMLElement;
-}
+import BaseComponent from '@utils/base-component';
+import isEqual from '@utils/object-comparing';
 
 interface IPageConstructor {
-  new(args?: any): IPage;
+  new(args?: any): BaseComponent;
 }
 
 function render(query: string, block: BaseComponent): HTMLElement | null {
@@ -25,8 +21,11 @@ interface RouteProps {
 
 class Route {
   private _pathname: string;
+
   private _componentName: IPageConstructor;
+
   private _block: BaseComponent | null;
+
   private _props: RouteProps;
   
   constructor(pathname: string, view: IPageConstructor, props: RouteProps) {

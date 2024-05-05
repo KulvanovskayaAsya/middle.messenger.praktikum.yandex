@@ -1,8 +1,8 @@
-import BaseComponent from '../../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './message.scss';
 import template from './message.hbs?raw';
 
-export interface IMessageProps {
+export interface IMessageProps extends IProps {
   text: string;
   date: string;
   mediaSrc?: string;
@@ -11,6 +11,7 @@ export interface IMessageProps {
 
 class Message extends BaseComponent {
   constructor(props: IMessageProps) {
+    props.date = new Date(props.date).toLocaleString();
     super(props);
   }
 

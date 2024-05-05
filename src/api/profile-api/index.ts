@@ -9,12 +9,12 @@ export type ProfileData = {
   login: string,
   email: string,
   phone: string
-}
+};
 
 export type PasswordData = {
   oldPassword: string,
   newPassword: string
-}
+};
 
 class ProfileAPI extends BaseAPI {
   constructor() {
@@ -22,17 +22,17 @@ class ProfileAPI extends BaseAPI {
   }
 
   changeProfile(data: Record<string, any>) {
-    return this.http.put(`/profile`, { data });
+    return this.http.put('/profile', { data });
   }
 
   changeAvatar(avatar: File) {
     const data = new FormData();
     data.append('avatar', avatar);
-    return this.http.put(`/profile/avatar`, { data });
+    return this.http.put('/profile/avatar', { data });
   }
 
   changePassword(data: PasswordData) {
-    return this.http.put(`/password`, { data });
+    return this.http.put('/password', { data });
   }
 
   getUserById(userId: string) {
@@ -40,10 +40,10 @@ class ProfileAPI extends BaseAPI {
   }
 
   searchUser(login: string) {
-    return this.http.post(`/search`, {
-      data: { login }
+    return this.http.post('/search', {
+      data: { login },
     });
   }
 }
 
-export default ProfileAPI;
+export default new ProfileAPI();

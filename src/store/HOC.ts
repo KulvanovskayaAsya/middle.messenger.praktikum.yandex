@@ -1,20 +1,18 @@
-import List from '@/components/organisms/list';
 import store, { StoreEvents } from '@/store';
-import BaseComponent from '@/utils/base-component';
-import isEqual from '@/utils/object-comparing';
-import { ChatInfo } from './initial-state';
-import Chat from '@/components/molecules/chat';
+import BaseComponent from '@utils/base-component';
+import isEqual from '@utils/object-comparing';
 
 type Indexed<T = unknown> = {
   [key: string]: T;
 };
 
 function connect(mapStateToProps: (state: Indexed) => Indexed) {
-  return function(Component: typeof BaseComponent) {
+  return function (Component: typeof BaseComponent) {
+    // @ts-ignore
     return class extends Component {
       constructor(props: any) {
         let state = mapStateToProps(store.getState());
-        super({...props, ...state});
+        super({ ...props, ...state });
 
         store.on(StoreEvents.Updated, () => {
           const newState = mapStateToProps(store.getState());
@@ -33,6 +31,8 @@ export const withProfile = connect(state => ({ profile: state.profileInfo }));
 export const withChats = connect(state => ({
   profile: state.profileInfo,
   chats: state.chatsList,
+  activeChatID: state.activeChatID,
+  activeChatMessages: state.activeChatMessages,
 }));
 
 export default connect;

@@ -4,8 +4,6 @@ import Handlebars from 'handlebars';
 import EventBus from './event-bus';
 import isEqual from './object-comparing';
 
-const RESOURCES_BASE_URL = 'https://ya-praktikum.tech/api/v2/resources';
-
 enum EVENTS {
   INIT = 'init',
   FLOW_CDM = 'flow:component-did-mount',
@@ -13,33 +11,40 @@ enum EVENTS {
   FLOW_RENDER = 'flow:render',
 }
 
-export type Props = {
+export interface IProps {
   [key: string]: unknown;
   dependences?: string[] | [];
   events?: Record<string, (e: Event) => void>;
-};
+  additionalClasses?: string;
+}
+
 type Children = Record<string, BaseComponent>;
 
-// не получилось типизировать
 type PropsAndChildren = {
+  props: IProps;
+  children: Children;
 };
 
 abstract class BaseComponent {
   static LIFECICLE_EVENTS = EVENTS;
 
   protected _dependences: string[] | [] = [];
+
   private _id: string;
+
   private _element: HTMLElement | null = null;
+
   private eventBus: EventBus;
 
-  public props: Props;
+  public props: IProps;
+
   public children: Children;
 
-  constructor(propsAndChildren: PropsAndChildren = {}) {
+  constructor(propsAndChildren: PropsAndChildren = { props: {}, children: {} }) {
     const eventBus = new EventBus();
     const { children, props } = this._getChildrenAndProps(propsAndChildren);
 
-    if(props.dependences) {
+    if (props.dependences) {
       this._dependences = props.dependences;
     }
 
@@ -56,9 +61,9 @@ abstract class BaseComponent {
     return this._dependences;
   }
 
-  private _getChildrenAndProps(propsAndChildren: PropsAndChildren): { children: Children; props: Props } {
+  private _getChildrenAndProps(propsAndChildren: PropsAndChildren): { children: Children; props: IProps } {
     const children: Children = {};
-    const props: Props = {};
+    const props: IProps = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (value instanceof BaseComponent) {
@@ -71,9 +76,9 @@ abstract class BaseComponent {
     return { children, props };
   }
 
-  private _makePropsProxy(props: Props): Props {
+  private _makePropsProxy(props: IProps): IProps {
     return new Proxy(props, {
-      set: (target: Props, prop: string, value: unknown): boolean => {
+      set: (target: IProps, prop: string, value: unknown): boolean => {
         const oldProps = { ...target };
         target[prop] = value;
         this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_CDU, oldProps, target);
@@ -102,7 +107,7 @@ abstract class BaseComponent {
     throw new Error('Element is not created');
   }
 
-  public setProps = (nextProps: Props): void => {
+  public setProps = (nextProps: IProps): void => {
     if (!nextProps) {
       return;
     }
@@ -130,10 +135,10 @@ abstract class BaseComponent {
     this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_CDM);
   }
 
-  private _componentDidUpdate(oldProps: Props, newProps: Props): void {
+  private _componentDidUpdate(oldProps: IProps, newProps: IProps): void {
     const shouldUpdate = this.componentDidUpdate(
-      oldProps as Props,
-      newProps as Props,
+      oldProps as IProps,
+      newProps as IProps,
     );
 
     if (shouldUpdate) {
@@ -142,34 +147,23 @@ abstract class BaseComponent {
       Object.values(this.children).forEach(child => {
         const dependencies = child.dependsOnProps();
         const hasDependencyChanged = dependencies.some(dep => {
-          
-          child.setProps({
-            ...child.props,
-            list: newProps[dep]
-          });
-
-          if(child.props.src) {
-            child.setProps({
-              ...child.props,
-              src: `${RESOURCES_BASE_URL}${newProps[dep].avatar}`
-            });
+          if (this instanceof BasePage) {
+            this.updateChildrenDependentProps(newProps[dep], dep);
           }
 
-          return !isEqual(oldProps[dep], newProps[dep])
+          child._init();
+
+          return !isEqual(oldProps[dep], newProps[dep]);
         });
 
         if (hasDependencyChanged) {
-          child._forceRender();
+          this._init();
         }
       });
     }
   }
 
-  private _forceRender(): void {
-    this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_RENDER);
-  }
-
-  public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+  public componentDidUpdate(oldProps: IProps, newProps: IProps): boolean {
     return !isEqual(oldProps, newProps);
   }
 
@@ -188,7 +182,7 @@ abstract class BaseComponent {
 
   abstract render(): HTMLElement;
 
-  compile(template: string, props: Props): HTMLElement {
+  compile(template: string, props: IProps): HTMLElement {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
@@ -244,6 +238,10 @@ abstract class BaseComponent {
       this._element.style.display = 'none';
     }
   }
+}
+
+export abstract class BasePage extends BaseComponent {
+  abstract updateChildrenDependentProps(newProp: unknown, dependence?: string): void;
 }
 
 export default BaseComponent;

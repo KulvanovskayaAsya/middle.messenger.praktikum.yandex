@@ -1,9 +1,12 @@
-import BaseComponent from '../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './error500.scss';
 import template from './error500.hbs?raw';
-import Link from '../../components/atoms/link';
+import Link from '@components/atoms/link';
 
-interface IErrorPageProps {}
+interface IErrorPageProps extends IProps {
+  backLink: Link;
+  errorImgSrc: string;
+}
 
 class ErrorPage500 extends BaseComponent {
   constructor(props: IErrorPageProps) {

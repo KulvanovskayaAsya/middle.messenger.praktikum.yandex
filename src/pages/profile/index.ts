@@ -1,38 +1,34 @@
 import './profile.scss';
 import template from './profile.hbs?raw';
 
-import BaseComponent from '@utils/base-component';
+import { BasePage, IProps } from '@utils/base-component';
 import Form from '@components/organisms/form';
 import TextField from '@components/molecules/text-field';
 import Button from '@components/atoms/button';
 import Link from '@components/atoms/link';
 import Avatar from '@components/atoms/avatar';
 
-import { profileForm } from '@utils/mock-data';
-import ProfileService from '@/services/profile-service';
+import { profileFormFields } from '@utils/mock-data';
 import { withProfile } from '@/store/HOC';
 import { ProfileInfo } from '@/store/initial-state';
-import Input from '@/components/atoms/input';
+import Input from '@components/atoms/input';
+import profileService from '@services/profile-service';
+import { getAvatarUrl } from '@/utils/get-resources-url';
 
-interface IProfilePageProps {
+interface IProfilePageProps extends IProps {
   profile: ProfileInfo
 }
 
-const RESOURCES_BASE_URL = 'https://ya-praktikum.tech/api/v2/resources';
-
-class ProfilePage extends BaseComponent {
+class ProfilePage extends BasePage {
   profileForm: Form;
-  profileService: ProfileService = new ProfileService();
 
-  constructor({ profile, ...props}: IProfilePageProps) {
-    const profileAvatar = profile.avatar ? `${RESOURCES_BASE_URL}${profile.avatar}` : 'images/no-avatar.png';
-
-    const fields = profileForm.map((field) => new TextField({
+  constructor({ profile, ...props }: IProfilePageProps) {
+    const fields = profileFormFields.map((field) => new TextField({
       input: {
         id: field.id,
         name: field.name,
         inputType: field.type || 'text',
-        value: profile[field.name]
+        value: String(profile[field.name as keyof ProfileInfo]),
       },
       label: {
         forInputId: field.id,
@@ -48,7 +44,8 @@ class ProfilePage extends BaseComponent {
       }),
       events: {
         submit: (event: Event) => this.handleFormSubmit(event),
-      }
+      },
+      dependences: ['profile'],
     });
 
     const uploadAvatarInput = new Input({
@@ -57,8 +54,8 @@ class ProfilePage extends BaseComponent {
       inputType: 'file',
       additionalClasses: 'profile-form__upload-avatar',
       events: {
-        change: (event: Event) => this.handleAvatarChange(event)
-      }
+        change: (event: Event) => this.handleAvatarChange(event),
+      },
     });
 
     super({
@@ -69,10 +66,10 @@ class ProfilePage extends BaseComponent {
         additionalClasses: 'link_back',
       }),
       avatar: new Avatar({
-        src: profileAvatar,
+        src: getAvatarUrl(profile.avatar),
         alt: 'Аватар вашего профиля',
         additionalClasses: 'avatar_large',
-        dependences: ['profile']
+        dependences: ['profile'],
       }),
       uploadAvatarInput: uploadAvatarInput,
       form: form,
@@ -90,18 +87,50 @@ class ProfilePage extends BaseComponent {
     return this.compile(template, this.props);
   }
 
+  public updateChildrenDependentProps(profile: ProfileInfo) {
+    const fields = profileFormFields.map((field) => new TextField({
+      input: {
+        id: field.id,
+        name: field.name,
+        inputType: field.type || 'text',
+        value: String(profile[field.name as keyof ProfileInfo]),
+      },
+      label: {
+        forInputId: field.id,
+        label: field.label,
+      },
+    }));
+
+    const avatar = this.children.avatar;
+    const form = this.children.form;
+
+    avatar.setProps({
+      ...avatar.props,
+      src: getAvatarUrl(profile.avatar),
+    });
+
+    form.setProps({
+      ...form.props,
+      textFields: fields,
+    });
+  }
+
   async handleAvatarChange(event: Event) {
     event.preventDefault();
 
-    const avatar = event.target.files[0];
-    this.profileService.changeAvatar(avatar);
+    const input = event.target as HTMLInputElement;
+    const avatar = input.files ? input.files[0] : null;
+  
+    if (avatar) {
+      profileService.changeAvatar(avatar);
+    }
   }
 
   async handleFormSubmit(event: Event) {
     event.preventDefault();
-    const profileData = this.profileForm.grabFormValues(this.profileForm);
+    const profileData = this.profileForm.grabFormValues(this.profileForm) as unknown as ProfileInfo;
     
-    await this.profileService.changeProfile(profileData);
+    await profileService.changeProfile(profileData);
   }
 }
 

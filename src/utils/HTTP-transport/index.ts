@@ -8,7 +8,7 @@ const enum HttpMethods {
 type Options = {
   method?: HttpMethods;
   headers?: Record<string, string>;
-  data?: Record<string, string>;
+  data?: Record<string, unknown> | FormData;
   withCreditals?: boolean;
   timeout?: number;
   retries?: number;
@@ -24,11 +24,11 @@ interface IHTTP {
   request: HTTPMethod;
 }
 
-function queryStringify(data: Record<string, string>): string {
+function queryStringify(data: Record<string, unknown>): string {
   let result = '?';
 
   for (const [key, value] of Object.entries(data)) {
-    result += `${key}=${value.toString()}&`;
+    result += `${key}=${String(value)}&`;
   }
 
   return result.slice(0, result.length - 1);
@@ -50,16 +50,16 @@ class HTTPTransport implements IHTTP {
   delete: HTTPMethod = (url, options) => this.request(url, { ...options, method: HttpMethods.DELETE });
 
   request: HTTPMethod = (url, options) => {
-    const { method, headers = {}, data, withCreditals = true, timeout = 1000 } = options;
+    const { method = HttpMethods.GET, headers = {}, data, withCreditals = true, timeout = 1000 } = options;
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      const xhrUrl = this.baseUrl + url + (method === HttpMethods.GET && data ? `?${queryStringify(data)}` : '');
+      const xhrUrl = this.baseUrl + url + (method === HttpMethods.GET && data && !(data instanceof FormData) ? `?${queryStringify(data)}` : '');
       
       xhr.open(method, xhrUrl);
 
-      Object.keys(headers).forEach(([key, value]) => {
-        xhr.setRequestHeader(key, value);
+      Object.keys(headers).forEach(key => {
+        xhr.setRequestHeader(key, headers[key]);
       });
 
       xhr.timeout = timeout;
@@ -91,17 +91,3 @@ class HTTPTransport implements IHTTP {
   };
 }
 export default HTTPTransport;
-
-// function fetchWithRetry(url: string, options: Options): unknown {
-//   const { retries = 2 } = options;
-
-//   if (retries === 0) {
-//     throw new Error('The number of attempts has been exhausted');
-//   }
-
-//   return new HTTPTransport()
-//     .get(url, options)
-//     .catch(() => fetchWithRetry(url, { ...options, retries: retries - 1 }));
-// }
-
-// export { fetchWithRetry };

@@ -1,8 +1,8 @@
-import BaseComponent from '@utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './input.scss';
 import template from './input.hbs?raw';
 
-export interface IInputProps {
+export interface IInputProps extends IProps {
   id: string;
   value?: string;
   additionalClasses?: string;
@@ -29,7 +29,7 @@ class Input extends BaseComponent {
   }
 
   public setAttribute(attr: string, value: string) {
-    this._element?.setAttribute(attr, value);
+    this.element?.setAttribute(attr, value);
   }
 
   render(): HTMLElement {

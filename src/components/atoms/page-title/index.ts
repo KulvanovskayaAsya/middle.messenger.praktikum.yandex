@@ -1,8 +1,8 @@
-import BaseComponent from '../../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './page-title.scss';
 import template from './page-title.hbs?raw';
 
-export interface IPageTitleProps {
+export interface IPageTitleProps extends IProps {
   text: string,
   additionalClasses?: string
 }

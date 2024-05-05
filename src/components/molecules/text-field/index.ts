@@ -1,11 +1,11 @@
-import BaseComponent from '../../../utils/base-component';
+import BaseComponent from '@utils/base-component';
 import './text-field.scss';
 import template from './text-field.hbs?raw';
 
-import validate from '../../../utils/validation';
+import validate from '@utils/validation';
 
-import Input, { IInputProps } from '../../atoms/input';
-import Label, { ILabelProps } from '../../atoms/label';
+import Input, { IInputProps } from '@components/atoms/input';
+import Label, { ILabelProps } from '@components/atoms/label';
 
 export interface ITextFieldProps {
   input: IInputProps;

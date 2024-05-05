@@ -1,7 +1,7 @@
-import EventBus from '@/utils/event-bus';
+import EventBus from '@utils/event-bus';
 import initialState from '@/store/initial-state';
 
-import { isPlainObject } from '@/utils/type-check';
+import { isPlainObject } from '@utils/type-check';
 
 export enum StoreEvents {
   Updated = 'updated',
@@ -12,11 +12,11 @@ type Indexed<T = unknown> = {
 };
 
 function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
-  if(typeof path !== 'string') {
+  if (typeof path !== 'string') {
     throw new Error('path must be string');
   }
   
-  if(typeof object !== 'object' || object === null) {
+  if (typeof object !== 'object' || object === null) {
     return object;
   }
   

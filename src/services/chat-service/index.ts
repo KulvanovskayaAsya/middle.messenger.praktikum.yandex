@@ -1,17 +1,22 @@
 import store from '@/store';
 import ChatAPI from '@/api/chat-api';
 import { ChatInfo } from '@/store/initial-state';
+import WebSocketTransport, { MessageEventHandlers } from '@utils/WS-transport';
+import { isArray } from '@utils/type-check';
+
+export type WSMessageType = 'message' | 'file' | 'sticker' | 'get old';
+
+export type WSMessage = {
+  content: string | number,
+  type: WSMessageType
+};
 
 class ChatService {
-  API: ChatAPI = new ChatAPI();
-
-  constructor() {
-    this.getChatsList();
-  }
+  socket: WebSocketTransport | null = null;
 
   public async getChatsList() {
     try {
-      const profileChats = JSON.parse(await this.API.getChats() as string);
+      const profileChats = JSON.parse(await ChatAPI.getChats() as string);
 
       this._setStoreChatsList(profileChats);
     } catch (error) {
@@ -19,86 +24,91 @@ class ChatService {
     }
   }
 
+  public async createChat(chatData: any) {
+    try {
+      const chatTitle = {
+        title: chatData.chatTitle,
+      };
+      
+      const { id } = JSON.parse(await ChatAPI.createChat(chatTitle) as string);
+
+      const chatInfo = {
+        userIDs: [
+          chatData.chatUser,
+        ],
+        chatID: id,
+      };
+
+      await ChatAPI.addUsersToChat(chatInfo);
+
+      this.getChatsList();
+    } catch (error) {
+      alert('Ошибка создания чата: ' + error);
+    }
+  }
+
   private async _setStoreChatsList(chatInfo: ChatInfo[]) {
     store.setState('chatsList', [...chatInfo]);
   }
-  
-  // public async createChat(data: { title: string }) {
-  //   try {
-  //     const response = await this.API.createChat(data);
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Ошибка создания чата:', error);
-  //     alert('Ошибка создания чата: ' + error);
-  //     return null;
-  //   }
-  // }
 
-  // public async deleteChat(chatId: string) {
-  //   try {
-  //     const response = await this.API.deleteChat(chatId);
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Ошибка удаления чата:', error);
-  //     alert('Ошибка удаления чата: ' + error);
-  //     return null;
-  //   }
-  // }
+  public async setActiveChat(chatId: number) {
+    const currentActiveChatID = store.getState().activeChatID;
 
-  // public async getUsersByChatId(chatId: string) {
-  //   try {
-  //     const response = await this.API.getUsersByChatId(chatId);
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Ошибка получения пользователей чата:', error);
-  //     alert('Ошибка получения пользователей чата: ' + error);
-  //     return null;
-  //   }
-  // }
+    if (currentActiveChatID != chatId) {
+      store.setState('activeChatMessges', []);
+      store.setState('activeChatID', chatId);
+      await this._createWSConnection(chatId);
+      await this.socket?.waitForOpen();
+      this.getChatMessages(0);
+    }
+  }
 
-  // public async getNewMessagesCount(chatId: string) {
-  //   try {
-  //     const response = await this.API.getNewMessagesCount(chatId);
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Ошибка получения новых сообщений:', error);
-  //     alert('Ошибка получения новых сообщений: ' + error);
-  //     return null;
-  //   }
-  // }
+  private async _createWSConnection(chatID: number) {
+    const userID = store.getState().profileInfo.id;
+    const { token } = JSON.parse(await ChatAPI.getToken(chatID) as string);
 
-  // public async uploadChatAvatar(data: FormData) {
-  //   try {
-  //     const response = await this.API.uploadChatAvatar(data);
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Ошибка обновления аватара чата:', error);
-  //     alert('Ошибка обновления аватара чата: ' + error);
-  //     return null;
-  //   }
-  // }
+    const WSUrl = `wss://ya-praktikum.tech/ws/chats/${userID}/${chatID}/${token}`;
+    const handlers: MessageEventHandlers = {
+      onMessage: this._handleMessage,
+      onError: this._handleError,
+    };
 
-  // public async addUsersToChat(data: { chatId: string; userIds: string[] }) {
-  //   try {
-  //     const response = await this.API.addUsersToChat(data);
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Ошибка добавления пользователей в чат:', error);
-  //     alert('Ошибка добавления пользователей в чат: ' + error);
-  //     return null;
-  //   }
-  // }
+    this.socket = new WebSocketTransport(WSUrl, handlers);
+  }
 
-  // public async removeUsersFromChat(data: { chatId: string; userIds: string[] }) {
-  //   try {
-  //     const response = await this.API.removeUsersFromChat(data);
-  //     return response;
-  //   } catch (error) {
-  //     console.error('Ошибка удаления пользователей из чата:', error);
-  //     alert('Ошибка удаления пользователей из чата: ' + error);
-  //     return null;
-  //   }
-  // }
+  public sendMessage(message: string) {
+    const data: WSMessage = {
+      type: 'message',
+      content: message,
+    };
+
+    this.socket?.send(data);
+  }
+
+  public getChatMessages(count: number) {
+    const data: WSMessage = {
+      type: 'get old',
+      content: count,
+    };
+
+    this.socket?.send(data);
+  }
+
+  private _handleMessage(event: MessageEvent): void {
+    const data = JSON.parse(event.data);
+
+    if (isArray(data)) {
+      store.setState('activeChatMessages', data.reverse());
+    }
+
+    if (data.type === 'message') {
+      store.setState('activeChatMessages', [ ...store.getState().activeChatMessages, data]);
+    }
+  }
+
+  private _handleError(event: Event): void {
+    console.error('Ошибка коннекта:', event);
+  }
 }
 
-export default ChatService;
+export default new ChatService();

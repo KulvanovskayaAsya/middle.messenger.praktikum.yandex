@@ -9,12 +9,12 @@ export type SignUpData = {
   email: string
   password: string
   phone: string
-}
+};
 
 export type SignInData = {
   login: string
   password: string
-}
+};
 
 class AuthorizationAPI extends BaseAPI {
   constructor() {
@@ -38,4 +38,4 @@ class AuthorizationAPI extends BaseAPI {
   }
 }
 
-export default AuthorizationAPI;
+export default new AuthorizationAPI();

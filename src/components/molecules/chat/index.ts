@@ -1,14 +1,16 @@
-import BaseComponent from '../../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './chat.scss';
 import template from './chat.hbs?raw';
 
-import Avatar, { IAvatarProps } from '../../atoms/avatar';
+import Avatar, { IAvatarProps } from '@components/atoms/avatar';
 
-export interface ChatProps {
+export interface ChatProps extends IProps {
+  id: number;
   avatar: IAvatarProps;
   name: string;
   lastMessage: string;
   unreadedCount: number;
+  additionalClasses?: string;
 }
 
 class Chat extends BaseComponent {

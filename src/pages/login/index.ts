@@ -1,23 +1,24 @@
 import './login.scss';
 import template from './login.hbs?raw';
-import BaseComponent from '@utils/base-component';
+
+import BaseComponent, { IProps } from '@utils/base-component';
 import Form from '@components/organisms/form';
 import TextField from '@components/molecules/text-field';
 import Button from '@components/atoms/button';
 import Link from '@components/atoms/link';
 import PageTitle from '@components/atoms/page-title';
 
-import { authenticationForm } from '@utils/mock-data';
-import AuthorizationService from '@/services/authorization-service';
+import { authenticationFormFields } from '@utils/mock-data';
 import { withProfile } from '@/store/HOC';
+import AuthorizationService from '@services/authorization-service';
 
-interface ILoginPageProps {
+interface ILoginPageProps extends IProps {
   modalTitle: PageTitle;
   form: Form;
   registrationLink: Link;
 }
 
-const fields = authenticationForm.map((field) => new TextField({
+const fields = authenticationFormFields.map((field) => new TextField({
   input: {
     id: field.id,
     name: field.name,
@@ -31,18 +32,17 @@ const fields = authenticationForm.map((field) => new TextField({
 
 class LoginPage extends BaseComponent {
   loginForm: Form;
-  authService: AuthorizationService = new AuthorizationService();
 
   constructor(props: ILoginPageProps) {
-    const form = new Form({
+    const loginForm = new Form({
       textFields: fields,
       button: new Button({
         text: 'Войти',
-        additionalClasses: 'button_primary'
+        additionalClasses: 'button_primary',
       }),
       events: {
-        submit: (event: Event) => this.handleFormSubmit(event),
-      }
+        submit: (event: Event) => this.handleLoginFormSubmit(event),
+      },
     });
 
     super({
@@ -50,25 +50,25 @@ class LoginPage extends BaseComponent {
       modalTitle: new PageTitle({
         text: 'Вход',
       }),
-      form: form,
+      form: loginForm,
       registrationLink: new Link({
         text: 'Нет аккаунта?',
         hrefPage: '/sign-up',
       }),
     });
 
-    this.loginForm = form;
+    this.loginForm = loginForm;
   }
 
   render(): HTMLElement {
     return this.compile(template, this.props);
   }
 
-  async handleFormSubmit (event: Event) {
+  async handleLoginFormSubmit(event: Event) {
     event.preventDefault();
     const loginData = this.loginForm.grabFormValues(this.loginForm);
     
-    await this.authService.authorize(loginData);
+    await AuthorizationService.authorize(loginData);
   }
 }
 

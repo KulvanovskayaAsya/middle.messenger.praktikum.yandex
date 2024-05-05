@@ -1,84 +1,103 @@
-import EventBus from '@/utils/event-bus';
-
 const enum WSEvents {
-  ERROR = 'error',
-  CONNECTED = 'connected',
-  CLOSE = 'close',
+  OPEN = 'open',
   MESSAGE = 'message',
+  ERROR = 'error',
+  CLOSE = 'close',
 }
 
-class WebSocketTransport extends EventBus{
-  private ws: WebSocket | null = null;
-  private url: string = '';
+export type MessageEventHandlers = {
+  onOpen?: (event: Event) => void;
+  onClose?: (event: CloseEvent) => void;
+  onMessage?: (event: MessageEvent) => void;
+  onError?: (event: Event) => void;
+};
 
-  private socket?: WebSocket;
+class WebSocketTransport {
+  private socket: WebSocket | null = null;
+
+  private eventHandlers: MessageEventHandlers;
+
+  private _url: string;
+
   private pingInterval: ReturnType<typeof setInterval> | null = null;
+
   private readonly pingIntervalTime = 30000;
-  
-  constructor(url: string) {
-    super();
-    this.url = url;
+
+  private openPromise: Promise<void>;
+
+  private resolveOpenPromise!: () => void;
+
+  constructor(url: string, eventHandlers: MessageEventHandlers) {
+    this._url = url;
+    this.eventHandlers = eventHandlers;
+    this.openPromise = new Promise(resolve => {
+      this.resolveOpenPromise = resolve;
+    });
+
+    this._connect();
   }
 
-  public send(data: object) {
-    if (!this.ws) {
-      throw new Error( 'Socket is not connected');
-    }
-
-    this.ws.send(JSON.stringify(data));
+  public waitForOpen(): Promise<void> {
+    return this.openPromise;
   }
 
-  public connect(): Promise<void> {
-    if (this.ws) {
-      throw new Error ('The socket is already connected');
+  private _connect(): void {
+    if (this.socket) {
+      throw new Error('The socket is already connected');
     }
 
-    this.ws = new WebSocket(this.url);
-    this.subscribe(this.ws);
-    this.setupPing();
+    this.socket = new WebSocket(this._url);
 
-    return new Promise((resolve, reject) => {
-      this.on(WSEvents.ERROR, reject);
-      this.on(WSEvents.CONNECTED, () => {
-        this.off(WSEvents.ERROR, reject);
-        resolve();
-      })
-    })
+    this.socket.addEventListener(WSEvents.OPEN, (event: Event) => {
+      if (this.eventHandlers.onOpen) {
+        this.eventHandlers.onOpen(event);
+      }
+      this.resolveOpenPromise();
+    });
+
+    this._setupPing();
+
+    if (this.eventHandlers.onOpen) {
+      this.socket.addEventListener(WSEvents.OPEN, this.eventHandlers.onOpen);
+    }
+
+    if (this.eventHandlers.onMessage) {
+      this.socket.addEventListener(WSEvents.MESSAGE, this.eventHandlers.onMessage);
+    }
+
+    if (this.eventHandlers.onError) {
+      this.socket.addEventListener(WSEvents.ERROR, this.eventHandlers.onError);
+    }
+
+    if (this.eventHandlers.onClose) {
+      this.socket.addEventListener(WSEvents.CLOSE, this.eventHandlers.onClose);
+    }
+  }
+
+  public send(message: any): void {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      this.socket?.send(JSON.stringify(message));
+    } else {
+      console.error('WebSocket is not open. Cannot send message.');
+    }
   }
 
   public close() {
-    this.ws?.close();
-    clearInterval(this.pingInterval);
+    if (this.socket) {
+      this.socket.close();
+    }
+
+    clearInterval(this.pingInterval as number);
+    this.pingInterval = null;
   }
 
-  private setupPing() {
+  private _setupPing() {
+    const data = {
+      type: 'ping',
+    };
     this.pingInterval = setInterval(() => {
-      this.send({type: 'ping'});
+      this.socket?.send(JSON.stringify(data));
     }, this.pingIntervalTime);
-
-    this.on(WSEvents.CLOSE, () => {
-      clearInterval(this.pingInterval);
-      this.pingInterval = null;
-    })
-  }
-
-  private subscribe(ws: WebSocket) {
-    ws.addEventListener('error', (event: Event) => {
-      this.emit(WSEvents.ERROR, event)
-    });
-
-    // ws.addEventListener('connected', (message: MessageEvent<unknown>) => {
-    //   const data = JSON.parse(message.data);
-    //   this.emit(WSEvents.MESSAGE, data);
-    // });
-
-    ws.addEventListener('open', () => {
-      this.emit(WSEvents.CONNECTED);
-    });
-
-    ws.addEventListener('close', () => {
-      this.emit(WSEvents.CLOSE);
-    });
   }
 }
 

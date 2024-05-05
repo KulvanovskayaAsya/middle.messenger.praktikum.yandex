@@ -1,17 +1,22 @@
 <main class='chat-page'>
 	<div class='chat-page__side-column'>
 		{{{ profilePreview }}}
-		{{{ searchBox }}}
+		<div class='chat-page__manage-chats manage-chats'>
+			{{{ searchBox }}}
+			{{{ addChatButton }}}
+		</div>
 		{{{ chatsList }}}
 	</div>
 	<div class='messenger chat-page__messenger'>
 		{{{ messagesList }}}
 		{{#if messagesList}}
 			{{{ messagesList }}}
-			{{{ messageInput }}}
-			{{{ sendButton }}}
+			{{{ messageSendForm }}}
 		{{else}}
 			Выберите диалог для начала общения
 		{{/if}}
 	</div>
+	<div class='modal'>
+    {{{ addChatForm }}}
+  </div>
 </main>

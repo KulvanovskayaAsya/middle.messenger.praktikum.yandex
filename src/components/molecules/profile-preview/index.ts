@@ -1,4 +1,4 @@
-import BaseComponent from '@utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './profile-preview.scss';
 import template from './profile-preview.hbs?raw';
 
@@ -7,7 +7,8 @@ import PageTitle, { IPageTitleProps } from '@components/atoms/page-title';
 
 import Router from '@/router';
 
-export interface IProfilePreviewProps {
+export interface IProfilePreviewProps extends IProps {
+  profileId?: string | number;
   hrefPage: string;
   avatar: IAvatarProps;
   profileName: IPageTitleProps;
@@ -24,7 +25,7 @@ class ProfilePreview extends BaseComponent {
         click: () => {
           Router.go(props.hrefPage);
         },
-      }
+      },
     });
   }
 

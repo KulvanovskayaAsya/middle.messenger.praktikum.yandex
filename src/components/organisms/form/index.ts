@@ -1,13 +1,12 @@
-import BaseComponent from '@utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './form.scss';
 
 import TextField from '@components/molecules/text-field';
 import Button from '@components/atoms/button';
 
-import validate from '@utils/validation';
-import { isArray } from '@/utils/type-check';
+import { isArray } from '@utils/type-check';
 
-export interface IFormProps {
+export interface IFormProps extends IProps {
   textFields: TextField[];
   button?: Button;
   events?: any;
@@ -22,7 +21,7 @@ class Form extends BaseComponent {
     const form = document.createElement('form');
     form.classList.add('form');
 
-    const formBtn = this.compile(`{{{button}}}`, this.props);
+    const formBtn = this.compile('{{{button}}}', this.props);
 
     if (isArray(this.props.textFields)) {
       this.props.textFields.forEach((textField: BaseComponent) => {
@@ -35,43 +34,21 @@ class Form extends BaseComponent {
     return form;
   }
 
-  public grabFormValues(form: any): object {
+  public grabFormValues(form: any): Record<string, string> {
     const formData: Record<string, string> = {};
 
-    if(form) {
-      const formElements = form._element.elements;
-      let isValidForm = true;
+    if (form) {
+      const formElements = form.element.elements;
   
       for (let i = 0; i < formElements.length; i++) {
         const element = formElements[i] as HTMLInputElement;
         if (element.name) {
           formData[element.name] = element.value;
-          const isValidField = validate(formData[element.name], element.value).isValid;
-          if (!isValidField) {
-            isValidForm = false;
-          }
         }
       }
     }
 
     return formData;
-  }
-
-  public setFieldValue(fieldName: string, value: string): void {
-    if (isArray(this.props.textFields)) {
-      const textField = this.props.textFields.find((textField: TextField) => {
-        const inputName = textField.children.input.props.name;
-        return inputName === fieldName;
-      });
-
-      if (textField instanceof TextField) {
-        const input = textField.children.input;
-        input.setProps({
-          ...input.props,
-          value: value
-        });
-      }
-    }
   }
 }
 

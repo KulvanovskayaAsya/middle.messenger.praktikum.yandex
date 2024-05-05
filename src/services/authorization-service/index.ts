@@ -4,14 +4,29 @@ import AuthorizationAPI, { SignInData, SignUpData } from '@/api/authorization-ap
 import initialState, { ProfileInfo } from '@/store/initial-state';
 
 class AuthorizationService {
-  API: AuthorizationAPI = new AuthorizationAPI();
+  private async _getProfileInfo() {
+    return JSON.parse(await AuthorizationAPI.getUser() as string);
+  }
 
-  public async authorize(data: SignInData) {
+  private async _setStoreProfileInfo(profileInfo: ProfileInfo | {}) {
+    store.setState('profileInfo', {
+      ...profileInfo,
+    });
+  }
+
+  public async updateProfileInfo() {
     try {
-      await this.API.signIn(data);
-
       const profileInfo = await this._getProfileInfo();
       this._setStoreProfileInfo(profileInfo);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async authorize(data: unknown) {
+    try {
+      await AuthorizationAPI.signIn(data as SignInData);
+      await this.updateProfileInfo();
     } catch (error) {
       alert('Ошибка входа: ' + error);
     }
@@ -19,12 +34,10 @@ class AuthorizationService {
     router.go('/messenger');
   }
 
-  public async register(data: SignUpData) {
+  public async register(data: unknown) {
     try {
-      await this.API.signUp(data);
-
-      const profileInfo = await this._getProfileInfo();
-      this._setStoreProfileInfo(profileInfo);
+      await AuthorizationAPI.signUp(data as SignUpData);
+      await this.updateProfileInfo();
     } catch (error) {
       alert('Ошибка регистрации: ' + error);
     }
@@ -34,7 +47,7 @@ class AuthorizationService {
 
   public async logout() {
     try {
-      await this.API.logout();
+      await AuthorizationAPI.logout();
 
       this._setStoreProfileInfo(initialState.profileInfo);
     } catch (error) {
@@ -43,16 +56,6 @@ class AuthorizationService {
     
     router.go('/login');
   }
-
-  private async _getProfileInfo() {
-    return JSON.parse(await this.API.getUser() as string);
-  }
-
-  private async _setStoreProfileInfo(profileInfo: ProfileInfo) {
-    store.setState('profileInfo', {
-      ...profileInfo
-    });
-  }
 }
 
-export default AuthorizationService;
+export default new AuthorizationService();

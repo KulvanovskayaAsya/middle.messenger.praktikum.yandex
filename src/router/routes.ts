@@ -5,13 +5,10 @@ import ProfilePage from '@pages/profile';
 import ChangePasswordPage from '@pages/change-password';
 import ErrorPage404 from '@pages/error404';
 import ErrorPage500 from '@pages/error500';
-
-interface IPage {
-  getContent: () => HTMLElement;
-}
+import BaseComponent from '@/utils/base-component';
 
 interface IPageConstructor {
-  new(args?: any): IPage;
+  new(args?: any): BaseComponent;
 }
 
 const routes: Record<string, { path: string, component: IPageConstructor }> = {
