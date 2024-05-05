@@ -8,7 +8,7 @@ type Indexed<T = unknown> = {
 
 function connect(mapStateToProps: (state: Indexed) => Indexed) {
   return function (Component: typeof BaseComponent) {
-    // @ts-expect-error
+    // @ts-expect-error данный класс не должен реализовывать render метод, иначе не получилось решить проблему
     return class extends Component {
       constructor(props: any) {
         let state = mapStateToProps(store.getState());
