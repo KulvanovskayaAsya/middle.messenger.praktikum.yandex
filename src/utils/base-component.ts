@@ -21,8 +21,7 @@ export interface IProps {
 type Children = Record<string, BaseComponent>;
 
 type PropsAndChildren = {
-  props: IProps;
-  children: Children;
+  [key: string]: unknown;
 };
 
 abstract class BaseComponent {
@@ -40,7 +39,7 @@ abstract class BaseComponent {
 
   public children: Children;
 
-  constructor(propsAndChildren: PropsAndChildren = { props: {}, children: {} }) {
+  constructor(propsAndChildren: PropsAndChildren = {}) {
     const eventBus = new EventBus();
     const { children, props } = this._getChildrenAndProps(propsAndChildren);
 

@@ -89,7 +89,7 @@ class ChatPage extends BasePage {
         additionalClasses: 'messenger__message-input',
       })],
       button: new Button({
-        icon: '/src/assets/icons/sendIcon.svg',
+        icon: 'icons/sendIcon.svg',
         additionalClasses: 'button_with-icon messenger__send-button',
       }),
       events: {
@@ -156,7 +156,7 @@ class ChatPage extends BasePage {
         additionalClasses: 'manage-chats__search-chat',
       }),
       addChatButton: new Button({
-        icon: '/src/assets/icons/addChat.svg',
+        icon: 'icons/addChat.svg',
         additionalClasses: 'button_with-icon manage-chats__add-chat',
         events: {
           mousedown: () => {
