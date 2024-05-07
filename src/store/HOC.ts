@@ -27,12 +27,14 @@ function connect(mapStateToProps: (state: Indexed) => Indexed) {
   };
 }
 
-export const withProfile = connect(state => ({ profile: state.profileInfo }));
+export const withProfile = connect(state => ({ profile: state.profile }));
 export const withChats = connect(state => ({
-  profile: state.profileInfo,
-  chats: state.chatsList,
+  profile: state.profile,
+  chats: state.chats,
+  activeChat: state.activeChat,
   activeChatID: state.activeChatID,
   activeChatMessages: state.activeChatMessages,
+  activeChatUsers: state.activeChatUsers,
 }));
 
 export default connect;

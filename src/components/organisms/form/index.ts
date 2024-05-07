@@ -34,7 +34,7 @@ class Form extends BaseComponent {
     return form;
   }
 
-  public grabFormValues(form: any): Record<string, string> {
+  public grabFormValues(form: any): object {
     const formData: Record<string, string> = {};
 
     if (form) {

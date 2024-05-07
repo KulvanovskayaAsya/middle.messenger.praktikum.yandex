@@ -7,8 +7,8 @@ export type ChatData = {
 };
 
 export type UsersWithChatData = {
-  chatID: string; 
-  userIDs: string[];
+  chatId: string; 
+  users: string[];
 };
 
 class ChatAPI extends BaseAPI {
@@ -20,20 +20,34 @@ class ChatAPI extends BaseAPI {
     return this.http.get('', {});
   }
 
-  getToken(id: number) {
-    return this.http.post(`/token/${id}`, {});
-  }
-
   createChat(data: ChatData) {
     return this.http.post('/', { data });
   }
 
-  getNewMessagesCount(chatID: string) {
-    return this.http.get(`/new/${chatID}`, {});
+  getToken(id: number) {
+    return this.http.post(`/token/${id}`, {});
   }
 
-  addUsersToChat(data: UsersWithChatData) {
+  getChatUsers(chatID: number) {
+    return this.http.get(`/${chatID}/users`, {});
+  }
+
+  changeAvatar(chatId: number, avatar: File) {
+    const data = new FormData();
+    
+    data.append('chatId', String(chatId));
+    data.append('avatar', avatar);
+
+    return this.http.put('/avatar', { data });
+  }
+
+  addChatUsers(data: UsersWithChatData) {
+    console.log('addChatUsers', data);
     return this.http.put('/users', { data });
+  }
+
+  deleteChatUsers(data: UsersWithChatData) {
+    return this.http.delete('/users', { data });
   }
 }
 
