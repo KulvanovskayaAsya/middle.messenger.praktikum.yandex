@@ -8,15 +8,32 @@
 		{{{ chatsList }}}
 	</div>
 	<div class='messenger chat-page__messenger'>
-		{{{ messagesList }}}
-		{{#if messagesList}}
+		{{#if activeChatID}}
+			<div class='chat-info'>
+				{{{ chatInfo }}}
+				{{{ showChatDetailsButton }}}
+			</div>
 			{{{ messagesList }}}
 			{{{ messageSendForm }}}
 		{{else}}
 			Выберите диалог для начала общения
 		{{/if}}
 	</div>
+		{{#if activeChatID}}
+			<div class='chat-info chat-info_details chat-page__chat-info'>
+				<div class='profile-form__upload-container'>
+					{{{ chatAvatar }}}
+					{{{ uploadChatAvatarInput }}}
+				</div>
+				{{{ usersList }}}
+				{{{ addUserButton }}}
+			</div>
+		{{/if}}
 	<div class='modal'>
-    {{{ addChatForm }}}
+		{{#if isChatUserCreation}}
+    	{{{ addChatUserForm }}}
+		{{else}}
+			{{{ addChatForm }}}
+		{{/if}}
   </div>
 </main>

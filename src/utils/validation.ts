@@ -1,3 +1,5 @@
+import { isEmptyString } from './type-check';
+
 type ValidationResult = {
   isValid: boolean;
   message: string;
@@ -48,7 +50,7 @@ const validatePhone = (phone: string): ValidationResult => {
 };
 
 const validateNotEmpty = (message: string): ValidationResult => {
-  if (message.trim() === '') {
+  if (isEmptyString(message)) {
     return { isValid: false, message: 'Поле не может быть пустым.' };
   }
   return { isValid: true, message: '' };

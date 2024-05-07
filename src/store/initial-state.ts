@@ -41,18 +41,32 @@ export type MessageInfo = {
   }  
 };
 
+export type ChatUserInfo = {
+  id: number,
+  first_name: string,
+  second_name: string,
+  display_name: string,
+  login: string,
+  avatar: string,
+  role: string
+};
+
 export type StoreState = {
-  profileInfo: ProfileInfo | {};
-  chatsList: ChatInfo[] | [];
+  profile: ProfileInfo | {};
+  chats: ChatInfo[] | [];
+  activeChat: ChatInfo | {};
   activeChatID: number;
   activeChatMessages: IMessageProps[] | [];
+  activeChatUsers: ChatUserInfo[] | [];
 };
 
 const initialState: StoreState = {
-  profileInfo: {},
-  chatsList: [],
+  profile: {},
+  chats: [],
+  activeChat: {},
   activeChatID: 0,
   activeChatMessages: [],
+  activeChatUsers: [],
 };
 
 export default initialState;

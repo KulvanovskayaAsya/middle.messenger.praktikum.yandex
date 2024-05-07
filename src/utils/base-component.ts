@@ -122,6 +122,14 @@ abstract class BaseComponent {
     Object.assign(this.props, nextProps);
   };
 
+  public setChildren = (nextChildren: Children): void => {
+    if (!nextChildren) {
+      return;
+    }
+
+    Object.assign(this.children, nextChildren);
+  };
+
   private _init(): void {
     this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_RENDER);
   }

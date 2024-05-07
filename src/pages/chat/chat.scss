@@ -6,6 +6,26 @@
   gap: $spacing__large;
 }
 
+.chat-info {
+  display: flex;
+  align-items: center;
+	gap: $spacing__medium;
+	background-color: $color__surface;
+	border-radius: $border-radius_large;
+  margin-bottom: auto;
+}
+
+.chat-info_details {
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing__large;
+	padding: $spacing__medium;
+}
+
+.chat-info__show-details {
+  margin-left: auto;
+}
+
 .chat-page__side-column {
   flex: 0 1 360px;
   display: flex;
@@ -44,6 +64,7 @@
 }
 
 .messenger {
+  position: relative;
   display: flex;
   gap: $spacing__medium;
   flex-direction: column;
@@ -60,6 +81,6 @@
 
 .messenger__send-button {
   position: absolute;
-  right: $spacing__large;
-  bottom: $spacing__extra-large;
+  right: $spacing__small;
+  bottom: $spacing__small;
 }

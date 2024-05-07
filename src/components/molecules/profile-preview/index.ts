@@ -9,10 +9,10 @@ import Router from '@/router';
 
 export interface IProfilePreviewProps extends IProps {
   profileId?: string | number;
-  hrefPage: string;
+  hrefPage?: string;
   avatar: IAvatarProps;
   profileName: IPageTitleProps;
-  nickname: string;
+  nickname?: string;
 }
 
 class ProfilePreview extends BaseComponent {
@@ -23,7 +23,8 @@ class ProfilePreview extends BaseComponent {
       profileName: new PageTitle({ ...props.profileName, additionalClasses: 'profile-preview__real-name' }),
       events: {
         click: () => {
-          Router.go(props.hrefPage);
+          if (props.hrefPage)
+            Router.go(props.hrefPage);
         },
       },
     });

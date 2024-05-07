@@ -9,7 +9,7 @@ class AuthorizationService {
   }
 
   private async _setStoreProfileInfo(profileInfo: ProfileInfo | {}) {
-    store.setState('profileInfo', {
+    store.setState('profile', {
       ...profileInfo,
     });
   }
@@ -49,7 +49,7 @@ class AuthorizationService {
     try {
       await AuthorizationAPI.logout();
 
-      this._setStoreProfileInfo(initialState.profileInfo);
+      this._setStoreProfileInfo(initialState.profile);
     } catch (error) {
       alert('Ошибка выхода: ' + error);
     }

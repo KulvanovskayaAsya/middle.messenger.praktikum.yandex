@@ -10,7 +10,6 @@ export interface ChatProps extends IProps {
   name: string;
   lastMessage: string;
   unreadedCount: number;
-  additionalClasses?: string;
 }
 
 class Chat extends BaseComponent {

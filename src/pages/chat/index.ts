@@ -2,80 +2,49 @@ import BaseComponent, { IProps, IUpdatable } from '@utils/base-component';
 import template from './chat.hbs?raw';
 import './chat.scss';
 
-import Message, { IMessageProps } from '@components/atoms/message';
-import Chat from '@components/molecules/chat';
-import List, { IListFactory } from '@components/organisms/list';
+import { IMessageProps } from '@components/atoms/message';
+import List from '@components/organisms/list';
 import ProfilePreview from '@components/molecules/profile-preview';
 import TextField from '@components/molecules/text-field';
 
-import { ChatInfo, MessageInfo, ProfileInfo } from '@/store/initial-state';
+import { ChatInfo, ChatUserInfo, ProfileInfo } from '@/store/initial-state';
 import { withChats } from '@/store/HOC';
 import Button from '@components/atoms/button';
 import Form from '@components/organisms/form';
 import ChatService from '@services/chat-service';
-import store from '@/store';
 import { getAvatarUrl } from '@/utils/get-resources-url';
+import Input from '@/components/atoms/input';
+import Avatar from '@/components/atoms/avatar';
+import ChatUsersListFactory from '@/utils/list-factories/chat-users-list';
+import ChatsListFactory from '@/utils/list-factories/chat-list';
+import MessagesListFactory from '@/utils/list-factories/messages-list';
+import { isEmptyObject, isPlainObject } from '@/utils/type-check';
 
 interface IChatPageProps extends IProps {
   profile: ProfileInfo;
   chats: ChatInfo[];
+  activeChat: ChatInfo;
   activeChatID: number;
   activeChatMessages: IMessageProps[] | [];
+  activeChatUsers: ChatUserInfo[];
 }
 
-export class ChatListFactory implements IListFactory {
-  getListItemComponent(props: ChatInfo): BaseComponent {
-    return new Chat({
-      id: props.id,
-      avatar: {
-        src: getAvatarUrl(props.avatar),
-        alt: `Аватар чата ${props.title}`,
-      },
-      name: props.title,
-      lastMessage: props.last_message?.content || 'Нет сообщений',
-      unreadedCount: props.unread_count,
-      events: {
-        click: (event: Event) => {
-          const target = event.target as HTMLElement;
+type AddUserFormData = {
+  chatUser: string;
+};
 
-          const chatsElements = document.querySelectorAll('.chat');
-          chatsElements.forEach((chatElement) => chatElement.classList.remove('chat_active'));
-
-          const activeChat = target.closest('.chat') as HTMLElement;
-          activeChat.classList.add('chat_active');
-
-          const activeChatID = Number(activeChat.getAttribute('data-chat-id'));
-          
-          ChatService.setActiveChat(activeChatID);
-        },
-      },
-    });
-  }
-}
-
-export class MessageFactory implements IListFactory {
-  getListItemComponent(props: MessageInfo): BaseComponent {
-    if (props.user_id === store.getState().profileInfo.id) {
-      return new Message({
-        text: props.content,
-        date: props.time,
-        additionalClasses: 'message_mine',
-      });
-    } else {
-      return new Message({
-        text: props.content,
-        date: props.time,
-      });
-    }
-  }
-}
+type SendMessageFormData = {
+  message: string;
+};
 
 class ChatPage extends BaseComponent implements IUpdatable {
   messageForm: Form;
 
   addChatForm: Form;
 
-  constructor({ profile, chats, activeChatID, activeChatMessages, ...props }: IChatPageProps) {
+  addUserForm: Form;
+
+  constructor({ profile, chats, activeChat, activeChatID, activeChatMessages, activeChatUsers, ...props }: IChatPageProps) {
     const messageSendForm = new Form({
       textFields: [ new TextField({
         input: {
@@ -129,8 +98,52 @@ class ChatPage extends BaseComponent implements IUpdatable {
       },
     });
 
+    const addChatUserForm = new Form({
+      textFields: [
+        new TextField({
+          input: {
+            id: 'userId',
+            name: 'chatUser',
+          },
+          label: {
+            forInputId: 'userId',
+            label: 'ID пользователя',
+          },
+        }),
+      ],
+      button: new Button({
+        text: 'Добавить пользователя',
+        additionalClasses: 'button_primary',
+      }),
+      events: {
+        submit: (event: Event) => this.handleUserAdding(event),
+      },
+    });
+
+    const uploadChatAvatarInput = new Input({
+      id: 'avatar',
+      name: 'avatar',
+      inputType: 'file',
+      additionalClasses: 'profile-form__upload-avatar',
+      events: {
+        change: (event: Event) => this.handleAvatarChange(event),
+      },
+    });
+
     super({
       ...props,
+      isChatUserCreation: false,
+      chatInfo: new ProfilePreview({
+        avatar: {
+          src: getAvatarUrl(activeChat.avatar),
+          alt: `Аватар чата ${activeChat.title}`,
+        },
+        profileName: {
+          text: `${activeChat.title}`,
+        },
+        profileId: activeChat.id,
+        dependences: ['activeChat'],
+      }),
       profilePreview: new ProfilePreview({
         avatar: {
           src: getAvatarUrl(profile.avatar),
@@ -168,23 +181,77 @@ class ChatPage extends BaseComponent implements IUpdatable {
       chatsList: new List({
         list: chats,
         dependences: ['chats'],
-      }, new ChatListFactory()),
+      }, new ChatsListFactory()),
       messagesList: new List({ 
         list: activeChatMessages,
         dependences: ['activeChatMessages'],
-      }, new MessageFactory()),
+      }, new MessagesListFactory()),
       messageSendForm: messageSendForm,
       addChatForm: addChatForm,
+      addChatUserForm: addChatUserForm,
+      chatAvatar: new Avatar({
+        src: getAvatarUrl(activeChat.avatar),
+        alt: 'Аватар чата',
+        additionalClasses: 'avatar_large',
+        dependences: ['activeChat'],
+      }),
+      uploadChatAvatarInput: uploadChatAvatarInput,
+      addUserButton: new Button({
+        text: 'Добавить пользователя',
+        icon: 'icons/addUser.svg',
+        additionalClasses: 'button_secondary',
+        events: {
+          mousedown: () => {
+            const modal = document.querySelector('.modal');
+            modal?.classList.add('open');
+            this._createAddUserForm();
+          },
+        },
+      }),
+      usersList: new List({
+        list: activeChatUsers,
+        dependences: ['activeChatUsers'],
+      }, new ChatUsersListFactory()),
+      showChatDetailsButton: new Button({
+        icon: 'icons/moreAboutChat.svg',
+        additionalClasses: 'button_with-icon chat-info__show-details',
+        events: {
+          mousedown: () => this._showChatDetails(),
+        },
+      }),
     });
 
     this.messageForm = messageSendForm;
     this.addChatForm = addChatForm;
+    this.addUserForm = addChatUserForm;
 
     ChatService.getChatsList();
   }
 
-  render() {
+  private _createAddUserForm() {
+    this.setProps({
+      ...this.props,
+      isChatUserCreation: true,
+    });
+  }
+
+  private _showChatDetails() {
+    document.querySelector('.chat-info_details')?.classList.remove('hidden');
+  }
+
+  public render() {
     return this.compile(template, this.props);
+  }
+
+  async handleAvatarChange(event: Event) {
+    event.preventDefault();
+
+    const input = event.target as HTMLInputElement;
+    const avatar = input.files ? input.files[0] : null;
+  
+    if (avatar) {
+      ChatService.changeActiveChatAvatar(avatar);
+    }
   }
 
   public handleChatCreation(event: Event) {
@@ -194,7 +261,22 @@ class ChatPage extends BaseComponent implements IUpdatable {
     ChatService.createChat(newChatData);
   }
 
-  public updateChildrenDependentProps(newProps: ProfileInfo | ChatInfo[] | IMessageProps[], dependence: string) {
+  public handleUserAdding(event: Event) {
+    event.preventDefault();
+
+    const newUserData = this.addUserForm.grabFormValues(this.addUserForm) as AddUserFormData;
+    ChatService.addUserToActiveChat(newUserData.chatUser);
+  }
+
+  public handleMessageSend(event: Event) {
+    event.preventDefault();
+
+    const messageData = this.messageForm.grabFormValues(this.messageForm) as SendMessageFormData;
+    if (messageData.hasOwnProperty('message'))
+      ChatService.sendMessage(messageData.message);
+  }
+
+  public updateChildrenDependentProps(newProps: ProfileInfo | ChatInfo | ChatInfo[] | IMessageProps[] | ChatUserInfo[], dependence: string) {
     if (dependence === 'chats') {
       const chats = newProps as ChatInfo[];
       const chatsList = this.children.chatsList;
@@ -224,6 +306,36 @@ class ChatPage extends BaseComponent implements IUpdatable {
         ...profilePreviewName.props,
         text: `${profileInfo.first_name} ${profileInfo.second_name}`,
       });
+    } else if (dependence === 'activeChat') {
+      const activeChat = newProps as ChatInfo;
+
+      const chatAvatar = this.children.chatAvatar;
+
+      const chatInfo = this.children.chatInfo;
+      const chatInfoAvatar = chatInfo.children.avatar;
+      const chatInfoTitle = chatInfo.children.profileName;
+
+      if (isPlainObject(activeChat) && !isEmptyObject(activeChat)) {
+        chatInfo.setProps({
+          ...chatInfo.props,
+          profileId: activeChat.id,
+        });
+        chatInfoAvatar.setProps({
+          ...chatInfoAvatar.props,
+          src: getAvatarUrl(activeChat.avatar),
+          alt: `Аватар чата ${activeChat.title}`,
+        });
+  
+        chatInfoTitle.setProps({
+          ...chatInfoTitle.props,
+          text: activeChat.title,
+        });
+  
+        chatAvatar.setProps({
+          ...chatAvatar.props,
+          src: getAvatarUrl(activeChat.avatar),
+        });
+      }
     } else if (dependence === 'activeChatMessages') {
       const messages = newProps as IMessageProps[];
       const messagesList = this.children.messagesList;
@@ -232,15 +344,15 @@ class ChatPage extends BaseComponent implements IUpdatable {
         ...messagesList.props,
         list: messages,
       });
+    } else if (dependence === 'activeChatUsers') {
+      const users = newProps as ChatUserInfo[];
+      const usersList = this.children.usersList;
+
+      usersList.setProps({
+        ...usersList.props,
+        list: users,
+      });
     }
-  }
-
-  public handleMessageSend(event: Event) {
-    event.preventDefault();
-
-    const messageData = this.messageForm.grabFormValues(this.messageForm);
-
-    ChatService.sendMessage(messageData.message);
   }
 }
 

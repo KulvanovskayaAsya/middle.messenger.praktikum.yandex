@@ -4,7 +4,7 @@ import { ProfileInfo } from '@/store/initial-state';
 
 class ProfileService {
   getProfileInfo(): ProfileInfo {
-    return store.getState().profileInfo;
+    return store.getState().profile;
   }
 
   public async changeProfile(data: ProfileInfo) {
@@ -41,7 +41,7 @@ class ProfileService {
   }
 
   private async _setStoreProfileInfo(profileInfo: ProfileInfo) {
-    store.setState('profileInfo', {
+    store.setState('profile', {
       ...profileInfo,
     });
   }
