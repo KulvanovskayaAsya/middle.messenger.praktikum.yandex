@@ -7,14 +7,22 @@
 	gap: $spacing__medium;
 	padding: $spacing__medium;
 	background-color: $color__surface;
-	border-radius: $border-radius_large;
-}
-
-.message__text {
   color: $color-text__light_accent;
+	border-radius: $border-radius_large;
+
+  &_mine {
+    align-self: flex-end;
+    background-color: $color__primary;
+    color: $color-text__dark_accent;
+  }
 }
 
 .message__date {
+  color: $color-text__light_main;
   align-self: flex-end;
   font: 400 10px / 10px $font-family__secondary;
+}
+
+.message_mine .message__date {
+  color: $color-text__dark_main;
 }

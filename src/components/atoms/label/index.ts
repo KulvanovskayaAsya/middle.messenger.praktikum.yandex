@@ -1,8 +1,8 @@
-import BaseComponent from '../../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './label.scss';
 import template from './label.hbs?raw';
 
-export interface ILabelProps {
+export interface ILabelProps extends IProps {
   forInputId: string,
   additionalClasses?: string,
   label: string

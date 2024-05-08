@@ -1,3 +1,5 @@
+import { isEmptyString } from './type-check';
+
 type ValidationResult = {
   isValid: boolean;
   message: string;
@@ -47,9 +49,17 @@ const validatePhone = (phone: string): ValidationResult => {
   return { isValid: true, message: '' };
 };
 
-const validateMessage = (message: string): ValidationResult => {
-  if (message.trim() === '') {
-    return { isValid: false, message: 'Сообщение не может быть пустым.' };
+const validateNotEmpty = (message: string): ValidationResult => {
+  if (isEmptyString(message)) {
+    return { isValid: false, message: 'Поле не может быть пустым.' };
+  }
+  return { isValid: true, message: '' };
+};
+
+const validateUserId = (id: string): ValidationResult => {
+  const regex = /^\d{1,7}$/;
+  if (!regex.test(id)) {
+    return { isValid: false, message: 'ID пользователя должно быть целым числом' };
   }
   return { isValid: true, message: '' };
 };
@@ -62,12 +72,14 @@ const validate = (fieldName: string, value: string): ValidationResult => {
     email: validateEmail,
     password: validatePassword,
     phone: validatePhone,
-    message: validateMessage,
+    message: validateNotEmpty,
+    chatTitle: validateNotEmpty,
+    chatUser: validateUserId,
   };
 
   const validator = validators[fieldName];
   if (!validator) {
-    return { isValid: false, message: 'Валидация для данного поля не предусмотрена.' };
+    return { isValid: true, message: '' };
   }
 
   return validator(value);

@@ -1,11 +1,11 @@
-import BaseComponent from '../../../utils/base-component';
+import BaseComponent from '@utils/base-component';
 import './text-field.scss';
 import template from './text-field.hbs?raw';
 
-import validate from '../../../utils/validation';
+import validate from '@utils/validation';
 
-import Input, { IInputProps } from '../../atoms/input';
-import Label, { ILabelProps } from '../../atoms/label';
+import Input, { IInputProps } from '@components/atoms/input';
+import Label, { ILabelProps } from '@components/atoms/label';
 
 export interface ITextFieldProps {
   input: IInputProps;
@@ -46,7 +46,6 @@ class TextField extends BaseComponent {
           ...childInput.props,
           additionalClasses: `${childInput.props.additionalClasses ? `${childInput.props.additionalClasses} ` : ''}input_invalid`,
         });
-        console.log(validationResult.message);
       } else {
         let updatedClasses: string = '';
         if (typeof childInput.props.additionalClasses === 'string') updatedClasses = (childInput.props.additionalClasses || '').replace('input_invalid', '').trim();

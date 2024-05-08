@@ -8,6 +8,11 @@
 	border-radius: $border-radius_large;
 }
 
+.chat_active {
+	background-color: $color__primary_light;
+	color: $color-text__dark_main;
+}
+
 .chat__avatar {
 	height: 100%;
 	aspect-ratio: 1/1;
@@ -23,6 +28,10 @@
 	font: 800 18px/18px $font-family__secondary;
 	color: $color-text__light_accent;
 	margin-bottom: $spacing__extra-small;
+}
+
+.chat_active .chat__name {
+	color: $color-text__dark_accent;
 }
 
 .chat__message {

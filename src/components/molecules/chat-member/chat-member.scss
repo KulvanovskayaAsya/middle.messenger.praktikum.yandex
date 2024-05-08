@@ -1,0 +1,11 @@
+@import 'src/assets/variables';
+
+.chat-member {
+	display: flex;
+	align-items: center;
+	gap: $spacing__small;
+}
+
+.chat-member__action {
+	margin-left: auto;
+}

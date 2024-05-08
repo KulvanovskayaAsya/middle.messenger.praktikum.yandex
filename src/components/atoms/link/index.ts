@@ -1,17 +1,25 @@
-import BaseComponent from '../../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './link.scss';
 import template from './link.hbs?raw';
 
-export interface ILinkProps {
-  hrefLink: string,
+import Router from '@/router';
+
+export interface ILinkProps extends IProps {
+  hrefPage: string,
   text: string,
-  additionalClasses?: string,
-  hrefPage: string
+  additionalClasses?: string
 }
 
 class Link extends BaseComponent {
   constructor(props: ILinkProps) {
-    super(props);
+    super({
+      ...props,
+      events: {
+        click: () => {
+          Router.go(props.hrefPage);
+        },
+      },
+    });
   }
 
   render(): HTMLElement {

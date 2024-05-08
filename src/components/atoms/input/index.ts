@@ -1,10 +1,8 @@
-import BaseComponent, { Props } from '../../../utils/base-component';
+import BaseComponent, { IProps } from '@utils/base-component';
 import './input.scss';
 import template from './input.hbs?raw';
 
-import isObjectsEqual from '../../../utils/object-comparing';
-
-export interface IInputProps {
+export interface IInputProps extends IProps {
   id: string;
   value?: string;
   additionalClasses?: string;
@@ -23,21 +21,15 @@ class Input extends BaseComponent {
           const target = event.target as HTMLInputElement;
           
           if (target) {
-            this.setProps({
-              ...this.props,
-              value: target.value,
-            });
+            this.setAttribute('value', target.value);
           }
         },
       },
     });
   }
 
-  public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-    const { value: oldValue, ...oldPropsWithoutValue } = oldProps;
-    const { value: newValue, ...newPropsWithoutValue } = newProps;
-  
-    return !isObjectsEqual(oldPropsWithoutValue, newPropsWithoutValue);
+  public setAttribute(attr: string, value: string) {
+    this.element?.setAttribute(attr, value);
   }
 
   render(): HTMLElement {

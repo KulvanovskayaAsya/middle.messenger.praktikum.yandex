@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Handlebars from 'handlebars';
 
 import EventBus from './event-bus';
-import isObjectsEqual from './object-comparing';
+import isEqual from './object-comparing';
 
 enum EVENTS {
   INIT = 'init',
@@ -11,17 +11,31 @@ enum EVENTS {
   FLOW_RENDER = 'flow:render',
 }
 
-export type Props = {
+export interface IProps {
   [key: string]: unknown;
+  dependences?: string[] | [];
   events?: Record<string, (e: Event) => void>;
-};
+  additionalClasses?: string;
+}
+
+export interface IUpdatable {
+  updateChildrenDependentProps(newProp: unknown, dependence?: string): void;
+}
+
 type Children = Record<string, BaseComponent>;
 
-// не получается типизировать
-type PropsAndChildren = {};
+type PropsAndChildren = {
+  [key: string]: unknown;
+};
+
+function isUpdatable(object: any): object is IUpdatable {
+  return typeof object.updateChildrenDependentProps === 'function';
+}
 
 abstract class BaseComponent {
   static LIFECICLE_EVENTS = EVENTS;
+
+  protected _dependences: string[] | [] = [];
 
   private _id: string;
 
@@ -29,13 +43,17 @@ abstract class BaseComponent {
 
   private eventBus: EventBus;
 
-  public props: Props;
+  public props: IProps;
 
   public children: Children;
 
   constructor(propsAndChildren: PropsAndChildren = {}) {
     const eventBus = new EventBus();
     const { children, props } = this._getChildrenAndProps(propsAndChildren);
+
+    if (props.dependences) {
+      this._dependences = props.dependences;
+    }
 
     this._id = uuidv4();
     this.props = this._makePropsProxy(props);
@@ -46,9 +64,13 @@ abstract class BaseComponent {
     eventBus.emit(BaseComponent.LIFECICLE_EVENTS.INIT);
   }
 
-  private _getChildrenAndProps(propsAndChildren: PropsAndChildren): { children: Children; props: Props } {
+  dependsOnProps(): string[] {
+    return this._dependences;
+  }
+
+  private _getChildrenAndProps(propsAndChildren: PropsAndChildren): { children: Children; props: IProps } {
     const children: Children = {};
-    const props: Props = {};
+    const props: IProps = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (value instanceof BaseComponent) {
@@ -61,9 +83,9 @@ abstract class BaseComponent {
     return { children, props };
   }
 
-  private _makePropsProxy(props: Props): Props {
+  private _makePropsProxy(props: IProps): IProps {
     return new Proxy(props, {
-      set: (target: Props, prop: string, value: unknown): boolean => {
+      set: (target: IProps, prop: string, value: unknown): boolean => {
         const oldProps = { ...target };
         target[prop] = value;
         this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_CDU, oldProps, target);
@@ -92,12 +114,20 @@ abstract class BaseComponent {
     throw new Error('Element is not created');
   }
 
-  public setProps = (nextProps: Props): void => {
+  public setProps = (nextProps: IProps): void => {
     if (!nextProps) {
       return;
     }
 
     Object.assign(this.props, nextProps);
+  };
+
+  public setChildren = (nextChildren: Children): void => {
+    if (!nextChildren) {
+      return;
+    }
+
+    Object.assign(this.children, nextChildren);
   };
 
   private _init(): void {
@@ -120,27 +150,46 @@ abstract class BaseComponent {
     this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_CDM);
   }
 
-  private _componentDidUpdate(oldProps: Props, newProps: Props): void {
+  private _componentDidUpdate(oldProps: IProps, newProps: IProps): void {
     const shouldUpdate = this.componentDidUpdate(
-      oldProps as Props,
-      newProps as Props,
+      oldProps as IProps,
+      newProps as IProps,
     );
 
     if (shouldUpdate) {
       this.eventBus.emit(BaseComponent.LIFECICLE_EVENTS.FLOW_RENDER);
+
+      Object.values(this.children).forEach(child => {
+        const dependencies = child.dependsOnProps();
+        const hasDependencyChanged = dependencies.some(dep => {
+          if (isUpdatable(this)) {
+            this.updateChildrenDependentProps(newProps[dep], dep);
+          }
+
+          child._init();
+
+          return !isEqual(oldProps[dep], newProps[dep]);
+        });
+
+        if (hasDependencyChanged) {
+          this._init();
+        }
+      });
     }
   }
 
-  public componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-    return !isObjectsEqual(oldProps, newProps);
+  public componentDidUpdate(oldProps: IProps, newProps: IProps): boolean {
+    return !isEqual(oldProps, newProps);
   }
 
   private _render(): void {
     const block = this.render();
     this._removeEvents();
+
     if (!this._element) {
       this._element = document.createElement('div');
     }
+    
     this._element.replaceWith(block);
     this._element = block;
     this._addEvents();
@@ -148,7 +197,7 @@ abstract class BaseComponent {
 
   abstract render(): HTMLElement;
 
-  compile(template: string, props: Props): HTMLElement {
+  compile(template: string, props: IProps): HTMLElement {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
@@ -204,6 +253,10 @@ abstract class BaseComponent {
       this._element.style.display = 'none';
     }
   }
+}
+
+export abstract class BasePage extends BaseComponent {
+  abstract updateChildrenDependentProps(newProp: unknown, dependence?: string): void;
 }
 
 export default BaseComponent;

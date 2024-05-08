@@ -1,6 +1,10 @@
 @import 'src/assets/variables';
 
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing__small;
   height: 40px;
   width: 100%;
   text-align: center;
@@ -19,6 +23,11 @@
 
   &_secondary {
     background-color: $color__secondary;
-    color: $color-text__light_accent;
+    color: $color__primary-light;
+  }
+
+  &_with-icon {
+    background-color: transparent;
+    width: fit-content;
   }
 }

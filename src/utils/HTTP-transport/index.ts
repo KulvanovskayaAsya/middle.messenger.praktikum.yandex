@@ -6,9 +6,10 @@ const enum HttpMethods {
 }
 
 type Options = {
-  method: HttpMethods;
+  method?: HttpMethods;
   headers?: Record<string, string>;
-  data?: Record<string, string>;
+  data?: Record<string, unknown> | FormData;
+  withCreditals?: boolean;
   timeout?: number;
   retries?: number;
 };
@@ -23,17 +24,23 @@ interface IHTTP {
   request: HTTPMethod;
 }
 
-function queryStringify(data: Record<string, string>): string {
+function queryStringify(data: Record<string, unknown>): string {
   let result = '?';
 
   for (const [key, value] of Object.entries(data)) {
-    result += `${key}=${value.toString()}&`;
+    result += `${key}=${String(value)}&`;
   }
 
   return result.slice(0, result.length - 1);
 }
 
-class HTTP implements IHTTP {
+class HTTPTransport implements IHTTP {
+  baseUrl: string;
+
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
+
   get: HTTPMethod = (url, options) => this.request(url, { ...options, method: HttpMethods.GET });
 
   post: HTTPMethod = (url, options) => this.request(url, { ...options, method: HttpMethods.POST });
@@ -43,34 +50,39 @@ class HTTP implements IHTTP {
   delete: HTTPMethod = (url, options) => this.request(url, { ...options, method: HttpMethods.DELETE });
 
   request: HTTPMethod = (url, options) => {
-    const {
-      method, headers = {}, data, timeout = 5000,
-    } = options;
+    const { method = HttpMethods.GET, headers = {}, data, withCreditals = true, timeout = 1000 } = options;
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
+      const xhrUrl = this.baseUrl + url + (method === HttpMethods.GET && data && !(data instanceof FormData) ? `?${queryStringify(data)}` : '');
+      
+      xhr.open(method, xhrUrl);
 
-      if (method === HttpMethods.GET && data) {
-        url += `?${queryStringify(data)}`;
-      }
-
-      xhr.open(method, url);
-
-      Object.keys(headers).forEach((key) => {
+      Object.keys(headers).forEach(key => {
         xhr.setRequestHeader(key, headers[key]);
       });
 
-      xhr.onload = () => {
-        resolve(xhr);
-      };
-
       xhr.timeout = timeout;
-      xhr.onabort = reject;
-      xhr.onerror = reject;
-      xhr.ontimeout = reject;
+      xhr.withCredentials = withCreditals;
+
+      xhr.onload = () => {
+        const responseData = xhr.response;
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(responseData);
+        } else {
+          reject(responseData);
+        }
+      };
+      
+      xhr.onabort = () => reject(new Error('Запрос был прерван'));
+      xhr.onerror = () => reject(new Error('Сетевая ошибка'));
+      xhr.ontimeout = () => reject(new Error('Время запроса истекло'));
 
       if (method === HttpMethods.GET || !data) {
         xhr.send();
+      } else if (data instanceof FormData) {
+        xhr.send(data);
       } else {
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(data));
@@ -78,19 +90,4 @@ class HTTP implements IHTTP {
     });
   };
 }
-
-function fetchWithRetry(url: string, options: Options): unknown {
-  const { retries = 2 } = options;
-
-  if (retries === 0) {
-    throw new Error('The number of attempts has been exhausted');
-  }
-
-  return new HTTP()
-    .get(url, options)
-    .catch(() => fetchWithRetry(url, { ...options, retries: retries - 1 }));
-}
-
-export default HTTP;
-
-export { fetchWithRetry };
+export default HTTPTransport;
