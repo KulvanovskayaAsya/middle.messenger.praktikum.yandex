@@ -87,7 +87,7 @@ class WebSocketTransport {
       this.socket.close();
     }
 
-    clearInterval(this.pingInterval as number);
+    clearInterval(Number(this.pingInterval));
     this.pingInterval = null;
   }
 

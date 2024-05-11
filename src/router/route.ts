@@ -1,5 +1,5 @@
-import BaseComponent from '@utils/base-component';
-import isEqual from '@utils/object-comparing';
+import BaseComponent from '../utils/base-component.ts';
+import isEqual from '../utils/object-comparing.ts';
 
 interface IPageConstructor {
   new(args?: any): BaseComponent;

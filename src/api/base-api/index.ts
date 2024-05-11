@@ -1,4 +1,4 @@
-import HTTPTransport from '@utils/HTTP-transport';
+import HTTPTransport from '../../utils/HTTP-transport/index.ts';
 
 class BaseAPI {
   http: HTTPTransport;

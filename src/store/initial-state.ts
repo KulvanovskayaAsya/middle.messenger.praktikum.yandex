@@ -1,4 +1,4 @@
-import { IMessageProps } from '@components/atoms/message';
+import { IMessageProps } from '../components/atoms/message/index.ts';
 
 export type ProfileInfo = {
   id?: number;
