@@ -6,5 +6,9 @@ const jsdom = new JSDOM('<body></body>', {
 });
 
 global.window = jsdom.window;
-global.document = jsdom.document;
+global.document = window.document;
+global.DocumentFragment = window.DocumentFragment;
+global.history = window.history;
+global.Node = window.Node;
+
 global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();

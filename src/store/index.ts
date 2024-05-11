@@ -1,7 +1,7 @@
-import EventBus from '@utils/event-bus';
-import initialState from '@/store/initial-state';
+import EventBus from '../utils/event-bus.ts';
+import initialState from './initial-state.ts';
 
-import { isPlainObject } from '@utils/type-check';
+import { isPlainObject } from '../utils/type-check.ts';
 
 export enum StoreEvents {
   Updated = 'updated',

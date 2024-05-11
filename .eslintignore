@@ -3,3 +3,4 @@
 /node_modules
 server.js
 vite.config.js
+mocha-setup.js

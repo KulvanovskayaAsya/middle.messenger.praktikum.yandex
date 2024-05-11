@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import Handlebars from 'handlebars';
 
-import EventBus from './event-bus';
-import isEqual from './object-comparing';
+import EventBus from './event-bus.ts';
+import isEqual from './object-comparing.ts';
 
 enum EVENTS {
   INIT = 'init',
@@ -64,7 +64,7 @@ abstract class BaseComponent {
     eventBus.emit(BaseComponent.LIFECICLE_EVENTS.INIT);
   }
 
-  dependsOnProps(): string[] {
+  public dependsOnProps(): string[] {
     return this._dependences;
   }
 
@@ -114,20 +114,16 @@ abstract class BaseComponent {
     throw new Error('Element is not created');
   }
 
+  public getEventBus() {
+    return this.eventBus;
+  }
+
   public setProps = (nextProps: IProps): void => {
     if (!nextProps) {
       return;
     }
 
     Object.assign(this.props, nextProps);
-  };
-
-  public setChildren = (nextChildren: Children): void => {
-    if (!nextChildren) {
-      return;
-    }
-
-    Object.assign(this.children, nextChildren);
   };
 
   private _init(): void {
@@ -222,7 +218,7 @@ abstract class BaseComponent {
     return fragment.content.firstElementChild as HTMLElement;
   }
 
-  _addEvents() {
+  protected _addEvents() {
     const { events } = this.props;
 
     if (events) {
@@ -232,7 +228,7 @@ abstract class BaseComponent {
     }
   }
 
-  _removeEvents() {
+  protected _removeEvents() {
     const { events } = this.props;
 
     if (events) {
@@ -253,10 +249,6 @@ abstract class BaseComponent {
       this._element.style.display = 'none';
     }
   }
-}
-
-export abstract class BasePage extends BaseComponent {
-  abstract updateChildrenDependentProps(newProp: unknown, dependence?: string): void;
 }
 
 export default BaseComponent;

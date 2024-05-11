@@ -1,10 +1,10 @@
 import { use, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
-import { 
+import sinon, { 
   useFakeXMLHttpRequest, 
   SinonFakeXMLHttpRequest,
-  SinonFakeXMLHttpRequestStatic
+  SinonFakeXMLHttpRequestStatic,
 } from 'sinon';
 import HTTPTransport from './index.ts';
 
@@ -28,6 +28,7 @@ describe('HTTP-Transport', () => {
 
   afterEach(() => {
     xhr.restore();
+    sinon.restore();
   });
 
   describe('Request', () => {
@@ -42,7 +43,7 @@ describe('HTTP-Transport', () => {
     it('should set Content-Type header to application/json', () => {
       const testBody = { 
         name: 'Test',
-        value: 123
+        value: 123,
       };
 
       http.post('test', { data: testBody });
@@ -82,8 +83,8 @@ describe('HTTP-Transport', () => {
     it('should be sent with query params', async () => {
       const requestParams = { 
         param1: 'value1',
-        param2: 'value2' 
-      }
+        param2: 'value2', 
+      };
 
       http.get('/test', { data: requestParams });
 
@@ -103,7 +104,7 @@ describe('HTTP-Transport', () => {
     it('should be sent with non empty body', () => {
       const requestBody = {
         id: 1,
-        info: 'test'
+        info: 'test',
       };
 
       http.post(requestURL, { data: requestBody });
@@ -124,7 +125,7 @@ describe('HTTP-Transport', () => {
     it('should be sent with non empty body', () => {
       const requestBody = {
         id: 1,
-        info: 'test'
+        info: 'test',
       };
 
       http.put(requestURL, { data: requestBody });
@@ -145,7 +146,7 @@ describe('HTTP-Transport', () => {
     it('should be sent with non empty body', () => {
       const requestBody = {
         id: 1,
-        info: 'test'
+        info: 'test',
       };
 
       http.delete(requestURL, { data: requestBody });
