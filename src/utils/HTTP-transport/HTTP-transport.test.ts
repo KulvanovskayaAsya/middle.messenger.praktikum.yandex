@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import sinon, { 
   useFakeXMLHttpRequest, 
   SinonFakeXMLHttpRequest,
-  SinonFakeXMLHttpRequestStatic
+  SinonFakeXMLHttpRequestStatic,
 } from 'sinon';
 import HTTPTransport from './index.ts';
 
