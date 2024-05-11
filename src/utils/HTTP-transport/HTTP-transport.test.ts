@@ -48,7 +48,7 @@ describe('HTTP-Transport', () => {
 
       http.post('test', { data: testBody });
   
-      expect(request.requestHeaders).to.have.property('Content-Type').that.includes('application/json');
+      expect(request?.requestHeaders).to.have.property('Content-Type').that.includes('application/json');
     });
 
     //данный тест отключен из-за того, что не проходит проверку тестов на гитхабе
