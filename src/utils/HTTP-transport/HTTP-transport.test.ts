@@ -156,7 +156,7 @@ describe('HTTP-Transport', () => {
 
       http.delete(requestURL, { data: requestBody });
 
-      if(request != null) {
+      if (request != null) {
         expect(JSON.parse(request.requestBody)).to.deep.equal(requestBody);
       }
     });
