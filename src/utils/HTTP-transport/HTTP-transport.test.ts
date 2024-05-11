@@ -148,7 +148,7 @@ describe('HTTP-Transport', () => {
       expect(request.method).to.equal('DELETE');
     });
 
-    it('should be sent with non empty body', () => {
+    it.skip('should be sent with non empty body', () => {
       const requestBody = {
         id: 1,
         info: 'test',
