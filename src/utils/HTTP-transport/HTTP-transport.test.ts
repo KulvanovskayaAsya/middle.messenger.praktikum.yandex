@@ -66,7 +66,7 @@ describe('HTTP-Transport', () => {
     });
   });
 
-  it.skip('Network errors should be handled', async () => {
+  it('Network errors should be handled', async () => {
     const errorMessage = 'Сетевая ошибка';
     const requestURL = 'test/error';
     
