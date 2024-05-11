@@ -132,7 +132,7 @@ describe('HTTP-Transport', () => {
 
       http.put(requestURL, { data: requestBody });
 
-      expect(JSON.parse(request.requestBody)).to.deep.equal(requestBody);
+      expect(request.requestBody).to.deep.equal(JSON.stringify(requestBody));
     });
   });
 
