@@ -12,27 +12,39 @@
     "lint": "npm run lint:js && npm run lint:css && npm run lint:types",
     "dev": "vite --port 3000 --host",
     "build": "vite build",
-    "start": "npm run build && node server.js"
+    "start": "npm run build && node server.js",
+    "test": "mocha"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.16",
+    "@types/chai-as-promised": "^7.1.8",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.11",
+    "@types/sinon": "^17.0.3",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.4.0",
     "@typescript-eslint/parser": "^7.4.0",
+    "chai": "^5.1.1",
+    "chai-as-promised": "^7.1.2",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-plugin-import": "^2.29.1",
+    "mocha": "^10.4.0",
     "sass": "^1.72.0",
+    "sinon": "^17.0.2",
     "stylelint": "^16.3.1",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-config-standard-scss": "^13.0.0",
     "stylelint-scss": "^6.2.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
     "vite": "^5.1.6"
   },
   "dependencies": {
     "express": "^4.18.3",
     "handlebars": "^4.7.8",
+    "jsdom": "^24.0.0",
     "uuid": "^9.0.1"
   }
 }
