@@ -1,7 +1,7 @@
-import store from '@/store';
-import router from '@/router';
-import AuthorizationAPI, { SignInData, SignUpData } from '@/api/authorization-api';
-import initialState, { ProfileInfo } from '@/store/initial-state';
+import store from '../../store/index.ts';
+import router from '../../router/index.ts';
+import AuthorizationAPI, { SignInData, SignUpData } from '../../api/authorization-api/index.ts';
+import initialState, { ProfileInfo } from '../../store/initial-state.ts';
 
 class AuthorizationService {
   private async _getProfileInfo() {

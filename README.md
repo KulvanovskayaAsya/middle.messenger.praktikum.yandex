@@ -35,7 +35,18 @@ npm run start
 npm run dev
 ```
 
+Для линтинга проекта используйте
+```bash
+npm run lint
+```
+
+
 Для сборки проекта используйте
 ```bash
-npm run dev
+npm run build
+```
+
+Для тестирования проекта используйте
+```bash
+npm run test
 ```

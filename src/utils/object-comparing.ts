@@ -1,4 +1,4 @@
-import { isArray, isPlainObject } from '@utils/type-check';
+import { isArray, isPlainObject } from './type-check.ts';
 
 function isEqual<T>(lhs: T, rhs: T): boolean {
   if (lhs === rhs) {

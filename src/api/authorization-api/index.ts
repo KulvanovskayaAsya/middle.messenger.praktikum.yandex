@@ -1,4 +1,4 @@
-import BaseAPI from '@/api/base-api';
+import BaseAPI from '../base-api/index.ts';
 
 const API_BASE_PATH = '/auth';
 

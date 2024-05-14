@@ -1,6 +1,6 @@
-import Route from '@/router/route';
-import BaseComponent from '@/utils/base-component';
-import AuthorizationService from '@services/authorization-service';
+import Route from './route.ts';
+import BaseComponent from '../utils/base-component.ts';
+import AuthorizationService from '../services/authorization-service/index.ts';
 
 interface IPageConstructor {
   new(args?: unknown): BaseComponent;
@@ -17,6 +17,10 @@ class Router {
 
   constructor(rootQuery: string) {   
     this._rootQuery = rootQuery;
+  }
+
+  public get routes() {
+    return this._routes;
   }
 
   public use(pathname: string, block: IPageConstructor): Router {
